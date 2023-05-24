@@ -9,7 +9,7 @@ Additional Features:
 
 - The estimated print time is added to the thumbnail for a better overview
 
-> TODO: Add image of example thunbnail on printer
+> TODO: Add image of example thumbnail on printer
 
 ## Installation
 
@@ -33,8 +33,8 @@ Additional Features:
    ![Manage printers](images/cura_manage_printers.png "Manage printers")
 2) Choose your Elegoo Neptune 3 Pro/Plus/Max printer and then `Machine Settings`
    ![Machine Settings](images/cura_machine_settings.png "Machine Settings")
-3) At the top of `Start G-code` add an options (e.g. `;includeThumbnail`)
-   ![Start G-code](images/cura_start_g_code.png "Start G-code")
+3) At the top of `Start G-code` add your preferred options
+   ![Start G-code](images/cura_edit_g_code.png "Edit G-code")
 
 ## Development Guide
 
