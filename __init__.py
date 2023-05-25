@@ -1,4 +1,4 @@
-from . import ElegooN3Thumbnail
+from .elegoo_neptune_3_thumbnails import ElegooNeptune3Thumbnails
 
 
 def getMetaData():
@@ -9,4 +9,4 @@ def register(app):
     """
     Init point: Register the extension
     """
-    return {"extension": ElegooN3Thumbnail.ElegooN3Thumbnail()}
+    return {"extension": ElegooNeptune3Thumbnails()}

@@ -3,6 +3,7 @@ from array import array
 from ctypes import *
 
 from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QImage
 
 from UM.Application import Application
 from UM.Extension import Extension
@@ -12,7 +13,7 @@ from cura.CuraApplication import CuraApplication
 from cura.Snapshot import Snapshot
 
 
-class ElegooN3Thumbnail(Extension):
+class ElegooNeptune3Thumbnails(Extension):
     """
     Main class of the extension
     """
@@ -74,7 +75,7 @@ class ElegooN3Thumbnail(Extension):
         """
         Take a screenshot of the model
         """
-        cut_image = Snapshot.snapshot(width=900, height=900)
+        cut_image: QImage = Snapshot.snapshot(width=900, height=900)
         return cut_image
 
     @classmethod

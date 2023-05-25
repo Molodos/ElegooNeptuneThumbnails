@@ -41,7 +41,9 @@ Additional Features:
 1) Install requirements `pip install -r requirements.txt`
 2) Add `cura` folder from https://github.com/Ultimaker/Cura to base directory (needed as lib)
 3) Add `UM` folder from https://github.com/Ultimaker/Uranium to base directory (needed as lib)
-4) Start developing
+4) Develop
+5) Create package `python -m package_plugin` (package will be
+   under `packaget_plugin/ElegooNeptune3Thumbnails.curapackage`)
 
 ## Contribution
 
