@@ -2,6 +2,6 @@
     "name": "Elegoo Neptune 3 Thumbnails",
     "author": "Molodos",
     "version": "1.0.0",
-    "description": "Adds Neptune 3 Pro/Plus/Max thumbnail to G-code. Option to add estimated print time to thumbnail",
+    "description": "Adds Neptune 3 Pro/Plus/Max thumbnail to G-code. Options to add parameters like estimated print time to thumbnail",
     "api": 8
 }

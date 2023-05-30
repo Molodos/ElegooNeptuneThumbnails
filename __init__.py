@@ -1,3 +1,8 @@
+# Copyright (c) 2023 Molodos
+# Copyright (c) 2023 sigathi
+# Copyright (c) 2020 LotmaxxSnapshot
+# The ElegooNeptune3Thumbnails plugin is released under the terms of the AGPLv3 or higher.
+
 from .elegoo_neptune_3_thumbnails import ElegooNeptune3Thumbnails
 
 

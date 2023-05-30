@@ -1,15 +1,21 @@
+# Copyright (c) 2023 Molodos
+# Copyright (c) 2023 sigathi
+# Copyright (c) 2020 DhanOS
+# The ElegooNeptune3Thumbnails plugin is released under the terms of the AGPLv3 or higher.
+
 import os
 from array import array
 from ctypes import *
+from typing import Optional
 
 from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QImage
+from PyQt6.QtGui import QImage, QPainter, QFont
 
 from UM.Application import Application
 from UM.Extension import Extension
 from UM.Logger import Logger
 from UM.Platform import Platform
-from cura.CuraApplication import CuraApplication
+from UM.Scene.Scene import Scene
 from cura.Snapshot import Snapshot
 
 
@@ -28,7 +34,7 @@ class ElegooNeptune3Thumbnails(Extension):
         Application.getInstance().getOutputDeviceManager().writeStarted.connect(self.add_snapshot_to_gcode)
 
         # Get a scene handler fo late usage
-        self.scene = Application.getInstance().getController().getScene()
+        self.scene: Scene = Application.getInstance().getController().getScene()
 
     def add_snapshot_to_gcode(self, output_device) -> None:
         """
@@ -42,49 +48,95 @@ class ElegooNeptune3Thumbnails(Extension):
 
         # Enumerate G-code objects
         for build_plate_number, gcode_list in self.scene.gcode_dict.items():
-            for index, g_code in enumerate(gcode_list):
+            include_thumbnail: bool = False
+            include_time_estimate: bool = False
+            for g_code in gcode_list:  # List of commands sets
 
-                # If there is ";includeThumbnail" anywhere, add encoded snapshot image (simage and gimage)
+                # Check for options
                 if ';includeThumbnail' in g_code:
+                    include_thumbnail = True
+                if ';includeTimeEstimate' in g_code:
+                    include_time_estimate = True
 
-                    # Take a screenshot
-                    screenshot = self.take_screenshot()
+            # Get params from G-code
+            g_code_params_list: list[str] = gcode_list[0].splitlines()
+            g_code_params: dict[str, str] = {p[1:p.index(":")].lower(): p[p.index(":") + 1:] for p in
+                                             g_code_params_list}
+            """
+            Example:
+            {
+                'flavor': 'Marlin',
+                'time': '2432',
+                'filament used':' 2.02409m',
+                'layer height': ' 0.2',
+                'minx': '86.84',
+                'miny': '101.226',
+                'minz': '0.2',
+                'maxx': '140.428',
+                'maxy': '130.771',
+                'maxz': '33'
+            }
+            """
+
+            # Add encoded snapshot image if wanted (simage and gimage)
+            if include_thumbnail:
+
+                # Take a screenshot
+                if include_time_estimate:
 
                     # Add estimated print time if it should be added
-                    if ';includeTimeEstimate' in g_code:
-                        pass  # TODO
+                    # Calculate estimation
+                    minutes: int = round(int(g_code_params["time"]) / 60)
+                    estimate: str = f"{minutes // 60}:{minutes % 60:02d}"
+                    Logger.log("d", f"Estimated time: {estimate}")
 
-                    # Create the G-code for the screenshot depending on machine type
-                    image_gcode = ""
-                    machine_type = Application.getInstance().getMachineManager().activeMachine.definition.getId()
-                    if machine_type in ["elegoo_neptune_3_pro", "elegoo_neptune_3_plus", "elegoo_neptune_3_max",
-                                        "elegoo_neptune_3pro", "elegoo_neptune_3plus", "elegoo_neptune_3max"]:
-                        image_gcode += self.parse_screenshot_new(screenshot, 200, 200, ";gimage:")
-                        image_gcode += self.parse_screenshot_new(screenshot, 160, 160, ";simage:")
-                        image_gcode += "\r"
-                    elif machine_type != "elegoo_neptune_3":
-                        image_gcode += self.parse_screenshot(screenshot, 200, 200, ";gimage:")
-                        image_gcode += self.parse_screenshot(screenshot, 160, 160, ";simage:")
-                        image_gcode += "\r"
+                    # Take screenshot with estimate
+                    screenshot: QImage = self.take_screenshot(estimate)
+                else:
+                    screenshot: QImage = self.take_screenshot()
 
-                    # Add image G-code to the beginning of the G-code
-                    self.scene.gcode_dict[0][0] = image_gcode + self.scene.gcode_dict[0][0]
+                # Create the G-code for the screenshot depending on machine type
+                image_gcode = ""
+                machine_type = Application.getInstance().getMachineManager().activeMachine.definition.getId()
+                if machine_type in ["elegoo_neptune_3_pro", "elegoo_neptune_3_plus", "elegoo_neptune_3_max",
+                                    "elegoo_neptune_3pro", "elegoo_neptune_3plus", "elegoo_neptune_3max"]:
+                    image_gcode += self.parse_screenshot_new(screenshot, 200, 200, ";gimage:")
+                    image_gcode += self.parse_screenshot_new(screenshot, 160, 160, ";simage:")
+                    image_gcode += "\r"
+                elif machine_type != "elegoo_neptune_3":
+                    image_gcode += self.parse_screenshot(screenshot, 200, 200, ";gimage:")
+                    image_gcode += self.parse_screenshot(screenshot, 160, 160, ";simage:")
+                    image_gcode += "\r"
+
+                # Add image G-code to the beginning of the G-code
+                self.scene.gcode_dict[0][0] = image_gcode + self.scene.gcode_dict[0][0]
 
     @classmethod
-    def take_screenshot(cls):
+    def take_screenshot(cls, text: Optional[str] = None) -> QImage:
         """
         Take a screenshot of the model
         """
-        cut_image: QImage = Snapshot.snapshot(width=900, height=900)
-        return cut_image
+        Logger.log("d", f"Taking a screenshot with text {text}")
+        screen: QImage = Snapshot.snapshot(width=900, height=900)
+        if text:
+            screen = cls.add_text(screen, text)
+        return screen
+
+    @classmethod
+    def add_text(cls, image: QImage, text: str) -> QImage:
+        painter = QPainter(image)
+        font = QFont("Arial", 60)
+        painter.setFont(font)
+        painter.setPen(Qt.GlobalColor.darkGreen)
+        painter.drawText(0, 0, 880, 890, Qt.AlignmentFlag.AlignRight + Qt.AlignmentFlag.AlignBottom, text)
+        painter.end()
+        return image
 
     @classmethod
     def parse_screenshot(cls, img, width, height, img_type) -> str:
         """
         Parse screenshot to string for old printers
         """
-        Logger.log("d",
-                   "add_screenshot." + CuraApplication.getInstance().getMachineManager().activeMachine.definition.id)
         result = ""
         b_image = img.scaled(width, height, Qt.AspectRatioMode.KeepAspectRatio)
         img_size = b_image.size()
@@ -123,8 +175,6 @@ class ElegooNeptune3Thumbnails(Extension):
         """
         Parse screenshot to string for new printers
         """
-        Logger.log("d",
-                   "add_screenshot_new." + CuraApplication.getInstance().getMachineManager().activeMachine.definition.id)
         if Platform.isOSX():
             p_dll = CDLL(os.path.join(os.path.dirname(__file__), "libs/libColPic.dylib"))
         elif Platform.isLinux():

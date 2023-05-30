@@ -7,9 +7,9 @@ Pro)
 
 Additional Features:
 
-- The estimated print time is added to the thumbnail for a better overview
+- The estimated print time can be added to the thumbnail for a better overview
 
-> TODO: Add image of example thumbnail on printer
+<img src="images/neptune_3_pro_view.jpg" width="300">
 
 ## Installation
 
@@ -29,12 +29,12 @@ Additional Features:
 
 ### Adding An Option
 
-1) Open printer selection menu and choose `Manage printers`
-   ![Manage printers](images/cura_manage_printers.png "Manage printers")
-2) Choose your Elegoo Neptune 3 Pro/Plus/Max printer and then `Machine Settings`
-   ![Machine Settings](images/cura_machine_settings.png "Machine Settings")
-3) At the top of `Start G-code` add your preferred options
-   ![Start G-code](images/cura_edit_g_code.png "Edit G-code")
+1) Open printer selection menu and choose `Manage printers` \
+   <img src="images/cura_manage_printers.png" width="400">
+2) Choose your Elegoo Neptune 3 Pro/Plus/Max printer and then `Machine Settings` \
+   <img src="images/cura_manage_printers.png" width="400">
+3) At the top of `Start G-code` add your preferred options \
+   <img src="images/cura_edit_g_code.png" width="600">
 
 ## Development Guide
 
@@ -44,7 +44,9 @@ Additional Features:
 4) Develop
 5) Create package `python -m package_plugin` (package will be
    under `packaget_plugin/ElegooNeptune3Thumbnails.curapackage`)
+6) Use the `test.py` script for testing the formatting of image texts
 
 ## Contribution
 
-This repository is based on [sigathi/ElegooN3Thumbnail](https://github.com/sigathi/ElegooN3Thumbnail).
+This repository is based on [sigathi/ElegooN3Thumbnail](https://github.com/sigathi/ElegooN3Thumbnail) and therefore
+released under the **AGPL v3** license.
