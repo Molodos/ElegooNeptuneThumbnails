@@ -9,13 +9,16 @@ Additional Features:
 
 - The estimated print time can be added to the thumbnail for a better overview
 
+> If you have some idea on how to improve the plugin, feel free to create an issue for that
+
 <img src="images/neptune_3_pro_view.jpg" width="300">
 
 ## Installation
 
 > TODO: Add download link (and create release)
 
-1) Download the [plugin]()
+1) Download
+   the [plugin](https://github.com/Molodos/ElegooNeptune3Thumbnails/releases/latest/download/ElegooNeptune3Thumbnails.curapackage)
 2) Drag the `.curapackage` file onto Cura and restart Cura
 
 ## Usage
