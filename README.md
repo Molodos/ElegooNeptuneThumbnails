@@ -13,6 +13,12 @@ Additional Features:
 
 <img src="images/neptune_3_pro_view.jpg" width="300">
 
+## Support This Project
+
+If you like this project, every support is welcome :D
+
+[![Buy Me A Coffee](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/molodos)
+
 ## Installation
 
 > TODO: Add download link (and create release)
