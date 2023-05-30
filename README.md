@@ -2,7 +2,7 @@
 
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
 
-Cura 5 plugin for adding G-code thumbnail images Elegoo Neptune 3 Pro/Plus/Max printers (tested for Elegoo Neptune 3
+Cura 5 plugin for adding G-code thumbnail images for Elegoo Neptune 3 Pro/Plus/Max printers (tested for Elegoo Neptune 3
 Pro)
 
 Additional Features:
