@@ -39,6 +39,18 @@ Additional Features:
 3) At the top of `Start G-code` add your preferred options \
    <img src="images/cura_edit_g_code.png" width="600">
 
+## FAQ
+
+### Why does my printer sometimes display one minute more than Cura?
+
+Cura does always round down internally while my plugin will round correctly. Therefore for e.g. 5 minutes and 48
+seconds, Cura will say 5 minutes (round down) while the plugin will say 6 minutes (round up)
+
+### Does my printer support this plugin?
+
+I am pretty sure, that the plugin cannot break anything as it just generates a comment with an encoded image in the
+G-code, that a printer will only interpret if it can. So I guess just try it out
+
 ## Development Guide
 
 1) Install requirements `pip install -r requirements.txt`
