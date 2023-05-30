@@ -61,7 +61,7 @@ class ElegooNeptune3Thumbnails(Extension):
             # Get params from G-code
             g_code_params_list: list[str] = gcode_list[0].splitlines()
             g_code_params: dict[str, str] = {p[1:p.index(":")].lower(): p[p.index(":") + 1:] for p in
-                                             g_code_params_list}
+                                             g_code_params_list if ":" in p}
             """
             Example:
             {
