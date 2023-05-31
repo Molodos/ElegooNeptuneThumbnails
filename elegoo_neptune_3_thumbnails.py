@@ -2,14 +2,14 @@
 # Copyright (c) 2023 sigathi
 # Copyright (c) 2020 DhanOS
 # The ElegooNeptune3Thumbnails plugin is released under the terms of the AGPLv3 or higher.
-
+import math
 import os
 from array import array
 from ctypes import *
-from typing import Optional
+from os import path
 
 from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QImage, QPainter, QFont
+from PyQt6.QtGui import QImage, QPainter, QFont, QColor
 
 from UM.Application import Application
 from UM.Extension import Extension
@@ -23,6 +23,18 @@ class ElegooNeptune3Thumbnails(Extension):
     """
     Main class of the extension
     """
+
+    colors: dict[str, QColor] = {
+        "green": QColor(34, 236, 128),
+        "red": QColor(209, 76, 81),
+        "yellow": QColor(251, 226, 0),
+        "white": QColor(255, 255, 255),
+        "bg_dark": QColor(30, 36, 52),
+        "bg_light": QColor(46, 54, 75),
+        "bg_thumbnail": QColor(48, 57, 79),
+        "own_gray": QColor(200, 200, 200)
+    }
+    thumbnail_bg_path: str = path.join(path.dirname(path.realpath(__file__)), "bg_thumbnail.png")
 
     def __init__(self):
         """
@@ -47,23 +59,32 @@ class ElegooNeptune3Thumbnails(Extension):
             return
 
         # Enumerate G-code objects
-        for build_plate_number, gcode_list in self.scene.gcode_dict.items():
+        for build_plate_number, g_code_list in self.scene.gcode_dict.items():
+
+            # Set commands
             include_thumbnail: bool = False
-            include_time_estimate: bool = False
-            for g_code in gcode_list:  # List of commands sets
+            include_options: dict[str, int] = {}
+
+            for g_code in g_code_list:  # List of commands sets
 
                 # Check for options
                 if ';includeThumbnail' in g_code:
                     include_thumbnail = True
                 if ';includeTimeEstimate' in g_code:
-                    include_time_estimate = True
+                    include_options["time"] = g_code.index(";includeTimeEstimate")
+                if ';includeFilamentMetersEstimate' in g_code:
+                    include_options["filament_meters"] = g_code.index(";includeFilamentMetersEstimate")
+                if ';includeFilamentGramsEstimate' in g_code:
+                    include_options["filament_grams"] = g_code.index(";includeFilamentGramsEstimate")
+                if ';includeLayerHeight' in g_code:
+                    include_options["layer_height"] = g_code.index(";includeLayerHeight")
 
             # Get params from G-code
-            g_code_params_list: list[str] = gcode_list[0].splitlines()
+            g_code_params_list: list[str] = g_code_list[0].splitlines()
             g_code_params: dict[str, str] = {p[1:p.index(":")].lower(): p[p.index(":") + 1:] for p in
                                              g_code_params_list if ":" in p}
             """
-            Example:
+            Example for g_code_params:
             {
                 'flavor': 'Marlin',
                 'time': '2432',
@@ -78,22 +99,38 @@ class ElegooNeptune3Thumbnails(Extension):
             }
             """
 
+            # Parse params
+            minutes: int = math.floor(int(g_code_params["time"]) / 60)
+            est_time: str = f"{minutes // 60}:{minutes % 60:02d}h"
+            Logger.log("d", f"Estimated time: {est_time}")
+
+            filament_meters: float = float(g_code_params["filament used"][:-1])
+            est_filament_meters: str = f"{round(filament_meters, 2)}m"
+            est_filament_grams: str = f"{round(filament_meters * 2.98)}g"
+            Logger.log("d", f"Estimated filament: {est_filament_meters} {est_filament_grams}")
+
+            layer_height: str = f"{g_code_params['layer height']}mm"
+            Logger.log("d", f"Layer height: {layer_height}")
+
             # Add encoded snapshot image if wanted (simage and gimage)
             if include_thumbnail:
 
+                # Data
+                data_lines: list[str] = []
+
+                # Fill data
+                for option, priority in sorted(include_options.items(), key=lambda item: item[1]):
+                    if option == "time":
+                        data_lines.append(est_time)
+                    if option == "filament_meters":
+                        data_lines.append(est_filament_meters)
+                    if option == "filament_grams":
+                        data_lines.append(est_filament_grams)
+                    if option == "layer_height":
+                        data_lines.append(layer_height)
+
                 # Take a screenshot
-                if include_time_estimate:
-
-                    # Add estimated print time if it should be added
-                    # Calculate estimation
-                    minutes: int = round(int(g_code_params["time"]) / 60)
-                    estimate: str = f"{minutes // 60}:{minutes % 60:02d}"
-                    Logger.log("d", f"Estimated time: {estimate}")
-
-                    # Take screenshot with estimate
-                    screenshot: QImage = self.take_screenshot(estimate)
-                else:
-                    screenshot: QImage = self.take_screenshot()
+                screenshot: QImage = self.take_screenshot(data_lines)
 
                 # Create the G-code for the screenshot depending on machine type
                 image_gcode = ""
@@ -112,23 +149,46 @@ class ElegooNeptune3Thumbnails(Extension):
                 self.scene.gcode_dict[0][0] = image_gcode + self.scene.gcode_dict[0][0]
 
     @classmethod
-    def take_screenshot(cls, text: Optional[str] = None) -> QImage:
+    def take_screenshot(cls, lines: list[str]) -> QImage:
         """
         Take a screenshot of the model
         """
-        Logger.log("d", f"Taking a screenshot with text {text}")
-        screen: QImage = Snapshot.snapshot(width=900, height=900)
-        if text:
-            screen = cls.add_text(screen, text)
+        Logger.log("d", f"Taking a screenshot with text {lines}")
+        screen: QImage = Snapshot.snapshot(width=600, height=600)
+
+        # Add background
+        screen = cls.add_background(screen)
+
+        # Add text if options are set
+        for i, line in enumerate(reversed(lines)):
+            if i < 4:
+                screen = cls.add_text(screen, line, i > 1, i % 2 == 1)
+
         return screen
 
     @classmethod
-    def add_text(cls, image: QImage, text: str) -> QImage:
+    def add_background(cls, image: QImage) -> QImage:
+        """
+        Adds a background to replace the transparent one
+        """
+        background = QImage(cls.thumbnail_bg_path)
+        painter = QPainter(background)
+        painter.drawImage(150, 160, image)
+        painter.end()
+        return background
+
+    @classmethod
+    def add_text(cls, image: QImage, line: str, top: bool, left: bool) -> QImage:
+        """
+        Adds text line to the image
+        """
         painter = QPainter(image)
-        font = QFont("Arial", 60)
+        font = QFont("Arial", 30)
         painter.setFont(font)
-        painter.setPen(Qt.GlobalColor.darkGreen)
-        painter.drawText(0, 0, 880, 890, Qt.AlignmentFlag.AlignRight + Qt.AlignmentFlag.AlignBottom, text)
+        painter.setPen(cls.colors["own_gray"])
+        painter.drawText(30 if left else 470, 20 if top else 790, 400, 100,
+                         (Qt.AlignmentFlag.AlignLeft if left else Qt.AlignmentFlag.AlignRight) +
+                         Qt.AlignmentFlag.AlignVCenter, line)
         painter.end()
         return image
 

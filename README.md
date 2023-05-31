@@ -7,7 +7,10 @@ Pro)
 
 Additional Features:
 
-- The estimated print time can be added to the thumbnail for a better overview
+- The estimated print time can be added to thumbnail
+- Add estimated filament usage in meters to thumbnail
+- Add estimated filament usage in grams (for 1.75mm diameter PLA) to thumbnail
+- Add layer height to thumbnail
 
 > If you have some idea on how to improve the plugin, feel free to create an issue for that
 
@@ -31,10 +34,17 @@ If you like this project, every support is welcome :D
 
 ### Possible Options
 
-| Option                 | Description                                                                                 |
-|------------------------|---------------------------------------------------------------------------------------------|
-| `;includeThumbnail`    | Includes a thumbnail of the object to the gcode                                             |
-| `;includeTimeEstimate` | Includes the estimated print time in the thumbnail (needs `;includeThumbnail` to be active) |
+> **Note:** A maximum of 4 options more than `;includeThumbnail` is supported. \
+> The order in which you specify your options in the start G-code will also be the display
+> order (`top-left` > `top-right` > `bottom-left` > `bottom-right`)
+
+| Option                           | Description                                                                                                                        |
+|----------------------------------|------------------------------------------------------------------------------------------------------------------------------------|
+| `;includeThumbnail`              | Includes a thumbnail of the object to the gcode                                                                                    |
+| `;includeTimeEstimate`           | Includes the estimated print time in the thumbnail (needs `;includeThumbnail` to be active)                                        |
+| `;includeFilamentMetersEstimate` | Includes the estimated filament usage in meters in the thumbnail (needs `;includeThumbnail` to be active)                          |
+| `;includeFilamentGramsEstimate`  | Includes the estimated filament usage in grams (for 1.75mm diameter PLA) in the thumbnail (needs `;includeThumbnail` to be active) |
+| `;includeLayerHeight`            | Includes the layer height in the thumbnail (needs `;includeThumbnail` to be active)                                                |                                                                                  |
 
 ### Adding An Option
 
@@ -46,11 +56,6 @@ If you like this project, every support is welcome :D
    <img src="images/cura_edit_g_code.png" width="600">
 
 ## FAQ
-
-### Why does my printer sometimes display one minute more than Cura?
-
-Cura does always round down internally while my plugin will round correctly. Therefore for e.g. 5 minutes and 48
-seconds, Cura will say 5 minutes (round down) while the plugin will say 6 minutes (round up)
 
 ### Does my printer support this plugin?
 
@@ -65,7 +70,7 @@ G-code, that a printer will only interpret if it can. So I guess just try it out
 4) Develop
 5) Create package `python -m package_plugin` (package will be
    under `packaget_plugin/ElegooNeptune3Thumbnails.curapackage`)
-6) Use the `test.py` script for testing the formatting of image texts
+6) Use the `text/test.py` script for testing the formatting of image texts
 
 ## Contribution
 
