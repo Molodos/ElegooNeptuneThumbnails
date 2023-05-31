@@ -24,8 +24,6 @@ If you like this project, every support is welcome :D
 
 ## Installation
 
-> TODO: Add download link (and create release)
-
 1) Download
    the [plugin](https://github.com/Molodos/ElegooNeptune3Thumbnails/releases/latest/download/ElegooNeptune3Thumbnails.curapackage)
 2) Drag the `.curapackage` file onto Cura and restart Cura
