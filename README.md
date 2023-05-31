@@ -22,11 +22,12 @@ If you like this project, every support is welcome :D
 
 [![Buy Me A Coffee](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/molodos)
 
-## Installation
+## Installationo
 
 1) Download
    the [plugin](https://github.com/Molodos/ElegooNeptune3Thumbnails/releases/latest/download/ElegooNeptune3Thumbnails.curapackage)
-2) Drag the `.curapackage` file onto Cura and restart Cura
+2) Drag the `.curapackage` file into the Cura window (like onto the build plate) and restart Cura
+   <img src="images/cura_drag_plugin.png" width="400">
 
 ## Usage
 
