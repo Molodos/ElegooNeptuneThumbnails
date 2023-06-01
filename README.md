@@ -22,7 +22,7 @@ If you like this project, every support is welcome :D
 
 [![Buy Me A Coffee](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/molodos)
 
-## Installationo
+## Installation
 
 1) Download
    the [plugin](https://github.com/Molodos/ElegooNeptune3Thumbnails/releases/latest/download/ElegooNeptune3Thumbnails.curapackage)
