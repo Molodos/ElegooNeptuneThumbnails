@@ -28,6 +28,7 @@ If you like this project, every support is welcome :D
    the [plugin](https://github.com/Molodos/ElegooNeptune3Thumbnails/releases/latest/download/ElegooNeptune3Thumbnails.curapackage)
 2) Drag the `.curapackage` file into the Cura window (like onto the build plate) and restart Cura
    <img src="images/cura_drag_plugin.png" width="400">
+3) Configure the plugin as shown in [Usage](#usage)
 
 ## Usage
 
