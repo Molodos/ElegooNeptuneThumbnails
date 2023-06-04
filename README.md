@@ -56,7 +56,7 @@ If you like this project, every support is welcome :D
 
 1) Open printer selection menu and choose `Manage printers` \
    <img src="images/cura_manage_printers.png" width="400">
-2) Choose your Elegoo Neptune 3 Pro/Plus/Max printer and then `Machine Settings` \
+2) Choose your Elegoo Neptune printer and then `Machine Settings` \
    <img src="images/cura_manage_printers.png" width="400">
 3) At the top of `Start G-code` add your preferred options \
    <img src="images/cura_edit_g_code.png" width="600">

@@ -137,10 +137,12 @@ class ElegooNeptune3Thumbnails(Extension):
                 machine_type = Application.getInstance().getMachineManager().activeMachine.definition.getId()
                 if machine_type in ["elegoo_neptune_3_pro", "elegoo_neptune_3_plus", "elegoo_neptune_3_max",
                                     "elegoo_neptune_3pro", "elegoo_neptune_3plus", "elegoo_neptune_3max"]:
+                    # Neptune 3 Pro/Plus/Max have another thumbnail format
                     image_gcode += self.parse_screenshot_new(screenshot, 200, 200, ";gimage:")
                     image_gcode += self.parse_screenshot_new(screenshot, 160, 160, ";simage:")
                     image_gcode += "\r"
                 elif machine_type != "elegoo_neptune_3" and "neptune" in machine_type:
+                    # Neptune 3 is not supported for now (also not supported in Elegoo Cura)
                     image_gcode += self.parse_screenshot(screenshot, 200, 200, ";gimage:")
                     image_gcode += self.parse_screenshot(screenshot, 160, 160, ";simage:")
                     image_gcode += "\r"
