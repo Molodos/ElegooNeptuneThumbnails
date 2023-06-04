@@ -1,7 +1,7 @@
 # Copyright (c) 2023 Molodos
 # Copyright (c) 2023 sigathi
 # Copyright (c) 2020 DhanOS
-# The ElegooNeptune3Thumbnails plugin is released under the terms of the AGPLv3 or higher.
+# The ElegooNeptuneThumbnails plugin is released under the terms of the AGPLv3 or higher.
 import math
 import os
 from array import array
@@ -140,7 +140,7 @@ class ElegooNeptune3Thumbnails(Extension):
                     image_gcode += self.parse_screenshot_new(screenshot, 200, 200, ";gimage:")
                     image_gcode += self.parse_screenshot_new(screenshot, 160, 160, ";simage:")
                     image_gcode += "\r"
-                elif machine_type != "elegoo_neptune_3":
+                elif machine_type != "elegoo_neptune_3" and "neptune" in machine_type:
                     image_gcode += self.parse_screenshot(screenshot, 200, 200, ";gimage:")
                     image_gcode += self.parse_screenshot(screenshot, 160, 160, ";simage:")
                     image_gcode += "\r"
