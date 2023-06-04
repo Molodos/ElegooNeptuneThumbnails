@@ -30,6 +30,10 @@ If you like this project, every support is welcome :D
 
 ## Installation
 
+> Note: Make sure, that your printer was added to Cura using the official definition for your Neptune printer as a base.
+> If you for example used an Ender 3 definition as a base and modified it, it won't work because the plugin cannot
+> identify the printer model
+
 1) Download
    the [plugin](https://github.com/Molodos/ElegooNeptuneThumbnails/releases/latest/download/ElegooNeptuneThumbnails.curapackage)
 2) Drag the `.curapackage` file into the Cura window (like onto the build plate) and restart Cura
@@ -54,7 +58,6 @@ If you like this project, every support is welcome :D
 | `;includeFilamentGramsEstimate`  | Includes the estimated filament usage in grams (for 1.75mm diameter PLA) in the thumbnail (needs `;includeThumbnail` to be active) |
 | `;includeLayerHeight`            | Includes the layer height in the thumbnail (needs `;includeThumbnail` to be active)                                                |
 | `;includeModelHeight`            | Includes the model height in the thumbnail (needs `;includeThumbnail` to be active)                                                |
-
 
 ### Adding An Option
 
