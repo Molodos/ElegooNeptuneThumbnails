@@ -71,9 +71,11 @@ start of the print and be ready to cancel the print if it seems to behave weird.
 
 ### Thumbnails are not generated, what to do?
 
-Make sure, that your printer was added to Cura using the official definition for your Neptune printer as a base. If you
-for example used an Ender 3 definition as a base and modified it, it won't work because the plugin cannot identify the
-printer model.
+1) Make sure, that the plugin is installed correctly. Click "Marketplace" on the top right and then the settings gear on
+   the top right. The plugin should be displayed under "Installed Plugins"
+2) Make sure, that your printer was added to Cura using the official definition for your Neptune printer as a base. If
+   you for example used an Ender 3 definition as a base and modified it, it won't work because the plugin cannot
+   identify the printer model
 
 ### Why does my Neptune 3 not display thumbnails?
 
