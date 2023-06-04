@@ -116,6 +116,8 @@ class ElegooNeptune3Thumbnails(Extension):
                     include_options["includeFilamentGramsEstimate"] = g_code.index(";includeFilamentGramsEstimate")
                 if ';includeLayerHeight' in g_code:
                     include_options["includeLayerHeight"] = g_code.index(";includeLayerHeight")
+                if ';includeModelHeight' in g_code:
+                    include_options["includeModelHeight"] = g_code.index(";includeModelHeight")
 
             # Get params from G-code
             g_code_params_list: list[str] = g_code_list[0].splitlines()
@@ -150,6 +152,9 @@ class ElegooNeptune3Thumbnails(Extension):
             layer_height: str = f"{g_code_params['layer height']}mm"
             Logger.log("d", f"Layer height: {layer_height}")
 
+            model_height: str = f"▲ {g_code_params['maxz']}mm"
+            Logger.log("d", f"Model height: {model_height}")
+
             # Send statistics
             if not disable_statistics:
 
@@ -178,6 +183,8 @@ class ElegooNeptune3Thumbnails(Extension):
                         data_lines.append(est_filament_grams)
                     if option == "includeLayerHeight":
                         data_lines.append(layer_height)
+                    if option == "includeModelHeight":
+                        data_lines.append(model_height)
 
                 # Take a screenshot
                 screenshot: QImage = self.take_screenshot(data_lines)
