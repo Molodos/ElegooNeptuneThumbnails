@@ -5,12 +5,12 @@
     "email": "molodos@molodos.com",
     "website": "https://github.com/Molodos"
   },
-  "description": "Adds Neptune 3 Pro/Plus/Max thumbnail to G-code. Options to add parameters like estimated print time to thumbnail",
-  "display_name": "Elegoo Neptune 3 Thumbnails",
+  "description": "Adds Neptune thumbnail to G-code. Options to add parameters like estimated print time to thumbnail",
+  "display_name": "Elegoo Neptune Thumbnails",
   "package_id": "ElegooNeptune3Thumbnails",
   "package_type": "plugin",
-  "package_version": "2.0.0",
+  "package_version": "2.1.0",
   "sdk_version": 8,
   "sdk_version_semver": "8.0.0",
-  "website": "https://github.com/Molodos/ElegooNeptune3Thumbnails"
+  "website": "https://github.com/Molodos/ElegooNeptuneThumbnails"
 }

@@ -1,5 +1,5 @@
 # Copyright (c) 2023 Molodos
-# The ElegooNeptune3Thumbnails plugin is released under the terms of the AGPLv3 or higher.
+# The ElegooNeptuneThumbnails plugin is released under the terms of the AGPLv3 or higher.
 
 import os
 import shutil
@@ -7,9 +7,9 @@ from zipfile import ZipFile
 
 PACKAGE_PATH: str = os.path.dirname(os.path.realpath(__file__))
 
-PLUGIN_FILES: list[str] = ["__init__.py", "elegoo_neptune_3_thumbnails.py", "bg_thumbnail.png", "LICENSE", "plugin.json", "README.md"]
+PLUGIN_FILES: list[str] = ["__init__.py", "elegoo_neptune_thumbnails.py", "bg_thumbnail.png", "LICENSE", "plugin.json", "README.md"]
 
-BUILD_NAME = os.path.join(PACKAGE_PATH, "ElegooNeptune3Thumbnails.curapackage")
+BUILD_NAME = os.path.join(PACKAGE_PATH, "ElegooNeptuneThumbnails.curapackage")
 
 PACKAGE_JSON_PATH = os.path.join(PACKAGE_PATH, "package.json")
 

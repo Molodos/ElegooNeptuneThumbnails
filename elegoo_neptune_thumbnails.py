@@ -1,13 +1,17 @@
 # Copyright (c) 2023 Molodos
 # Copyright (c) 2023 sigathi
 # Copyright (c) 2020 DhanOS
-# The ElegooNeptune3Thumbnails plugin is released under the terms of the AGPLv3 or higher.
+# The ElegooNeptuneThumbnails plugin is released under the terms of the AGPLv3 or higher.
+import json
 import math
 import os
+import uuid
 from array import array
 from ctypes import *
 from os import path
+from typing import Any
 
+import requests
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QImage, QPainter, QFont, QColor
 
@@ -24,6 +28,9 @@ class ElegooNeptune3Thumbnails(Extension):
     Main class of the extension
     """
 
+    ID: str = "neptune_thumbnails"
+    VERSION: str = "2.1.0"
+
     colors: dict[str, QColor] = {
         "green": QColor(34, 236, 128),
         "red": QColor(209, 76, 81),
@@ -35,6 +42,7 @@ class ElegooNeptune3Thumbnails(Extension):
         "own_gray": QColor(200, 200, 200)
     }
     thumbnail_bg_path: str = path.join(path.dirname(path.realpath(__file__)), "bg_thumbnail.png")
+    statistics_id_path: str = path.join(path.dirname(path.realpath(__file__)), "statistics_id.json")
 
     def __init__(self):
         """
@@ -47,6 +55,33 @@ class ElegooNeptune3Thumbnails(Extension):
 
         # Get a scene handler fo late usage
         self.scene: Scene = Application.getInstance().getController().getScene()
+
+        # Generate if for anonymous statistics
+        self.statistics_id: str = self.generate_statistics_id()
+
+    @classmethod
+    def generate_statistics_id(cls) -> str:
+        """
+        Generates an id for anonymous statistics
+        """
+        # Generate if not exists
+        if not path.exists(cls.statistics_id_path):
+            random_id: str = str(uuid.uuid4())
+            with open(cls.statistics_id_path, "w") as file:
+                file.write(json.dumps(
+                    {
+                        "statistics_id": random_id
+                    },
+                    indent=4
+                ))
+
+        # Read and return
+        try:
+            with open(cls.statistics_id_path, "r") as file:
+                stats: dict[str, str] = json.load(file)
+                return stats.get("statistics_id", "unknown")
+        except Exception as e:
+            return "unknown"
 
     def add_snapshot_to_gcode(self, output_device) -> None:
         """
@@ -62,6 +97,7 @@ class ElegooNeptune3Thumbnails(Extension):
         for build_plate_number, g_code_list in self.scene.gcode_dict.items():
 
             # Set commands
+            disable_statistics: bool = False
             include_thumbnail: bool = False
             include_options: dict[str, int] = {}
 
@@ -70,14 +106,18 @@ class ElegooNeptune3Thumbnails(Extension):
                 # Check for options
                 if ';includeThumbnail' in g_code:
                     include_thumbnail = True
+                if ';disableStatistics' in g_code:
+                    disable_statistics = True
                 if ';includeTimeEstimate' in g_code:
-                    include_options["time"] = g_code.index(";includeTimeEstimate")
+                    include_options["includeTimeEstimate"] = g_code.index(";includeTimeEstimate")
                 if ';includeFilamentMetersEstimate' in g_code:
-                    include_options["filament_meters"] = g_code.index(";includeFilamentMetersEstimate")
+                    include_options["includeFilamentMetersEstimate"] = g_code.index(";includeFilamentMetersEstimate")
                 if ';includeFilamentGramsEstimate' in g_code:
-                    include_options["filament_grams"] = g_code.index(";includeFilamentGramsEstimate")
+                    include_options["includeFilamentGramsEstimate"] = g_code.index(";includeFilamentGramsEstimate")
                 if ';includeLayerHeight' in g_code:
-                    include_options["layer_height"] = g_code.index(";includeLayerHeight")
+                    include_options["includeLayerHeight"] = g_code.index(";includeLayerHeight")
+                if ';includeModelHeight' in g_code:
+                    include_options["includeModelHeight"] = g_code.index(";includeModelHeight")
 
             # Get params from G-code
             g_code_params_list: list[str] = g_code_list[0].splitlines()
@@ -107,10 +147,25 @@ class ElegooNeptune3Thumbnails(Extension):
             filament_meters: float = float(g_code_params["filament used"][:-1])
             est_filament_meters: str = f"{round(filament_meters, 2)}m"
             est_filament_grams: str = f"{round(filament_meters * 2.98)}g"
-            Logger.log("d", f"Estimated filament: {est_filament_meters} {est_filament_grams}")
+            Logger.log("d", f"Estimated filament: {est_filament_meters}, {est_filament_grams}")
 
             layer_height: str = f"{g_code_params['layer height']}mm"
             Logger.log("d", f"Layer height: {layer_height}")
+
+            model_height: str = f"▲ {g_code_params['maxz']}mm"
+            Logger.log("d", f"Model height: {model_height}")
+
+            # Send statistics
+            if not disable_statistics:
+
+                # Collect
+                options: list[str] = ["includeThumbnail"] if include_thumbnail else []
+                for option, _ in sorted(include_options.items(), key=lambda item: item[1]):
+                    options.append(option)
+                printer: str = Application.getInstance().getMachineManager().activeMachine.definition.getId()
+
+                # Send
+                self.send_statistics(printer=printer, options=options)
 
             # Add encoded snapshot image if wanted (simage and gimage)
             if include_thumbnail:
@@ -119,15 +174,17 @@ class ElegooNeptune3Thumbnails(Extension):
                 data_lines: list[str] = []
 
                 # Fill data
-                for option, priority in sorted(include_options.items(), key=lambda item: item[1]):
-                    if option == "time":
+                for option, _ in sorted(include_options.items(), key=lambda item: item[1]):
+                    if option == "includeTimeEstimate":
                         data_lines.append(est_time)
-                    if option == "filament_meters":
+                    if option == "includeFilamentMetersEstimate":
                         data_lines.append(est_filament_meters)
-                    if option == "filament_grams":
+                    if option == "includeFilamentGramsEstimate":
                         data_lines.append(est_filament_grams)
-                    if option == "layer_height":
+                    if option == "includeLayerHeight":
                         data_lines.append(layer_height)
+                    if option == "includeModelHeight":
+                        data_lines.append(model_height)
 
                 # Take a screenshot
                 screenshot: QImage = self.take_screenshot(data_lines)
@@ -137,10 +194,12 @@ class ElegooNeptune3Thumbnails(Extension):
                 machine_type = Application.getInstance().getMachineManager().activeMachine.definition.getId()
                 if machine_type in ["elegoo_neptune_3_pro", "elegoo_neptune_3_plus", "elegoo_neptune_3_max",
                                     "elegoo_neptune_3pro", "elegoo_neptune_3plus", "elegoo_neptune_3max"]:
+                    # Neptune 3 Pro/Plus/Max have another thumbnail format
                     image_gcode += self.parse_screenshot_new(screenshot, 200, 200, ";gimage:")
                     image_gcode += self.parse_screenshot_new(screenshot, 160, 160, ";simage:")
                     image_gcode += "\r"
-                elif machine_type != "elegoo_neptune_3":
+                elif machine_type != "elegoo_neptune_3" and "neptune" in machine_type:
+                    # Neptune 3 is not supported for now (also not supported in Elegoo Cura)
                     image_gcode += self.parse_screenshot(screenshot, 200, 200, ";gimage:")
                     image_gcode += self.parse_screenshot(screenshot, 160, 160, ";simage:")
                     image_gcode += "\r"
@@ -285,3 +344,25 @@ class ElegooNeptune3Thumbnails(Extension):
             Logger.log("d", "Exception == " + str(e))
 
         return result + '\r'
+
+    def send_statistics(self, printer: str, options: list[str]) -> None:
+        """
+        Sends anonymous statistics
+        """
+        # Anonymous statistics target url
+        target_url: str = "http://statistics.molodos.com:8090/cura"
+
+        # Collect statistics
+        statistics: dict[str, Any] = {
+            "plugin": self.ID,
+            "version": self.VERSION,
+            "id": self.statistics_id,
+            "printer": printer,
+            "options": options
+        }
+
+        # Send statistics
+        try:
+            requests.post(url=target_url, json=statistics, timeout=1)
+        except Exception:
+            pass
