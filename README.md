@@ -35,17 +35,19 @@ If you like this project, every support is welcome :D
 2) Drag the `.curapackage` file into the Cura window (like onto the build plate) and restart Cura
    <img src="images/cura_drag_plugin.png" width="400">
 3) Configure the plugin as shown in [Usage](#usage)
+4) Note: This plugin collects anonymous [usage statistics](#usage-statistics) for improvements if not disabled
 
 ## Usage
 
 ### Possible Options
 
-> **Note:** A maximum of 4 options more than `;includeThumbnail` is supported. \
+> **Note:** A maximum of 4 options more than `;includeThumbnail` and `;disableStatistics` is supported. \
 > The order in which you specify your options in the start G-code will also be the display
 > order (`top-left` > `top-right` > `bottom-left` > `bottom-right`)
 
 | Option                           | Description                                                                                                                        |
 |----------------------------------|------------------------------------------------------------------------------------------------------------------------------------|
+| `;disableStatistics`             | Disables the collection of anonymous [usage statistics](#usage-statistics)                                                         |
 | `;includeThumbnail`              | Includes a thumbnail of the object to the gcode                                                                                    |
 | `;includeTimeEstimate`           | Includes the estimated print time in the thumbnail (needs `;includeThumbnail` to be active)                                        |
 | `;includeFilamentMetersEstimate` | Includes the estimated filament usage in meters in the thumbnail (needs `;includeThumbnail` to be active)                          |
@@ -81,7 +83,7 @@ start of the print and be ready to cancel the print if it seems to behave weird.
 
 For now, the Neptune 3 model is disabled as it also is disabled in the official Elegoo Cura. I have heard, that support
 for thumbnails might have been added to the printer firmware, so I might be adding thumbnails for that printer in the
-future.
+future, if this can be confirmed somehow.
 
 ## Development Guide
 
@@ -92,6 +94,23 @@ future.
 5) Create package `python -m package_plugin` (package will be
    under `package_plugin/ElegooNeptuneThumbnails.curapackage`)
 6) Use the `text/test.py` script for testing the formatting of image texts
+
+## Usage Statistics
+
+The plugin will collect some anonymous usage statistics in order to make improvements easier. You can opt out of usage
+statistics by adding the option `;disableStatistics` at any time.
+
+Usage statistics are only related to an anonymous statistics id that is generated randomly when you install the plugin.
+No personal data is being collected. The statistics data, that is collected, is limited to the following:
+
+- Name of this plugin
+- Version of this plugin
+- The anonymous statistics id
+- The printer type (e.g. "Elegoo Neptune 3 Pro")
+- The options you are using (e.g. `;includeLayerHeight`)
+
+> Note: This list might change at some time, so keep an eye on it if you update the plugin. Be aware, that personal data
+> will never be added to this list.
 
 ## Contribution
 
