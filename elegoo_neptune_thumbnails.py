@@ -94,14 +94,32 @@ class ElegooNeptune3Thumbnails(Extension):
             return
 
         # Enumerate G-code objects
-        for build_plate_number, g_code_list in self.scene.gcode_dict.items():
+        for build_plate_number, g_code_segments in self.scene.gcode_dict.items():
 
             # Set commands
             disable_statistics: bool = False
             include_thumbnail: bool = False
             include_options: dict[str, int] = {}
 
-            for g_code in g_code_list:  # List of commands sets
+            # Params G-code
+            params_needed: list[str] = ["flavor", "time", "filament used", "layer height", "minx", "miny", "minz",
+                                        "maxx", "maxy", "maxz"]
+            params_g_code: str = ""
+
+            for g_code in g_code_segments:  # List of G-code segments
+
+                # Check it this is the params G-code segment
+                added: bool = False
+                for param_needed in params_needed:
+                    if param_needed in g_code.lower():
+                        
+                        # Add once
+                        if not added:
+                            params_g_code += f"\n{g_code}"
+                            added = True
+
+                        # Remove needed params from list for efficiency
+                        params_needed.remove(param_needed)
 
                 # Check for options
                 if ';includeThumbnail' in g_code:
@@ -120,7 +138,8 @@ class ElegooNeptune3Thumbnails(Extension):
                     include_options["includeModelHeight"] = g_code.index(";includeModelHeight")
 
             # Get params from G-code
-            g_code_params_list: list[str] = g_code_list[0].splitlines()
+            Logger.log("e", params_g_code)
+            g_code_params_list: list[str] = params_g_code.splitlines()
             g_code_params: dict[str, str] = {p[1:p.index(":")].lower(): p[p.index(":") + 1:] for p in
                                              g_code_params_list if ":" in p}
             """
