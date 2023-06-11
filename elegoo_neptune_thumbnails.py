@@ -28,9 +28,6 @@ class ElegooNeptune3Thumbnails(Extension):
     Main class of the extension
     """
 
-    ID: str = "neptune_thumbnails"
-    VERSION: str = "2.1.0"
-
     colors: dict[str, QColor] = {
         "green": QColor(34, 236, 128),
         "red": QColor(209, 76, 81),
@@ -43,6 +40,7 @@ class ElegooNeptune3Thumbnails(Extension):
     }
     thumbnail_bg_path: str = path.join(path.dirname(path.realpath(__file__)), "bg_thumbnail.png")
     statistics_id_path: str = path.join(path.dirname(path.realpath(__file__)), "statistics_id.json")
+    plugin_json_path: str = path.join(path.dirname(path.realpath(__file__)), "plugin.json")
 
     def __init__(self):
         """
@@ -112,7 +110,7 @@ class ElegooNeptune3Thumbnails(Extension):
                 added: bool = False
                 for param_needed in params_needed:
                     if param_needed in g_code.lower():
-                        
+
                         # Add once
                         if not added:
                             params_g_code += f"\n{g_code}"
@@ -371,10 +369,14 @@ class ElegooNeptune3Thumbnails(Extension):
         # Anonymous statistics target url
         target_url: str = "http://statistics.molodos.com:8090/cura"
 
+        # Read plugin json
+        with open(self.plugin_json_path, "r") as file:
+            plugin_json: dict[str, Any] = json.load(file)
+
         # Collect statistics
         statistics: dict[str, Any] = {
-            "plugin": self.ID,
-            "version": self.VERSION,
+            "plugin": plugin_json["id"],
+            "version": plugin_json["version"],
             "id": self.statistics_id,
             "printer": printer,
             "options": options
