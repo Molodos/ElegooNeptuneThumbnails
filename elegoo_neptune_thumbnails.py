@@ -57,6 +57,10 @@ class ElegooNeptune3Thumbnails(Extension):
         # Generate if for anonymous statistics
         self.statistics_id: str = self.generate_statistics_id()
 
+        # Read plugin json
+        with open(self.plugin_json_path, "r") as file:
+            self.plugin_json: dict[str, Any] = json.load(file)
+
     @classmethod
     def generate_statistics_id(cls) -> str:
         """
@@ -136,7 +140,6 @@ class ElegooNeptune3Thumbnails(Extension):
                     include_options["includeModelHeight"] = g_code.index(";includeModelHeight")
 
             # Get params from G-code
-            Logger.log("e", params_g_code)
             g_code_params_list: list[str] = params_g_code.splitlines()
             g_code_params: dict[str, str] = {p[1:p.index(":")].lower(): p[p.index(":") + 1:] for p in
                                              g_code_params_list if ":" in p}
@@ -155,6 +158,9 @@ class ElegooNeptune3Thumbnails(Extension):
                 'maxz': '33'
             }
             """
+
+            # Print info
+            Logger.log("d", f"Plugin version is {self.plugin_json['version']}")
 
             # Parse params
             minutes: int = math.floor(int(g_code_params["time"]) / 60)
@@ -369,14 +375,10 @@ class ElegooNeptune3Thumbnails(Extension):
         # Anonymous statistics target url
         target_url: str = "http://statistics.molodos.com:8090/cura"
 
-        # Read plugin json
-        with open(self.plugin_json_path, "r") as file:
-            plugin_json: dict[str, Any] = json.load(file)
-
         # Collect statistics
         statistics: dict[str, Any] = {
-            "plugin": plugin_json["id"],
-            "version": plugin_json["version"],
+            "plugin": self.plugin_json["id"],
+            "version": self.plugin_json["version"],
             "id": self.statistics_id,
             "printer": printer,
             "options": options

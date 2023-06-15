@@ -15,7 +15,7 @@ Additional Features:
 
 - The estimated print time can be added to thumbnail
 - Add estimated filament usage in meters to thumbnail
-- Add estimated filament usage in grams (for 1.75mm diameter PLA) to thumbnail
+- Add estimated filament usage in grams to thumbnail
 - Add layer height to thumbnail
 
 > If you have some idea on how to improve the plugin, feel free to create an issue for that
