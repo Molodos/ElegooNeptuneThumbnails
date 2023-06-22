@@ -31,7 +31,8 @@ If you like this project, every support is welcome :D
 
 ## Installation
 
-> **Note:** Make sure, that your printer was added to Cura using the official definition for your Neptune printer as a base.
+> **Note:** Make sure, that your printer was added to Cura using the official definition for your Neptune printer as a
+> base.
 > If you for example used an Ender 3 definition as a base and modified it, it won't work because the plugin cannot
 > identify the printer model
 
@@ -94,6 +95,12 @@ For now, the Neptune 3 model is disabled as it also is disabled in the official 
 for thumbnails might be added to the printer firmware, so I might be adding thumbnails for that printer in the
 future, if this can be confirmed somehow.
 
+### Will there be PrusaSlicer support at some point?
+
+Currently, I am not planning to release a PrusaSlicer version of the plugin. Maybe in further distance, there could be a
+chance, but for now I do not have enough time to do that. I will keep this in mind as there were several requests, but
+do not expect any news too soon.
+
 ## Development Guide
 
 1) Install requirements `pip install -r requirements.txt`
@@ -118,7 +125,8 @@ No personal data is being collected. The statistics data, that is collected, is 
 - The printer type (e.g. "Elegoo Neptune 3 Pro")
 - The options you are using (e.g. `;includeLayerHeight`)
 
-> **Note:** This list might change at some time, so keep an eye on it if you update the plugin. Be aware, that personal data
+> **Note:** This list might change at some time, so keep an eye on it if you update the plugin. Be aware, that personal
+> data
 > will never be added to this list.
 
 ## Contribution
