@@ -17,6 +17,7 @@ Additional Features:
 - Add estimated filament usage in meters to thumbnail
 - Add estimated filament usage in grams to thumbnail
 - Add layer height to thumbnail
+- Add total object height to thumbnail
 
 > If you have some idea on how to improve the plugin, feel free to create an issue for that
 
@@ -39,9 +40,12 @@ If you like this project, every support is welcome :D
 2) Drag the `.curapackage` file into the Cura window (like onto the build plate) and restart Cura
    <img src="images/cura_drag_plugin.png" width="400">
 3) Configure the plugin as shown in [Usage](#usage)
-4) Note: This plugin collects anonymous [usage statistics](#usage-statistics) for improvements if not disabled
+4) If it isn't working, check the [FAQ](#faq)
+5) (Note: This plugin collects anonymous [usage statistics](#usage-statistics) for improvements if not disabled)
 
 ## Usage
+
+To make the plugin work, you must at least add the option `;includeThumbnail` to your printers start G-code
 
 ### Possible Options
 
@@ -87,7 +91,7 @@ start of the print and be ready to cancel the print if it seems to behave weird.
 ### Why does my Neptune 3 not display thumbnails?
 
 For now, the Neptune 3 model is disabled as it also is disabled in the official Elegoo Cura. I have heard, that support
-for thumbnails might have been added to the printer firmware, so I might be adding thumbnails for that printer in the
+for thumbnails might be added to the printer firmware, so I might be adding thumbnails for that printer in the
 future, if this can be confirmed somehow.
 
 ## Development Guide
