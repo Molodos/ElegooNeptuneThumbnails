@@ -69,7 +69,7 @@ To make the plugin work, you must at least add the option `;includeThumbnail` to
 1) Open printer selection menu and choose `Manage printers` \
    <img src="images/cura_manage_printers.png" width="400">
 2) Choose your Elegoo Neptune printer and then `Machine Settings` \
-   <img src="images/cura_manage_printers.png" width="400">
+   <img src="images/cura_machine_settings.png" width="400">
 3) At the top of `Start G-code` add your preferred options \
    <img src="images/cura_edit_g_code.png" width="600">
 
