@@ -15,7 +15,7 @@ Additional Features:
 
 - The estimated print time can be added to thumbnail
 - Add estimated filament usage in meters to thumbnail
-- Add estimated filament usage in grams to thumbnail
+- Add estimated filament usage in grams (default 1.75 mm pla) to thumbnail
 - Add layer height to thumbnail
 - Add total object height to thumbnail
 

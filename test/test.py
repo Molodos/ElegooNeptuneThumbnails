@@ -29,7 +29,7 @@ class Test:
         app = QtWidgets.QApplication(sys.argv)
         screen = QImage(cls.demo_in_path)
         screen = cls.add_background(screen)
-        for i, line in enumerate(reversed(["3.86m", "12g", "0.2mm", "1:06h"])):
+        for i, line in enumerate(reversed(["⬌ 3.86m", "⭗ 12g", "⧗ 0.2mm", "⧖ 1:06h"])):
             if i < 4:
                 screen = cls.add_text(screen, line, i > 1, i % 2 == 1)
         screen.save(cls.demo_out_path)

@@ -2,6 +2,7 @@
 # Copyright (c) 2023 sigathi
 # Copyright (c) 2020 DhanOS
 # The ElegooNeptuneThumbnails plugin is released under the terms of the AGPLv3 or higher.
+
 import json
 import math
 import os
@@ -164,18 +165,18 @@ class ElegooNeptune3Thumbnails(Extension):
 
             # Parse params
             minutes: int = math.floor(int(g_code_params["time"]) / 60)
-            est_time: str = f"{minutes // 60}:{minutes % 60:02d}h"
+            est_time: str = f"⧖ {minutes // 60}:{minutes % 60:02d}h"
             Logger.log("d", f"Estimated time: {est_time}")
 
             filament_meters: float = float(g_code_params["filament used"][:-1])
-            est_filament_meters: str = f"{round(filament_meters, 2)}m"
-            est_filament_grams: str = f"{round(filament_meters * 2.98)}g"
+            est_filament_meters: str = f"⬌ {round(filament_meters, 2)}m"
+            est_filament_grams: str = f"⭗ {round(filament_meters * 2.98)}g"
             Logger.log("d", f"Estimated filament: {est_filament_meters}, {est_filament_grams}")
 
-            layer_height: str = f"{g_code_params['layer height']}mm"
+            layer_height: str = f"⧗ {g_code_params['layer height']}mm"
             Logger.log("d", f"Layer height: {layer_height}")
 
-            model_height: str = f"▲ {g_code_params['maxz']}mm"
+            model_height: str = f"⭱ {g_code_params['maxz']}mm"
             Logger.log("d", f"Model height: {model_height}")
 
             # Send statistics

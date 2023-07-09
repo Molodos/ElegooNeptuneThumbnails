@@ -2,7 +2,7 @@
     "name": "Elegoo Neptune Thumbnails",
     "id": "neptune_thumbnails",
     "author": "Molodos",
-    "version": "2.1.2",
-    "description": "Adds Neptune thumbnail to G-code. Options to add parameters like estimated print time to thumbnail",
+    "version": "2.1.3",
+    "description": "Adds Elegoo Neptune printer thumbnail to G-code. Contains options to display parameters like estimated print time or model height on the thumbnail",
     "api": 8
 }

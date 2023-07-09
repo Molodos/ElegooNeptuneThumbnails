@@ -1,0 +1,24 @@
+[2.1.3]
+- Added icons for configurable options
+
+[2.1.2]
+- Minor fixes
+
+[2.1.1]
+- Fixed a bug that sometimes caused errors when G-code gets modified by other plugins or scripts
+
+[2.1.0]
+- Fixed a bug that enabled generating thumbnails for non-Neptune printers
+- Added option for model height
+- Added anonymous statistics (read the README for further explanation and on how to disable them if you don't want to help improve this plugin)
+
+[2.0.0]
+- Make thumbnail background more appealing
+- Added option for layer height
+- Added options for filament usage in meters/grams
+- The order of options will now be the order of display in the thumbnail corners
+- Made object view smaller to fix overlaps of object and text
+
+[1.0.0]
+- Add thumbnails
+- Write estimated print time onto the thumbnail
