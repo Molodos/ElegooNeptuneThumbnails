@@ -36,10 +36,14 @@ If you like this project, every support is welcome :D
 > If you for example used an Ender 3 definition as a base and modified it, it won't work because the plugin cannot
 > identify the printer model
 
-1) Download
-   the [plugin](https://github.com/Molodos/ElegooNeptuneThumbnails/releases/latest/download/ElegooNeptuneThumbnails.curapackage)
-2) Drag the `.curapackage` file into the Cura window (like onto the build plate) and restart Cura
-   <img src="images/cura_drag_plugin.png" width="400">
+1) Download:
+    - Option A:
+      From [GitHub](https://github.com/Molodos/ElegooNeptuneThumbnails/releases/latest/download/ElegooNeptuneThumbnails.curapackage)
+      and drag the `.curapackage` file into the Cura window (like onto the build
+      plate) <img src="images/cura_drag_plugin.png" width="400">
+    - Option B: Install
+      from [Cura marketplace](https://marketplace.ultimaker.com/app/cura/plugins/molodos/ElegooNeptune3Thumbnails)
+2) Restart Cura
 3) Configure the plugin as shown in [Usage](#usage)
 4) If it isn't working, check the [FAQ](#faq)
 5) (Note: This plugin collects anonymous [usage statistics](#usage-statistics) for improvements if not disabled)
