@@ -2,6 +2,14 @@
 
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
 
+## Support This Project
+
+If you like this project, every support is welcome :D
+
+[![Buy Me A Coffee](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/molodos)
+
+## General Info
+
 Cura 5.X plugin for adding G-code thumbnail images for Elegoo Neptune printers (tested for Elegoo Neptune 3 Pro). I have
 not tested every printer, but it seems like based on feedback at least the following models are supported for other
 models, see [FAQ](#faq)):
@@ -22,12 +30,6 @@ Additional Features:
 > If you have some idea on how to improve the plugin, feel free to create an issue for that
 
 <img src="images/neptune_3_pro_view.jpg" width="300">
-
-## Support This Project
-
-If you like this project, every support is welcome :D
-
-[![Buy Me A Coffee](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/molodos)
 
 ## Installation
 
