@@ -101,6 +101,12 @@ For now, the Neptune 3 model is disabled as it also is disabled in the official 
 for thumbnails might be added to the printer firmware, so I might be adding thumbnails for that printer in the
 future, if this can be confirmed somehow.
 
+### Why do thumbnails not change when printing another G-code file?
+
+There seems to be a bug in older printer firmware versions which causes the thumbnail to not update if you start a print
+right after the last one ended. Restarting the printer in between prints seems to fix that. If this is the case for you,
+check your printer for firmware updates, which might fix the bug.
+
 ### Will there be PrusaSlicer support at some point?
 
 Currently, I am not planning to release a PrusaSlicer version of the plugin. Maybe in further distance, there could be a
