@@ -41,11 +41,11 @@ Additional Features:
 > identify the printer model
 
 1) Download:
-    - Option A:
+    - Option A (newest version):
       From [GitHub](https://github.com/Molodos/ElegooNeptuneThumbnails/releases/latest/download/ElegooNeptuneThumbnails.curapackage)
       and drag the `.curapackage` file into the Cura window (like onto the build
       plate) <img src="images/cura_drag_plugin.png" width="400">
-    - Option B: Install
+    - Option B (version could be outdated because review of Ultimaker takes some time): Install
       from [Cura marketplace](https://marketplace.ultimaker.com/app/cura/plugins/molodos/ElegooNeptune3Thumbnails)
 2) Restart Cura
 3) Configure the plugin as shown in [Usage](#usage)
