@@ -99,6 +99,9 @@ class ElegooNeptune3Thumbnails(Extension):
         # Enumerate G-code objects
         for build_plate_number, g_code_segments in self.scene.gcode_dict.items():
 
+            # Info
+            thumbnail_present: bool = False
+
             # Set commands
             disable_statistics: bool = False
             include_thumbnail: bool = False
@@ -124,6 +127,10 @@ class ElegooNeptune3Thumbnails(Extension):
                         # Remove needed params from list for efficiency
                         params_needed.remove(param_needed)
 
+                # Check for info
+                if ';gimage' in g_code:
+                    thumbnail_present = True
+
                 # Check for options
                 if ';includeThumbnail' in g_code:
                     include_thumbnail = True
@@ -139,6 +146,10 @@ class ElegooNeptune3Thumbnails(Extension):
                     include_options["includeLayerHeight"] = g_code.index(";includeLayerHeight")
                 if ';includeModelHeight' in g_code:
                     include_options["includeModelHeight"] = g_code.index(";includeModelHeight")
+
+            # Cancel if thumbnail already present
+            if thumbnail_present:
+                return
 
             # Get params from G-code
             g_code_params_list: list[str] = params_g_code.splitlines()
