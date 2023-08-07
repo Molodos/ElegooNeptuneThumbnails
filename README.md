@@ -18,6 +18,8 @@ models, see [FAQ](#faq)):
 - Elegoo Neptune 3 Plus
 - Elegoo Neptune 3 Max
 - Elegoo Neptune 2
+- Elegoo Neptune 4
+- Elegoo Neptune 4 Pro
 
 Additional Features:
 

@@ -217,7 +217,8 @@ class ElegooNeptune3Thumbnails(Extension):
                 image_gcode = ""
                 machine_type = Application.getInstance().getMachineManager().activeMachine.definition.getId()
                 if machine_type in ["elegoo_neptune_3_pro", "elegoo_neptune_3_plus", "elegoo_neptune_3_max",
-                                    "elegoo_neptune_3pro", "elegoo_neptune_3plus", "elegoo_neptune_3max"]:
+                                    "elegoo_neptune_3pro", "elegoo_neptune_3plus", "elegoo_neptune_3max",
+                                    "elegoo_neptune_4", "elegoo_neptune_4_pro", "elegoo_neptune_4pro"]:
                     # Neptune 3 Pro/Plus/Max have another thumbnail format
                     image_gcode += self.parse_screenshot_new(screenshot, 200, 200, ";gimage:")
                     image_gcode += self.parse_screenshot_new(screenshot, 160, 160, ";simage:")
