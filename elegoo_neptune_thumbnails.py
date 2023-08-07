@@ -40,7 +40,7 @@ class ElegooNeptune3Thumbnails(Extension):
         "own_gray": QColor(200, 200, 200)
     }
     thumbnail_bg_path: str = path.join(path.dirname(path.realpath(__file__)), "bg_thumbnail.png")
-    statistics_id_path: str = path.join(path.dirname(path.realpath(__file__)), "statistics_id.json")
+    statistics_id_path: str = path.join(path.dirname(path.realpath(__file__)), "..", "..", "statistics_id.json")
     plugin_json_path: str = path.join(path.dirname(path.realpath(__file__)), "plugin.json")
 
     def __init__(self):
