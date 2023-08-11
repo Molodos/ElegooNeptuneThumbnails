@@ -1,3 +1,7 @@
+[3.0.0]
+- Updated interface to set parameters via GUI in the extensions dropdown
+- Added printer selection in GUI to also allow printer selection if profile is based on e.g. an ender printer
+
 [2.2.0]
 - Fixed a bug that caused multiple thumbnails in G-code if saved multiple times
 - Minor other fixes

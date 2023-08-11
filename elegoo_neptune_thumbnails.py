@@ -22,6 +22,7 @@ from UM.Logger import Logger
 from UM.Platform import Platform
 from UM.Scene.Scene import Scene
 from cura.Snapshot import Snapshot
+from .gui import GUIManager
 
 
 class ElegooNeptune3Thumbnails(Extension):
@@ -29,7 +30,7 @@ class ElegooNeptune3Thumbnails(Extension):
     Main class of the extension
     """
 
-    colors: dict[str, QColor] = {
+    COLORS: dict[str, QColor] = {
         "green": QColor(34, 236, 128),
         "red": QColor(209, 76, 81),
         "yellow": QColor(251, 226, 0),
@@ -39,15 +40,19 @@ class ElegooNeptune3Thumbnails(Extension):
         "bg_thumbnail": QColor(48, 57, 79),
         "own_gray": QColor(200, 200, 200)
     }
-    thumbnail_bg_path: str = path.join(path.dirname(path.realpath(__file__)), "bg_thumbnail.png")
-    statistics_id_path: str = path.join(path.dirname(path.realpath(__file__)), "..", "..", "statistics_id.json")
-    plugin_json_path: str = path.join(path.dirname(path.realpath(__file__)), "plugin.json")
+    THUMBNAIL_BG_PATH: str = path.join(path.dirname(path.realpath(__file__)), "bg_thumbnail.png")
+    STATISTICS_ID_PATH: str = path.join(path.dirname(path.realpath(__file__)), "..", "..", "statistics_id.json")
+    PLUGIN_JSON_PATH: str = path.join(path.dirname(path.realpath(__file__)), "plugin.json")
 
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Initializer of the extension
         """
-        super().__init__()
+        # Init super objects
+        Extension.__init__(self)
+
+        # Create GUI stuff
+        self._gui: GUIManager = GUIManager(extension=self)
 
         # Add a hook when a G-gode is about to be written to a file
         Application.getInstance().getOutputDeviceManager().writeStarted.connect(self.add_snapshot_to_gcode)
@@ -59,7 +64,7 @@ class ElegooNeptune3Thumbnails(Extension):
         self.statistics_id: str = self.generate_statistics_id()
 
         # Read plugin json
-        with open(self.plugin_json_path, "r") as file:
+        with open(self.PLUGIN_JSON_PATH, "r") as file:
             self.plugin_json: dict[str, Any] = json.load(file)
 
     @classmethod
@@ -68,9 +73,9 @@ class ElegooNeptune3Thumbnails(Extension):
         Generates an id for anonymous statistics
         """
         # Generate if not exists
-        if not path.exists(cls.statistics_id_path):
+        if not path.exists(cls.STATISTICS_ID_PATH):
             random_id: str = str(uuid.uuid4())
-            with open(cls.statistics_id_path, "w") as file:
+            with open(cls.STATISTICS_ID_PATH, "w") as file:
                 file.write(json.dumps(
                     {
                         "statistics_id": random_id
@@ -80,7 +85,7 @@ class ElegooNeptune3Thumbnails(Extension):
 
         # Read and return
         try:
-            with open(cls.statistics_id_path, "r") as file:
+            with open(cls.STATISTICS_ID_PATH, "r") as file:
                 stats: dict[str, str] = json.load(file)
                 return stats.get("statistics_id", "unknown")
         except Exception as e:
@@ -265,7 +270,7 @@ class ElegooNeptune3Thumbnails(Extension):
         """
         Adds a background to replace the transparent one
         """
-        background = QImage(cls.thumbnail_bg_path)
+        background = QImage(cls.THUMBNAIL_BG_PATH)
         painter = QPainter(background)
         painter.drawImage(150, 160, image)
         painter.end()
@@ -279,7 +284,7 @@ class ElegooNeptune3Thumbnails(Extension):
         painter = QPainter(image)
         font = QFont("Arial", 30)
         painter.setFont(font)
-        painter.setPen(cls.colors["own_gray"])
+        painter.setPen(cls.COLORS["own_gray"])
         painter.drawText(30 if left else 470, 20 if top else 790, 400, 100,
                          (Qt.AlignmentFlag.AlignLeft if left else Qt.AlignmentFlag.AlignRight) +
                          Qt.AlignmentFlag.AlignVCenter, line)

@@ -7,7 +7,8 @@ from zipfile import ZipFile
 
 PACKAGE_PATH: str = os.path.dirname(os.path.realpath(__file__))
 
-PLUGIN_FILES: list[str] = ["__init__.py", "elegoo_neptune_thumbnails.py", "bg_thumbnail.png", "LICENSE", "plugin.json", "README.md", "changelog.txt"]
+PLUGIN_FILES: list[str] = ["__init__.py", "elegoo_neptune_thumbnails.py", "bg_thumbnail.png", "LICENSE", "plugin.json",
+                           "README.md", "changelog.txt", "gui.qml", "gui.py"]
 
 BUILD_NAME = os.path.join(PACKAGE_PATH, "ElegooNeptuneThumbnails.curapackage")
 PLUGIN_BUILD_NAME = os.path.join(PACKAGE_PATH, "ElegooNeptuneThumbnails.zip")
