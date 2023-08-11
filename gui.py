@@ -42,7 +42,7 @@ class GUIManager(QObject):
 
         # Add menu items
         extension.setMenuName("Elegoo Neptune Thumbnails")
-        extension.addMenuItem("Configure Thumbnail", self.show_popup)
+        extension.addMenuItem("Configure Thumbnails", self.show_popup)
         self._gui = None
 
     def show_popup(self) -> None:
