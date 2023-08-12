@@ -39,7 +39,7 @@ class SettingsManager(QObject):
         """
         Render a thumbnail image form settings (needs to be called on settings change)
         """
-        ThumbnailGenerator.render_thumbnail(settings=self._settings)
+        ThumbnailGenerator.render_preview(settings=self._settings)
         if self._thumbnail:
             self._thumbnail.setProperty("source", "")
             self._thumbnail.setProperty("source", "../img/thumbnail_preview.png")
@@ -97,6 +97,17 @@ class SettingsManager(QObject):
     @pyqtSlot(bool)
     def set_statistics_enabled(self, enabled: bool) -> None:
         self._settings.statistics_enabled = enabled
+
+    # Use current model enabled state
+
+    @pyqtProperty(bool)
+    def use_current_model(self) -> bool:
+        return self._settings.use_current_model
+
+    @pyqtSlot(bool)
+    def set_use_current_model(self, enabled: bool) -> None:
+        self._settings.use_current_model = enabled
+        self.render_thumbnail()
 
     # Save/restore buttons
 

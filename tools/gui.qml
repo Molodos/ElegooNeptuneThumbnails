@@ -250,6 +250,19 @@ Window
             }
         }
 
+        // Checkbox
+        UM.CheckBox
+        {
+            anchors.top: thumbnail.bottom
+            anchors.left: thumbnail.left
+            anchors.topMargin: Math.round(UM.Theme.getSize("wide_margin").width / 2)
+            id: useCurrentModel
+            checked: settings.use_current_model
+            onClicked: settings.set_use_current_model(useCurrentModel.checked)
+            text: "Use Current Model(s)"
+            tooltip: "Use the currently loaded model(s) from Cura for preview"
+        }
+
         // Donation title
         UM.Label
         {

@@ -23,6 +23,7 @@ class Settings:
 
     def __init__(self):
         self.thumbnails_enabled: bool = True
-        self.statistics_enabled: bool = True
-        self.corner_options: list[int] = [1, 2, 3, 4]
         self.printer_model: int = 1
+        self.corner_options: list[int] = [1, 2, 3, 4]
+        self.statistics_enabled: bool = True
+        self.use_current_model: bool = False

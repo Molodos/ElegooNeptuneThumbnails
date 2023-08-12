@@ -3,8 +3,9 @@
 
 from os import path
 
-from PyQt6.QtGui import QImage, QPainter
+from PyQt6.QtGui import QImage, QPainter, QColor
 
+from cura.Snapshot import Snapshot
 from .settings import Settings
 
 
@@ -13,25 +14,45 @@ class ThumbnailGenerator:
     Thumbnail generator
     """
 
+    COLORS: dict[str, QColor] = {
+        "green": QColor(34, 236, 128),
+        "red": QColor(209, 76, 81),
+        "yellow": QColor(251, 226, 0),
+        "white": QColor(255, 255, 255),
+        "bg_dark": QColor(30, 36, 52),
+        "bg_light": QColor(46, 54, 75),
+        "bg_thumbnail": QColor(48, 57, 79),
+        "own_gray": QColor(200, 200, 200)
+    }
     BACKGROUND_IMAGE_PATH: str = path.join(path.dirname(path.realpath(__file__)), "..", "img", "bg_preview.png")
     FOREGROUND_IMAGE_PATH: str = path.join(path.dirname(path.realpath(__file__)), "..", "img", "benchy.png")
     THUMBNAIL_PREVIEW_PATH: str = path.join(path.dirname(path.realpath(__file__)), "..", "img", "thumbnail_preview.png")
 
     @classmethod
-    def render_thumbnail(cls, settings: Settings) -> None:
+    def render_preview(cls, settings: Settings) -> None:
+        """
+        Render preview image based on settings
+        """
+        thumbnail: QImage = cls._render_thumbnail(settings=settings)
+        thumbnail.save(cls.THUMBNAIL_PREVIEW_PATH)
+
+    @classmethod
+    def _render_thumbnail(cls, settings: Settings, enforce_snapshot: bool = False) -> QImage:
         """
         Renders a thumbnail based on settings
         """
         # Create new image parts
         thumbnail = QImage(cls.BACKGROUND_IMAGE_PATH)
-        foreground = QImage(cls.FOREGROUND_IMAGE_PATH)
+        foreground = Snapshot.snapshot(width=600, height=600) if settings.use_current_model or enforce_snapshot \
+            else QImage(cls.FOREGROUND_IMAGE_PATH)
 
-        # Combine paths
-        painter = QPainter(thumbnail)
-        painter.drawImage(150, 160, foreground)
-        painter.end()
+        # Combine parts
+        if foreground:
+            painter = QPainter(thumbnail)
+            painter.drawImage(150, 160, foreground)
+            painter.end()
 
         # TODO: Add options in corners
 
-        # Save
-        thumbnail.save(cls.THUMBNAIL_PREVIEW_PATH)
+        # Return
+        return thumbnail
