@@ -3,3 +3,4 @@
 
 from .settings import Settings
 from .gui import GUIManager
+from .statistics_sender import StatisticsSender

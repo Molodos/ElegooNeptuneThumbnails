@@ -6,13 +6,11 @@
 import json
 import math
 import os
-import uuid
 from array import array
 from ctypes import *
 from os import path
 from typing import Any
 
-import requests
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QImage, QPainter, QFont, QColor
 
@@ -22,7 +20,7 @@ from UM.Logger import Logger
 from UM.Platform import Platform
 from UM.Scene.Scene import Scene
 from cura.Snapshot import Snapshot
-from .tools import GUIManager
+from .tools import Settings, StatisticsSender, GUIManager
 
 
 class ElegooNeptune3Thumbnails(Extension):
@@ -41,7 +39,6 @@ class ElegooNeptune3Thumbnails(Extension):
         "own_gray": QColor(200, 200, 200)
     }
     THUMBNAIL_BG_PATH: str = path.join(path.dirname(path.realpath(__file__)), "img", "bg_thumbnail.png")
-    STATISTICS_ID_PATH: str = path.join(path.dirname(path.realpath(__file__)), "..", "..", "statistics_id.json")
     PLUGIN_JSON_PATH: str = path.join(path.dirname(path.realpath(__file__)), "plugin.json")
 
     def __init__(self) -> None:
@@ -52,7 +49,8 @@ class ElegooNeptune3Thumbnails(Extension):
         Extension.__init__(self)
 
         # Create GUI stuff
-        self._gui: GUIManager = GUIManager(extension=self)
+        self._settings: Settings = Settings()
+        self._gui: GUIManager = GUIManager(extension=self, settings=self._settings)
 
         # Add a hook when a G-gode is about to be written to a file
         Application.getInstance().getOutputDeviceManager().writeStarted.connect(self.add_snapshot_to_gcode)
@@ -60,36 +58,9 @@ class ElegooNeptune3Thumbnails(Extension):
         # Get a scene handler fo late usage
         self.scene: Scene = Application.getInstance().getController().getScene()
 
-        # Generate if for anonymous statistics
-        self.statistics_id: str = self.generate_statistics_id()
-
         # Read plugin json
         with open(self.PLUGIN_JSON_PATH, "r") as file:
             self.plugin_json: dict[str, Any] = json.load(file)
-
-    @classmethod
-    def generate_statistics_id(cls) -> str:
-        """
-        Generates an id for anonymous statistics
-        """
-        # Generate if not exists
-        if not path.exists(cls.STATISTICS_ID_PATH):
-            random_id: str = str(uuid.uuid4())
-            with open(cls.STATISTICS_ID_PATH, "w") as file:
-                file.write(json.dumps(
-                    {
-                        "statistics_id": random_id
-                    },
-                    indent=4
-                ))
-
-        # Read and return
-        try:
-            with open(cls.STATISTICS_ID_PATH, "r") as file:
-                stats: dict[str, str] = json.load(file)
-                return stats.get("statistics_id", "unknown")
-        except Exception as e:
-            return "unknown"
 
     def add_snapshot_to_gcode(self, output_device) -> None:
         """
@@ -205,7 +176,7 @@ class ElegooNeptune3Thumbnails(Extension):
                 printer: str = Application.getInstance().getMachineManager().activeMachine.definition.getId()
 
                 # Send
-                self.send_statistics(printer=printer, options=options)
+                StatisticsSender.send_statistics(self._settings)
 
             # Add encoded snapshot image if wanted (simage and gimage)
             if include_thumbnail:
@@ -384,25 +355,3 @@ class ElegooNeptune3Thumbnails(Extension):
             Logger.log("d", "Exception == " + str(e))
 
         return result + '\r'
-
-    def send_statistics(self, printer: str, options: list[str]) -> None:
-        """
-        Sends anonymous statistics
-        """
-        # Anonymous statistics target url
-        target_url: str = "http://statistics.molodos.com:8090/cura"
-
-        # Collect statistics
-        statistics: dict[str, Any] = {
-            "plugin": self.plugin_json["id"],
-            "version": self.plugin_json["version"],
-            "id": self.statistics_id,
-            "printer": printer,
-            "options": options
-        }
-
-        # Send statistics
-        try:
-            requests.post(url=target_url, json=statistics, timeout=1)
-        except Exception:
-            pass

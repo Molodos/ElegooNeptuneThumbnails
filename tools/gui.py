@@ -133,11 +133,11 @@ class GUIManager(QObject):
 
     GUI_FILE_PATH: str = path.join(path.dirname(path.realpath(__file__)), "gui.qml")
 
-    def __init__(self, extension: Extension):
+    def __init__(self, extension: Extension, settings: Settings):
         QObject.__init__(self)
 
         # Init settings
-        self._settings: Settings = Settings()
+        self._settings: Settings = settings
         self._settings_manager: SettingsManager = SettingsManager(settings=self._settings)
 
         # Add menu items with popup trigger

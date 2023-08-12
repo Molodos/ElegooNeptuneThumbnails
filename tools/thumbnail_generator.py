@@ -2,7 +2,6 @@
 # The ElegooNeptuneThumbnails plugin is released under the terms of the AGPLv3 or higher.
 
 from os import path
-from typing import Optional
 
 from PyQt6.QtGui import QImage, QPainter, QColor
 
