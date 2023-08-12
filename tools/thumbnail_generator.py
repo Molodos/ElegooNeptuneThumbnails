@@ -17,7 +17,7 @@ class SliceData:
 
     def __init__(self):
         self.layer_height: float = 0.2
-        self.time_seconds: int = 3606
+        self.time_seconds: int = 3960
         self.filament_meters: float = 3.90
         self.filament_grams: float = self.filament_meters * 2.98
         self.filament_cost: float = 0.25
