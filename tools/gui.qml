@@ -44,7 +44,7 @@ Window
         {
             id: title
             anchors.top: parent.top
-            text: "Thumbnails Settings"
+            text: "Thumbnail Settings"
             font: UM.Theme.getFont("large")
             Layout.fillWidth: true
         }
