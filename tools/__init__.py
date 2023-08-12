@@ -4,3 +4,4 @@
 from .settings import Settings
 from .gui import GUIManager
 from .statistics_sender import StatisticsSender
+from .thumbnail_generator import SliceData, ThumbnailGenerator
