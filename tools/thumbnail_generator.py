@@ -126,7 +126,7 @@ class ThumbnailGenerator:
             elif option == "includeModelHeight":
                 lines.append(f"⭱ {round(slice_data.model_height, 2)}mm")
             elif option == "includeFilamentMetersEstimate":
-                lines.append(f"⬌ {round(slice_data.filament_meters, 2)}m")
+                lines.append(f"⬌ {round(slice_data.filament_meters, 2):.02f}m")
             elif option == "includeCostEstimate":
-                lines.append(f"⛁ {round(slice_data.filament_cost, 2)}€")
+                lines.append(f"⛁ {round(slice_data.filament_cost, 2):.02f}€")
         return lines
