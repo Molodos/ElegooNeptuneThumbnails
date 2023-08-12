@@ -99,13 +99,15 @@ class ThumbnailGenerator:
             if option == "nothing":
                 lines.append("")
             elif option == "includeTimeEstimate":
-                lines.append(f"⧖ 0:42h")
+                lines.append(f"⧖ 1:06h")
             elif option == "includeFilamentGramsEstimate":
-                lines.append(f"⭗ 16g")
+                lines.append(f"⭗ 12g")
             elif option == "includeLayerHeight":
                 lines.append(f"⧗ 0.2mm")
             elif option == "includeModelHeight":
-                lines.append(f"⭱ 15mm")
+                lines.append(f"⭱ 48mm")
             elif option == "includeFilamentMetersEstimate":
-                lines.append(f"⬌ 0.12m")
+                lines.append(f"⬌ 3.90m")
+            elif option == "includeCostEstimate":
+                lines.append(f"⛁ 0.25€")
         return lines

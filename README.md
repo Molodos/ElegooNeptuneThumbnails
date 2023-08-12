@@ -69,6 +69,7 @@ To make the plugin work, you must at least add the option `;includeThumbnail` to
 | `;includeFilamentGramsEstimate`  | Includes the estimated filament usage in grams (for 1.75mm diameter PLA) in the thumbnail (needs `;includeThumbnail` to be active) |
 | `;includeLayerHeight`            | Includes the layer height in the thumbnail (needs `;includeThumbnail` to be active)                                                |
 | `;includeModelHeight`            | Includes the model height in the thumbnail (needs `;includeThumbnail` to be active)                                                |
+| `;includeCostEstimate`           | Includes the estimated print cost in €                                                                                             |
 
 ### Adding An Option
 

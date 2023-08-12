@@ -18,7 +18,8 @@ class Settings:
         "includeFilamentGramsEstimate": "Filament Grams Estimate",
         "includeLayerHeight": "Layer Height",
         "includeModelHeight": "Model Height",
-        "includeFilamentMetersEstimate": "Filament Meters Estimate"
+        "includeFilamentMetersEstimate": "Filament Meters Estimate",
+        "includeCostEstimate": "Cost Estimate"
     }
     PRINTER_MODELS: dict[str, str] = {
         "elegoo_neptune_2": "Elegoo Neptune 2",
