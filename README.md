@@ -4,9 +4,9 @@
 
 ## Support This Project
 
-If you like this project, every support is welcome :D
+If you like this plugin, consider supporting me :)
 
-[![Buy Me A Coffee](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/molodos)
+[![Buy Me A Coffee](https://img.buymeacoffee.com/button-api/?text=Buy%20me%20a%20coffee&emoji=&slug=molodos&button_colour=5F7FFF&font_colour=ffffff&font_family=Comic&outline_colour=000000&coffee_colour=FFDD00)](https://www.buymeacoffee.com/molodos)
 
 ## General Info
 
@@ -29,7 +29,7 @@ Additional Features:
 
 > If you have some idea on how to improve the plugin, feel free to create an issue for that
 
-<img src="images/neptune_3_pro_view.jpg" width="300">
+<img src="readme_images/neptune_3_pro_view.jpg" width="300">
 
 ## Installation
 
@@ -42,7 +42,7 @@ Additional Features:
     - Option A (newest version):
       From [GitHub](https://github.com/Molodos/ElegooNeptuneThumbnails/releases/latest/download/ElegooNeptuneThumbnails.curapackage)
       and drag the `.curapackage` file into the Cura window (like onto the build
-      plate) <img src="images/cura_drag_plugin.png" width="400">
+      plate) <img src="readme_images/cura_drag_plugin.png" width="400">
     - Option B (version could be outdated because review of Ultimaker takes some time): Install
       from [Cura marketplace](https://marketplace.ultimaker.com/app/cura/plugins/molodos/ElegooNeptune3Thumbnails)
 2) Restart Cura
@@ -73,11 +73,11 @@ To make the plugin work, you must at least add the option `;includeThumbnail` to
 ### Adding An Option
 
 1) Open printer selection menu and choose `Manage printers` \
-   <img src="images/cura_manage_printers.png" width="400">
+   <img src="readme_images/cura_manage_printers.png" width="400">
 2) Choose your Elegoo Neptune printer and then `Machine Settings` \
-   <img src="images/cura_machine_settings.png" width="400">
+   <img src="readme_images/cura_machine_settings.png" width="400">
 3) At the top of `Start G-code` add your preferred options \
-   <img src="images/cura_edit_g_code.png" width="600">
+   <img src="readme_images/cura_edit_g_code.png" width="600">
 
 ## FAQ
 
@@ -122,6 +122,8 @@ do not expect any news too soon.
 5) Create package `python -m package_plugin` (package will be
    under `package_plugin/ElegooNeptuneThumbnails.curapackage`)
 6) Use the `text/test.py` script for testing the formatting of image texts
+
+> Note: For some reason, QPainter will not accept all pngs. Usually, re-saving pngs with paint will fix problems
 
 ## Usage Statistics
 

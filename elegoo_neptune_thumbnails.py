@@ -22,7 +22,7 @@ from UM.Logger import Logger
 from UM.Platform import Platform
 from UM.Scene.Scene import Scene
 from cura.Snapshot import Snapshot
-from .gui import GUIManager
+from .tools import GUIManager
 
 
 class ElegooNeptune3Thumbnails(Extension):
@@ -40,7 +40,7 @@ class ElegooNeptune3Thumbnails(Extension):
         "bg_thumbnail": QColor(48, 57, 79),
         "own_gray": QColor(200, 200, 200)
     }
-    THUMBNAIL_BG_PATH: str = path.join(path.dirname(path.realpath(__file__)), "bg_thumbnail.png")
+    THUMBNAIL_BG_PATH: str = path.join(path.dirname(path.realpath(__file__)), "img", "bg_thumbnail.png")
     STATISTICS_ID_PATH: str = path.join(path.dirname(path.realpath(__file__)), "..", "..", "statistics_id.json")
     PLUGIN_JSON_PATH: str = path.join(path.dirname(path.realpath(__file__)), "plugin.json")
 
