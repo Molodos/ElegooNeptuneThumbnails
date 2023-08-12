@@ -2,6 +2,7 @@
 # The ElegooNeptuneThumbnails plugin is released under the terms of the AGPLv3 or higher.
 
 from os import path
+from typing import Optional
 
 from PyQt6.QtGui import QImage, QPainter, QColor
 
@@ -26,6 +27,7 @@ class ThumbnailGenerator:
     }
     BACKGROUND_IMAGE_PATH: str = path.join(path.dirname(path.realpath(__file__)), "..", "img", "bg_preview.png")
     FOREGROUND_IMAGE_PATH: str = path.join(path.dirname(path.realpath(__file__)), "..", "img", "benchy.png")
+    NO_FOREGROUND_IMAGE_PATH: str = path.join(path.dirname(path.realpath(__file__)), "..", "img", "cross.png")
     THUMBNAIL_PREVIEW_PATH: str = path.join(path.dirname(path.realpath(__file__)), "..", "img", "thumbnail_preview.png")
 
     @classmethod
@@ -42,15 +44,24 @@ class ThumbnailGenerator:
         Renders a thumbnail based on settings
         """
         # Create new image parts
-        thumbnail = QImage(cls.BACKGROUND_IMAGE_PATH)
-        foreground = Snapshot.snapshot(width=600, height=600) if settings.use_current_model or enforce_snapshot \
-            else QImage(cls.FOREGROUND_IMAGE_PATH)
+        thumbnail: QImage = QImage(cls.BACKGROUND_IMAGE_PATH)
+        foreground: QImage
+        if not settings.thumbnails_enabled:
+            foreground = QImage(cls.NO_FOREGROUND_IMAGE_PATH)
+        elif settings.use_current_model or enforce_snapshot:
+            foreground = Snapshot.snapshot(width=600, height=600)
+        else:
+            foreground = QImage(cls.FOREGROUND_IMAGE_PATH)
 
         # Combine parts
         if foreground:
             painter = QPainter(thumbnail)
             painter.drawImage(150, 160, foreground)
             painter.end()
+
+        # End don't add options if thumbnails disabled
+        if not settings.thumbnails_enabled:
+            return thumbnail
 
         # TODO: Add options in corners
 
