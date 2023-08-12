@@ -19,7 +19,7 @@ class Settings:
         "includeLayerHeight": "Layer Height",
         "includeModelHeight": "Model Height",
         "includeFilamentMetersEstimate": "Filament Meters Estimate",
-        "includeCostEstimate": "Cost Estimate"
+        # "includeCostEstimate": "Cost Estimate"
     }
     PRINTER_MODELS: dict[str, str] = {
         "elegoo_neptune_2": "Elegoo Neptune 2",
@@ -60,6 +60,12 @@ class Settings:
         if self.thumbnails_enabled:
             selected_options.insert(0, "includeThumbnail")
         return selected_options
+
+    def is_old_thumbnail(self) -> bool:
+        """
+        Check if old thumbnail is required
+        """
+        return list(self.PRINTER_MODELS.keys())[self.printer_model] == "elegoo_naptune_2"
 
     @classmethod
     def _read_plugin_json(cls) -> dict[str, Any]:

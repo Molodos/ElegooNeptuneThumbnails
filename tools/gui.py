@@ -39,7 +39,7 @@ class SettingsManager(QObject):
         """
         Render a thumbnail image form settings (needs to be called on settings change)
         """
-        ThumbnailGenerator.render_preview(settings=self._settings)
+        ThumbnailGenerator.generate_preview(settings=self._settings)
         if self._thumbnail:
             self._thumbnail.setProperty("source", "")
             self._thumbnail.setProperty("source", "../img/thumbnail_preview.png")
@@ -167,7 +167,7 @@ class GUIManager(QObject):
             self._popup.show()
 
             # Find thumbnail
-            self._settings_manager.set_thumbnail_ref(self._popup.children()[1].children()[3].children()[0])
+            self._settings_manager.set_thumbnail_ref(self._popup.children()[1].children()[4].children()[0])
 
     def _init_gui(self) -> bool:
         """

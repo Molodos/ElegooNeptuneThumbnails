@@ -54,7 +54,7 @@ Window
         {
             id: settingCol
             anchors.top: title.bottom
-            anchors.topMargin: UM.Theme.getSize("wide_margin").width
+            anchors.topMargin: Math.round(UM.Theme.getSize("wide_margin").width / 2)
             spacing: Math.round(UM.Theme.getSize("wide_margin").width / 2)
 
             // Settings item: Enable checkbox
@@ -69,7 +69,7 @@ Window
                     id: thumbnailsEnabled
                     checked: settings.thumbnails_enabled
                     onClicked: settings.set_thumbnails_enabled(thumbnailsEnabled.checked)
-                    text: "Enable Thumbnails"
+                    text: "Enable thumbnails"
                     tooltip: "Thumbnails will be added when saving a G-code file"
                 }
             }
@@ -83,7 +83,7 @@ Window
                 // Name
                 UM.Label
                 {
-                    text: "Printer Model"
+                    text: "Printer model"
                     elide: Text.ElideRight
                     Layout.minimumWidth: 150 * screenScaleFactor
                     Layout.maximumWidth: 150 * screenScaleFactor
@@ -109,7 +109,7 @@ Window
                 // Name
                 UM.Label
                 {
-                    text: "Top Left Corner"
+                    text: "Top left corner"
                     elide: Text.ElideRight
                     Layout.minimumWidth: 150 * screenScaleFactor
                     Layout.maximumWidth: 150 * screenScaleFactor
@@ -135,7 +135,7 @@ Window
                 // Name
                 UM.Label
                 {
-                    text: "Top Right Corner"
+                    text: "Top right corner"
                     elide: Text.ElideRight
                     Layout.minimumWidth: 150 * screenScaleFactor
                     Layout.maximumWidth: 150 * screenScaleFactor
@@ -161,7 +161,7 @@ Window
                 // Name
                 UM.Label
                 {
-                    text: "Bottom Left Corner"
+                    text: "Bottom left corner"
                     elide: Text.ElideRight
                     Layout.minimumWidth: 150 * screenScaleFactor
                     Layout.maximumWidth: 150 * screenScaleFactor
@@ -187,7 +187,7 @@ Window
                 // Name
                 UM.Label
                 {
-                    text: "Bottom Right Corner"
+                    text: "Bottom right corner"
                     elide: Text.ElideRight
                     Layout.minimumWidth: 150 * screenScaleFactor
                     Layout.maximumWidth: 150 * screenScaleFactor
@@ -216,7 +216,7 @@ Window
                     id: statisticsEnabled
                     checked: settings.statistics_enabled
                     onClicked: settings.set_statistics_enabled(statisticsEnabled.checked)
-                    text: "Send Anonymous Usage Statistics"
+                    text: "Send anonymous usage statistics"
                     tooltip: "Statistics will help to improve the plugin in the future"
                 }
             }
@@ -232,12 +232,26 @@ Window
             Layout.fillWidth: true
         }
 
+        // Thumbnail header
+        UM.Label
+        {
+            id: thumbHeader
+            anchors.top: settingCol.top
+            anchors.left: thumbnail.left
+            text: "Values are just examples for showcase"
+            elide: Text.ElideRight
+            Layout.minimumWidth: 250 * screenScaleFactor
+            Layout.maximumWidth: 250 * screenScaleFactor
+            Layout.fillWidth: true
+        }
+
         // Thumbnail dimensions
         Item
         {
             id: thumbnail
-            anchors.top: settingCol.top
+            anchors.top: thumbHeader.bottom
             anchors.right: parent.right
+            anchors.topMargin: Math.round(UM.Theme.getSize("wide_margin").width / 2)
             height: 250 * screenScaleFactor
             width: 250 * screenScaleFactor
 
@@ -259,7 +273,7 @@ Window
             id: useCurrentModel
             checked: settings.use_current_model
             onClicked: settings.set_use_current_model(useCurrentModel.checked)
-            text: "Use Current Model(s)"
+            text: "Use current model(s)"
             tooltip: "Use the currently loaded model(s) from Cura for preview"
         }
 
@@ -269,7 +283,7 @@ Window
             anchors.bottom: donationButton.top
             anchors.left: parent.left
             anchors.bottomMargin: Math.round(UM.Theme.getSize("wide_margin").width / 2)
-            text: "Like This Plugin? Consider Supporting Me :)"
+            text: "Like this plugin? Consider supporting me :)"
             font: UM.Theme.getFont("large")
             Layout.fillWidth: true
         }
