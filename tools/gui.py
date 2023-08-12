@@ -52,8 +52,11 @@ class SettingsManager(QObject):
 
     @pyqtSlot(bool)
     def set_thumbnails_enabled(self, enabled: bool) -> None:
+        updated: bool = self._settings.thumbnails_enabled != enabled
         self._settings.thumbnails_enabled = enabled
-        self.render_thumbnail()  # Update preview
+        if updated:
+            # Update preview
+            self.render_thumbnail()
 
     # Printer dropdown
 
@@ -85,8 +88,11 @@ class SettingsManager(QObject):
 
     @pyqtSlot(int, int)
     def set_corner_option(self, corner: int, option: int) -> None:
+        updated: bool = self._settings.corner_options[corner] != option
         self._settings.corner_options[corner] = option
-        self.render_thumbnail()  # Update preview
+        if updated:
+            # Update preview
+            self.render_thumbnail()
 
     # Statistics enabled state
 
@@ -106,8 +112,11 @@ class SettingsManager(QObject):
 
     @pyqtSlot(bool)
     def set_use_current_model(self, enabled: bool) -> None:
+        updated: bool = self._settings.use_current_model != enabled
         self._settings.use_current_model = enabled
-        self.render_thumbnail()
+        if updated:
+            # Update preview
+            self.render_thumbnail()
 
     # Save/restore buttons
 

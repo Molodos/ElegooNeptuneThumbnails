@@ -27,7 +27,7 @@ class Settings:
         "elegoo_neptune_3_max": "Elegoo Neptune 3 Max"
     }
     STATISTICS_ID_PATH: str = path.join(path.dirname(path.realpath(__file__)), "..", "..", "..", "statistics_id.json")
-    PLUGIN_JSON_PATH: str = path.join(path.dirname(path.realpath(__file__)), "plugin.json")
+    PLUGIN_JSON_PATH: str = path.join(path.dirname(path.realpath(__file__)), "..", "plugin.json")
 
     def __init__(self):
         # Read stuff from files
