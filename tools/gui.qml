@@ -287,7 +287,7 @@ Window
             Image
             {
                 anchors.fill: parent
-                source: "https://img.buymeacoffee.com/button-api/?text=Buy%20me%20a%20coffee&emoji=&slug=molodos&button_colour=5F7FFF&font_colour=ffffff&font_family=Comic&outline_colour=000000&coffee_colour=FFDD00"
+                source: "https://img.buymeacoffee.com/button-api/?text=Buy%20me%20a%20coffee&emoji=&slug=molodos&button_colour=196EF0&font_colour=ffffff&font_family=Comic&outline_colour=000000&coffee_colour=FFDD00"
                 fillMode: Image.PreserveAspectFit
 
                 // Clickable
