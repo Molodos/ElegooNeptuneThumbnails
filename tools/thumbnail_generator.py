@@ -93,6 +93,9 @@ class ThumbnailGenerator:
 
     @classmethod
     def _generate_option_lines(cls, settings: Settings) -> list[str]:
+        """
+        Generate the texts for the corners from settings
+        """
         lines: list[str] = []
         for i in settings.corner_options:  # TODO: Check on how to retrieve real values from Cura when not using G-code
             option: str = list(settings.OPTIONS.keys())[i]
