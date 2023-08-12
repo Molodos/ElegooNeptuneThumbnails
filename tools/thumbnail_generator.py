@@ -1,6 +1,6 @@
 # Copyright (c) 2023 Molodos
 # The ElegooNeptuneThumbnails plugin is released under the terms of the AGPLv3 or higher.
-
+import math
 from os import path
 
 from PyQt6.QtCore import Qt
@@ -8,6 +8,20 @@ from PyQt6.QtGui import QImage, QPainter, QColor, QFont
 
 from cura.Snapshot import Snapshot
 from .settings import Settings
+
+
+class SliceData:
+    """
+    Result data from slicing
+    """
+
+    def __init__(self):
+        self.layer_height: float = 0.2
+        self.time_seconds: int = 3606
+        self.filament_meters: float = 3.90
+        self.filament_grams: float = self.filament_meters * 2.98
+        self.filament_cost: float = 0.25
+        self.model_height: int = 48
 
 
 class ThumbnailGenerator:
@@ -71,7 +85,8 @@ class ThumbnailGenerator:
             return background
 
         # Generate option lines
-        lines: list[str] = cls._generate_option_lines(settings=settings)
+        # TODO: Check on how to retrieve real values from Cura when not using G-code
+        lines: list[str] = cls._generate_option_lines(settings=settings, slice_data=SliceData())
 
         # Add options
         painter = QPainter(background)
@@ -92,25 +107,26 @@ class ThumbnailGenerator:
         return background
 
     @classmethod
-    def _generate_option_lines(cls, settings: Settings) -> list[str]:
+    def _generate_option_lines(cls, settings: Settings, slice_data: SliceData) -> list[str]:
         """
         Generate the texts for the corners from settings
         """
         lines: list[str] = []
-        for i in settings.corner_options:  # TODO: Check on how to retrieve real values from Cura when not using G-code
+        for i in settings.corner_options:
             option: str = list(settings.OPTIONS.keys())[i]
             if option == "nothing":
                 lines.append("")
             elif option == "includeTimeEstimate":
-                lines.append(f"⧖ 1:06h")
+                time_minutes: int = math.floor(slice_data.time_seconds / 60)
+                lines.append(f"⧖ {time_minutes // 60}:{time_minutes % 60:02d}h")
             elif option == "includeFilamentGramsEstimate":
-                lines.append(f"⭗ 12g")
+                lines.append(f"⭗ {round(slice_data.filament_grams)}g")
             elif option == "includeLayerHeight":
-                lines.append(f"⧗ 0.2mm")
+                lines.append(f"⧗ {round(slice_data.layer_height, 2)}mm")
             elif option == "includeModelHeight":
-                lines.append(f"⭱ 48mm")
+                lines.append(f"⭱ {round(slice_data.model_height, 2)}mm")
             elif option == "includeFilamentMetersEstimate":
-                lines.append(f"⬌ 3.90m")
+                lines.append(f"⬌ {round(slice_data.filament_meters, 2)}m")
             elif option == "includeCostEstimate":
-                lines.append(f"⛁ 0.25€")
+                lines.append(f"⛁ {round(slice_data.filament_cost, 2)}€")
         return lines
