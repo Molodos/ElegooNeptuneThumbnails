@@ -230,7 +230,7 @@ Window
             id: thumbHeader
             anchors.top: settingCol.top
             anchors.left: thumbnail.left
-            text: "Values are just examples for showcase"
+            text: "(Values are just examples for showcase)"
             elide: Text.ElideRight
             Layout.minimumWidth: 250 * screenScaleFactor
             Layout.maximumWidth: 250 * screenScaleFactor
