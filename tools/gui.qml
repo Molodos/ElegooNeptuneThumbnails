@@ -23,15 +23,7 @@ Window
     height: minimumHeight
     color: UM.Theme.getColor("main_background")
     title: "Elegoo Neptune Thumbnails"
-
-    // Check if the window is closed
-    onVisibleChanged:
-    {
-        if (!visible)
-        {
-            settings.restore()
-        }
-    }
+    onVisibleChanged: settings.visibility_changed(visible)
 
     // Add margin around window contents
     Item

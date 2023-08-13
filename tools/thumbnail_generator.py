@@ -14,7 +14,7 @@ from PyQt6.QtGui import QImage, QPainter, QColor, QFont
 from UM.Logger import Logger
 from UM.Platform import Platform
 from cura.Snapshot import Snapshot
-from .settings import Settings
+from .settings import SettingsManager
 
 
 class SliceData:
@@ -54,24 +54,24 @@ class ThumbnailGenerator:
     THUMBNAIL_PREVIEW_PATH: str = path.join(path.dirname(path.realpath(__file__)), "..", "img", "thumbnail_preview.png")
 
     @classmethod
-    def generate_preview(cls, settings: Settings) -> None:
+    def generate_preview(cls) -> None:
         """
         Generate a preview image based on settings
         """
-        thumbnail: QImage = cls._render_thumbnail(settings=settings, is_preview=True, slice_data=SliceData())
+        thumbnail: QImage = cls._render_thumbnail(is_preview=True, slice_data=SliceData())
         thumbnail.save(cls.THUMBNAIL_PREVIEW_PATH)
 
     @classmethod
-    def generate_gcode_prefix(cls, settings: Settings, slice_data: SliceData) -> str:
+    def generate_gcode_prefix(cls, slice_data: SliceData) -> str:
         """
         Generate a g-code prefix string based on settings
         """
         # Generate thumbnail
-        thumbnail: QImage = cls._render_thumbnail(settings=settings, is_preview=False, slice_data=slice_data)
+        thumbnail: QImage = cls._render_thumbnail(is_preview=False, slice_data=slice_data)
 
         # Parse to g-code prefix
         gcode_prefix: str = ""
-        if settings.is_old_thumbnail():
+        if SettingsManager.get_settings().is_old_thumbnail():
             gcode_prefix += cls._parse_thumbnail_old(thumbnail, 200, 200, "gimage")
             gcode_prefix += cls._parse_thumbnail_old(thumbnail, 160, 160, "simage")
         else:
@@ -83,7 +83,7 @@ class ThumbnailGenerator:
         return gcode_prefix
 
     @classmethod
-    def _render_thumbnail(cls, settings: Settings, slice_data: SliceData, is_preview: bool = True) -> QImage:
+    def _render_thumbnail(cls, slice_data: SliceData, is_preview: bool = True) -> QImage:
         """
         Renders a thumbnail based on settings
         """
@@ -96,9 +96,9 @@ class ThumbnailGenerator:
 
         # Create foreground
         foreground: QImage
-        if not settings.thumbnails_enabled:
+        if not SettingsManager.get_settings().thumbnails_enabled:
             foreground = QImage(cls.NO_FOREGROUND_IMAGE_PATH)
-        elif settings.use_current_model or not is_preview:
+        elif SettingsManager.get_settings().use_current_model or not is_preview:
             foreground = Snapshot.snapshot(width=600, height=600)
         else:
             foreground = QImage(cls.FOREGROUND_IMAGE_PATH)
@@ -110,11 +110,11 @@ class ThumbnailGenerator:
             painter.end()
 
         # Don't add options if thumbnails disabled
-        if not settings.thumbnails_enabled:
+        if not SettingsManager.get_settings().thumbnails_enabled:
             return background
 
         # Generate option lines
-        lines: list[str] = cls._generate_option_lines(settings=settings, slice_data=slice_data)
+        lines: list[str] = cls._generate_option_lines(slice_data=slice_data)
 
         # Add options
         painter = QPainter(background)
@@ -135,13 +135,13 @@ class ThumbnailGenerator:
         return background
 
     @classmethod
-    def _generate_option_lines(cls, settings: Settings, slice_data: SliceData) -> list[str]:
+    def _generate_option_lines(cls, slice_data: SliceData) -> list[str]:
         """
         Generate the texts for the corners from settings
         """
         lines: list[str] = []
-        for i in settings.corner_options:
-            option: str = list(settings.OPTIONS.keys())[i]
+        for i in SettingsManager.get_settings().corner_options:
+            option: str = list(SettingsManager.get_settings().OPTIONS.keys())[i]
             if option == "nothing":
                 lines.append("")
             elif option == "includeTimeEstimate":

@@ -4,7 +4,7 @@
 import json
 import uuid
 from os import path
-from typing import Any
+from typing import Any, Optional
 
 
 class Settings:
@@ -38,7 +38,7 @@ class Settings:
         # Define config
         self.thumbnails_enabled: bool = True
         self.printer_model: int = 1
-        self.corner_options: list[int] = [1, 2, 3, 4]
+        self.corner_options: list[int] = [0, 0, 3, 1]
         self.statistics_enabled: bool = True
         self.use_current_model: bool = False
 
@@ -99,3 +99,68 @@ class Settings:
                 return stats.get("statistics_id", "unknown")
         except Exception as e:
             return "unknown"
+
+    def load_json(self, data: dict[str, Any]) -> None:
+        """
+        Load from json
+        """
+        self.thumbnails_enabled = data["thumbnails_enabled"]
+        self.printer_model = data["printer_model"]
+        self.corner_options = data["corner_options"]
+        self.statistics_enabled = data["statistics_enabled"]
+        self.use_current_model = data["use_current_model"]
+
+    def to_json(self) -> dict[str, Any]:
+        """
+        Parse to json
+        """
+        return {
+            "thumbnails_enabled": self.thumbnails_enabled,
+            "printer_model": self.printer_model,
+            "corner_options": self.corner_options,
+            "statistics_enabled": self.statistics_enabled,
+            "use_current_model": self.use_current_model
+        }
+
+
+class SettingsManager:
+    """
+    Thumbnail settings manager
+    """
+
+    _settings: Optional[Settings] = None
+
+    @classmethod
+    def get_settings(cls) -> Settings:
+        """
+        Get the settings instance
+        """
+        if not cls._settings:
+            cls.load()
+        return cls._settings
+
+    @classmethod
+    def load(cls) -> None:
+        """
+        Load settings (also used to discard changes)
+        """
+        # Init settings if None
+        if not cls._settings:
+            cls._settings = Settings()
+
+        # Load settings and update
+        data: dict[str, Any] = {}  # TODO: Actually load data
+        # cls._settings.load_json(data=data)
+
+    @classmethod
+    def save(cls) -> None:
+        """
+        Save settings
+        """
+        # Init settings if None
+        if not cls._settings:
+            cls._settings = Settings()
+
+        # Get data and save
+        data: dict[str, Any] = cls._settings.to_json()
+        # TODO: Actually save data

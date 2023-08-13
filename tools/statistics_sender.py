@@ -5,7 +5,7 @@ from typing import Any
 
 import requests
 
-from .settings import Settings
+from .settings import SettingsManager
 
 
 class StatisticsSender:
@@ -16,17 +16,17 @@ class StatisticsSender:
     TARGET_URL: str = "http://statistics.molodos.com:8090/cura"
 
     @classmethod
-    def send_statistics(cls, settings: Settings) -> None:
+    def send_statistics(cls) -> None:
         """
         Sends anonymous statistics
         """
         # Collect statistics
         statistics: dict[str, Any] = {
-            "plugin": settings.plugin_json["id"],
-            "version": settings.plugin_json["version"],
-            "id": settings.statistics_id,
-            "printer": settings.get_printer_model_id(),
-            "options": settings.get_corner_option_ids()
+            "plugin": SettingsManager.get_settings().plugin_json["id"],
+            "version": SettingsManager.get_settings().plugin_json["version"],
+            "id": SettingsManager.get_settings().statistics_id,
+            "printer": SettingsManager.get_settings().get_printer_model_id(),
+            "options": SettingsManager.get_settings().get_corner_option_ids()
         }
 
         # Send statistics

@@ -10,7 +10,7 @@ from UM.Application import Application
 from UM.Extension import Extension
 from UM.Logger import Logger
 from UM.Scene.Scene import Scene
-from .tools import Settings, StatisticsSender, GUIManager, SliceData, ThumbnailGenerator
+from .tools import SettingsManager, StatisticsSender, GUIManager, SliceData, ThumbnailGenerator
 
 
 class ElegooNeptune3Thumbnails(Extension):
@@ -27,11 +27,8 @@ class ElegooNeptune3Thumbnails(Extension):
         # Init super objects
         Extension.__init__(self)
 
-        # Load settings - TODO: Actually load from some storage and also add saving
-        self._settings: Settings = Settings()
-
         # Create GUI stuff
-        self._gui: GUIManager = GUIManager(extension=self, settings=self._settings)
+        self._gui: GUIManager = GUIManager(extension=self)
 
         # Add a hook when a G-gode is about to be written to a file
         Application.getInstance().getOutputDeviceManager().writeStarted.connect(self.add_snapshot_to_gcode)
@@ -91,11 +88,11 @@ class ElegooNeptune3Thumbnails(Extension):
                 return
 
             # Send statistics if enabled
-            if self._settings.statistics_enabled:
-                StatisticsSender.send_statistics(self._settings)
+            if SettingsManager.get_settings().statistics_enabled:
+                StatisticsSender.send_statistics()
 
             # Cancel if thumbnail is disabled
-            if not self._settings.thumbnails_enabled:
+            if not SettingsManager.get_settings().thumbnails_enabled:
                 return
 
             # Get params from G-code
@@ -125,8 +122,7 @@ class ElegooNeptune3Thumbnails(Extension):
                                               model_height=float(g_code_params["maxz"]))
 
             # Add encoded snapshot image (simage and gimage)
-            g_code_prefix: str = ThumbnailGenerator.generate_gcode_prefix(settings=self._settings,
-                                                                          slice_data=slice_data)
+            g_code_prefix: str = ThumbnailGenerator.generate_gcode_prefix(slice_data=slice_data)
 
             # Add image G-code to the beginning of the G-code
             self.scene.gcode_dict[0][0] = g_code_prefix + self.scene.gcode_dict[0][0]
