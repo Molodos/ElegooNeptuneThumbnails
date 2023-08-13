@@ -1,6 +1,4 @@
 # Copyright (c) 2023 Molodos
-# Copyright (c) 2023 sigathi
-# Copyright (c) 2020 DhanOS
 # The ElegooNeptuneThumbnails plugin is released under the terms of the AGPLv3 or higher.
 
 import json

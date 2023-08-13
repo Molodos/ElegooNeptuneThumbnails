@@ -1,6 +1,4 @@
 # Copyright (c) 2023 Molodos
-# Copyright (c) 2023 sigathi
-# Copyright (c) 2020 DhanOS
 # The ElegooNeptuneThumbnails plugin is released under the terms of the AGPLv3 or higher.
 
 import math
@@ -47,8 +45,8 @@ class ThumbnailGenerator:
         "bg_thumbnail": QColor(48, 57, 79),
         "own_gray": QColor(200, 200, 200)
     }
-    BACKGROUND_IMAGE_PATH: str = path.join(path.dirname(path.realpath(__file__)), "..", "img", "bg_thumbnail.png")
-    PREVIEW_BACKGROUND_IMAGE_PATH: str = path.join(path.dirname(path.realpath(__file__)), "..", "img", "bg_preview.png")
+    BACKGROUND_OLD_PATH: str = path.join(path.dirname(path.realpath(__file__)), "..", "img", "bg_old.png")
+    BACKGROUND_NEW_PATH: str = path.join(path.dirname(path.realpath(__file__)), "..", "img", "bg_new.png")
     FOREGROUND_IMAGE_PATH: str = path.join(path.dirname(path.realpath(__file__)), "..", "img", "benchy.png")
     NO_FOREGROUND_IMAGE_PATH: str = path.join(path.dirname(path.realpath(__file__)), "..", "img", "cross.png")
     THUMBNAIL_PREVIEW_PATH: str = path.join(path.dirname(path.realpath(__file__)), "..", "img", "thumbnail_preview.png")
@@ -89,10 +87,10 @@ class ThumbnailGenerator:
         """
         # Create background
         background: QImage
-        if is_preview:
-            background = QImage(cls.PREVIEW_BACKGROUND_IMAGE_PATH)
+        if SettingsManager.get_settings().is_old_thumbnail():
+            background = QImage(cls.BACKGROUND_OLD_PATH)
         else:
-            background = QImage(cls.BACKGROUND_IMAGE_PATH)
+            background = QImage(cls.BACKGROUND_NEW_PATH)
 
         # Create foreground
         foreground: QImage
@@ -163,7 +161,7 @@ class ThumbnailGenerator:
     def _parse_thumbnail_old(cls, img: QImage, width: int, height: int, img_type: str) -> str:
         """
         Parse thumbnail to string for old printers
-        TODO: Refactor at some time
+        TODO: Maybe optimize at some time
         """
         img_type = f";{img_type}:"
         result = ""
@@ -203,7 +201,7 @@ class ThumbnailGenerator:
     def _parse_thumbnail_new(cls, img: QImage, width: int, height: int, img_type: str) -> str:
         """
         Parse thumbnail to string for new printers
-        TODO: Refactor at some time
+        TODO: Maybe optimize at some time
         """
         img_type = f";{img_type}:"
         if Platform.isOSX():

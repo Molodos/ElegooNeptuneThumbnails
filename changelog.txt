@@ -1,6 +1,9 @@
 [3.0.0]
+- Note: Settings from previous versions will no longer work and hav to be re-configured
 - Updated interface to set parameters via GUI in the extensions dropdown
 - Added printer selection in GUI to also allow printer selection if profile is based on e.g. an ender printer
+- Added correct background for Neptune 2(S) printer
+- Minor other fixes
 
 [2.2.0]
 - Fixed a bug that caused multiple thumbnails in G-code if saved multiple times

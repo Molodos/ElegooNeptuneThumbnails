@@ -82,7 +82,11 @@ class SettingsTranslator(QObject):
 
     @pyqtSlot(int)
     def select_printer_model(self, model: int) -> None:
+        updated: bool = SettingsManager.get_settings().printer_model != model
         SettingsManager.get_settings().printer_model = model
+        if updated:
+            # Update preview
+            self.render_thumbnail()
 
     @pyqtProperty(int)
     def selected_printer_model(self) -> int:

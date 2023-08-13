@@ -25,7 +25,7 @@ class Settings:
     }
     PRINTER_MODELS: dict[str, str] = {
         "elegoo_neptune_2": "Elegoo Neptune 2",
-        "elegoo_neptune_2s": "Elegoo Neptune 2S",
+        "elegoo_neptune_2_s": "Elegoo Neptune 2S",
         "elegoo_neptune_3_pro": "Elegoo Neptune 3 Pro",
         "elegoo_neptune_3_plus": "Elegoo Neptune 3 Plus",
         "elegoo_neptune_3_max": "Elegoo Neptune 3 Max"
@@ -68,7 +68,7 @@ class Settings:
         """
         Check if old thumbnail is required
         """
-        return list(self.PRINTER_MODELS.keys())[self.printer_model] == "elegoo_naptune_2"
+        return list(self.PRINTER_MODELS.keys())[self.printer_model] in ["elegoo_neptune_2", "elegoo_neptune_2_s"]
 
     @classmethod
     def _read_plugin_json(cls) -> dict[str, Any]:
