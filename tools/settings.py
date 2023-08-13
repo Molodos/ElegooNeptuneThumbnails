@@ -25,6 +25,7 @@ class Settings:
     }
     PRINTER_MODELS: dict[str, str] = {
         "elegoo_neptune_2": "Elegoo Neptune 2",
+        "elegoo_neptune_2s": "Elegoo Neptune 2S",
         "elegoo_neptune_3_pro": "Elegoo Neptune 3 Pro",
         "elegoo_neptune_3_plus": "Elegoo Neptune 3 Plus",
         "elegoo_neptune_3_max": "Elegoo Neptune 3 Max"
@@ -160,10 +161,23 @@ class SettingsManager:
         else:
             # Default settings
             cls._settings.thumbnails_enabled = True
-            cls._settings.printer_model = 1  # TODO: Try to find model from printer
+            cls._settings.printer_model = 2  # Neptune 3 Pro is most probable
             cls._settings.corner_options = [0, 0, 3, 1]
             cls._settings.statistics_enabled = True
             cls._settings.use_current_model = False
+
+            # Try to determine current printer model
+            printer_id: str = Application.getInstance().getMachineManager().activeMachine.definition.getId()
+            if printer_id in ["elegoo_neptune_2"]:
+                cls._settings.printer_model = 0
+            if printer_id in ["elegoo_neptune_2s", "elegoo_neptune_2_s"]:
+                cls._settings.printer_model = 1
+            if printer_id in ["elegoo_neptune_3pro", "elegoo_neptune_3_pro"]:
+                cls._settings.printer_model = 2
+            if printer_id in ["elegoo_neptune_3plus", "elegoo_neptune_3_plus"]:
+                cls._settings.printer_model = 3
+            if printer_id in ["elegoo_neptune_3max", "elegoo_neptune_3_max"]:
+                cls._settings.printer_model = 4
 
     @classmethod
     def save(cls) -> None:
