@@ -59,6 +59,9 @@ class Settings:
         option_ids: list[str] = list(self.OPTIONS.keys())
         selected_options: list[str] = [option_ids[i] for i in self.corner_options if i > 0]
 
+        # Remove duplicates
+        selected_options = list(dict.fromkeys(selected_options))
+
         # Add "includeThumbnail" if thumbnails are enabled
         if self.thumbnails_enabled:
             selected_options.insert(0, "includeThumbnail")
