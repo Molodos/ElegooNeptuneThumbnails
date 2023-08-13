@@ -6,6 +6,8 @@ import uuid
 from os import path
 from typing import Any, Optional
 
+from UM.Application import Application
+
 
 class Settings:
     """
@@ -128,6 +130,8 @@ class SettingsManager:
     Thumbnail settings manager
     """
 
+    SETTINGS_KEY: str = "elegoo_neptune_thumbnails"
+
     _settings: Optional[Settings] = None
 
     @classmethod
@@ -149,8 +153,17 @@ class SettingsManager:
             cls._settings = Settings()
 
         # Load settings and update
-        data: dict[str, Any] = {}  # TODO: Actually load data
-        # cls._settings.load_json(data=data)
+        plain_data: str = Application.getInstance().getGlobalContainerStack().getMetaDataEntry(cls.SETTINGS_KEY)
+        if plain_data:
+            data: dict[str, Any] = json.loads(plain_data)
+            cls._settings.load_json(data=data)
+        else:
+            # Default settings
+            cls._settings.thumbnails_enabled = True
+            cls._settings.printer_model = 1  # TODO: Try to find model from printer
+            cls._settings.corner_options = [0, 0, 3, 1]
+            cls._settings.statistics_enabled = True
+            cls._settings.use_current_model = False
 
     @classmethod
     def save(cls) -> None:
@@ -159,8 +172,8 @@ class SettingsManager:
         """
         # Init settings if None
         if not cls._settings:
-            cls._settings = Settings()
+            cls.load()
 
         # Get data and save
         data: dict[str, Any] = cls._settings.to_json()
-        # TODO: Actually save data
+        Application.getInstance().getGlobalContainerStack().setMetaDataEntry(cls.SETTINGS_KEY, json.dumps(data))

@@ -23,14 +23,14 @@ class SettingsTranslator(QObject):
 
     def __init__(self):
         QObject.__init__(self)
-        self._thumbnail: Optional[QQuickItem] = None
+        self._popup: Optional[QQuickWindow] = None
         self._selected_corner: int = -1
 
-    def set_thumbnail_ref(self, thumbnail: QQuickItem) -> None:
+    def set_popup_ref(self, popup: QQuickWindow) -> None:
         """
-        Set the thumbnail ref for updates
+        Set the popup ref for updates
         """
-        self._thumbnail = thumbnail
+        self._popup = popup
         self.render_thumbnail()
 
     def render_thumbnail(self) -> None:
@@ -38,9 +38,27 @@ class SettingsTranslator(QObject):
         Render a thumbnail image form settings (needs to be called on settings change)
         """
         ThumbnailGenerator.generate_preview()
-        if self._thumbnail:
-            self._thumbnail.setProperty("source", "")
-            self._thumbnail.setProperty("source", "../img/thumbnail_preview.png")
+        if self._popup:
+            thumbnail: QQuickItem = self._popup.findChild(QQuickItem, "thumbnailPreview")
+            thumbnail.setProperty("source", "")
+            thumbnail.setProperty("source", "../img/thumbnail_preview.png")
+
+    def update_gui(self) -> None:
+        """
+        Updates all values in the gui
+        """
+        self._popup.findChild(QQuickItem, "thumbnailsEnabled") \
+            .setProperty("checked", SettingsManager.get_settings().thumbnails_enabled)
+        self._popup.findChild(QQuickItem, "printerModel") \
+            .setProperty("currentIndex", SettingsManager.get_settings().printer_model)
+        for i, v in enumerate(SettingsManager.get_settings().corner_options):
+            self._popup.findChild(QQuickItem, f"corner{i}") \
+                .setProperty("currentIndex", v)
+        self._popup.findChild(QQuickItem, "sendStatistics") \
+            .setProperty("checked", SettingsManager.get_settings().statistics_enabled)
+        self._popup.findChild(QQuickItem, "useCurrentModel") \
+            .setProperty("checked", SettingsManager.get_settings().use_current_model)
+        self.render_thumbnail()
 
     # Thumbnails enabled state
 
@@ -121,10 +139,12 @@ class SettingsTranslator(QObject):
     @pyqtSlot(bool)
     def visibility_changed(self, visible: bool) -> None:
         """
-        Discard changes on close
+        Popup open/close
         """
         if not visible:
+            # Discard settings on close
             SettingsManager.load()
+            self.update_gui()
 
     @pyqtSlot()
     def save(self) -> None:
@@ -145,7 +165,7 @@ class GUIManager(QObject):
         QObject.__init__(self)
 
         # Init settings
-        self._settings_translator: SettingsTranslator = SettingsTranslator()
+        self.settings_translator: SettingsTranslator = SettingsTranslator()
 
         # Add menu items with popup trigger
         extension.setMenuName("Elegoo Neptune Thumbnails")
@@ -164,9 +184,6 @@ class GUIManager(QObject):
             # Show
             self._popup.show()
 
-            # Find thumbnail
-            self._settings_translator.set_thumbnail_ref(self._popup.children()[1].children()[4].children()[0])
-
     def _init_gui(self) -> bool:
         """
         Initialize GUI
@@ -174,6 +191,9 @@ class GUIManager(QObject):
         """
         # Create the plugin dialog component
         self._popup = CuraApplication.getInstance().createQmlComponent(self.GUI_FILE_PATH, {
-            "settings": self._settings_translator
+            "settings": self.settings_translator
         })
+
+        # Update ref and return
+        self.settings_translator.set_popup_ref(self._popup)
         return self._popup is not None

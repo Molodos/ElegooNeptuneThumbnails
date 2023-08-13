@@ -30,8 +30,11 @@ class ElegooNeptune3Thumbnails(Extension):
         # Create GUI stuff
         self._gui: GUIManager = GUIManager(extension=self)
 
-        # Add a hook when a G-gode is about to be written to a file
+        # Add a hook when G-gode is about to be written to a file -> add thumbnail
         Application.getInstance().getOutputDeviceManager().writeStarted.connect(self.add_snapshot_to_gcode)
+
+        # Add a hook when the selected printer changes -> load settings
+        Application.getInstance().globalContainerStackChanged.connect(self.printer_switched)
 
         # Get a scene handler for later usage
         self.scene: Scene = Application.getInstance().getController().getScene()
@@ -40,11 +43,17 @@ class ElegooNeptune3Thumbnails(Extension):
         with open(self.PLUGIN_JSON_PATH, "r") as file:
             self.plugin_version: str = json.load(file)["version"]
 
-    def add_snapshot_to_gcode(self, output_device) -> None:
+    def printer_switched(self) -> None:
+        """
+        Hook triggered on printer switch
+        """
+        SettingsManager.load()
+        self._gui.settings_translator.update_gui()
+
+    def add_snapshot_to_gcode(self) -> None:
         """
         Hook triggered on G-code write to file
         """
-
         # Return if there is no G-code - TODO: Maybe find slicing results other than g-code in scene
         # TODO: "Application.getInstance().getMachineManager().activeMachine.definition.getId()" could also have info
         if not hasattr(self.scene, "gcode_dict") or not self.scene.gcode_dict:

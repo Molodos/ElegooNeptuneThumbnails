@@ -59,6 +59,7 @@ Window
                 UM.CheckBox
                 {
                     id: thumbnailsEnabled
+                    objectName: "thumbnailsEnabled"
                     checked: settings.thumbnails_enabled
                     onClicked: settings.set_thumbnails_enabled(thumbnailsEnabled.checked)
                     text: "Enable thumbnails"
@@ -84,6 +85,7 @@ Window
 
                 // Setting
                 ComboBox {
+                    objectName: "printerModel"
                     Layout.minimumWidth: 200 * screenScaleFactor
                     Layout.maximumWidth: 200 * screenScaleFactor
                     currentIndex: settings.selected_printer_model
@@ -110,6 +112,7 @@ Window
 
                 // Setting
                 ComboBox {
+                    objectName: "corner0"
                     Layout.minimumWidth: 200 * screenScaleFactor
                     Layout.maximumWidth: 200 * screenScaleFactor
                     currentIndex: [settings.select_corner(0), settings.selected_corner_option][1]
@@ -136,6 +139,7 @@ Window
 
                 // Setting
                 ComboBox {
+                    objectName: "corner1"
                     Layout.minimumWidth: 200 * screenScaleFactor
                     Layout.maximumWidth: 200 * screenScaleFactor
                     currentIndex: [settings.select_corner(1), settings.selected_corner_option][1]
@@ -162,6 +166,7 @@ Window
 
                 // Setting
                 ComboBox {
+                    objectName: "corner2"
                     Layout.minimumWidth: 200 * screenScaleFactor
                     Layout.maximumWidth: 200 * screenScaleFactor
                     currentIndex: [settings.select_corner(2), settings.selected_corner_option][1]
@@ -188,6 +193,7 @@ Window
 
                 // Setting
                 ComboBox {
+                    objectName: "corner3"
                     Layout.minimumWidth: 200 * screenScaleFactor
                     Layout.maximumWidth: 200 * screenScaleFactor
                     currentIndex: [settings.select_corner(3), settings.selected_corner_option][1]
@@ -206,6 +212,7 @@ Window
                 UM.CheckBox
                 {
                     id: statisticsEnabled
+                    objectName: "sendStatistics"
                     checked: settings.statistics_enabled
                     onClicked: settings.set_statistics_enabled(statisticsEnabled.checked)
                     text: "Send anonymous usage statistics"
@@ -250,6 +257,7 @@ Window
             // Thumbnail image
             Image
             {
+                objectName: "thumbnailPreview"
                 anchors.fill: parent
                 source: "../img/bg_thumbnail.png"
                 fillMode: Image.PreserveAspectFit
@@ -263,6 +271,7 @@ Window
             anchors.left: thumbnail.left
             anchors.topMargin: Math.round(UM.Theme.getSize("wide_margin").width / 2)
             id: useCurrentModel
+            objectName: "useCurrentModel"
             checked: settings.use_current_model
             onClicked: settings.set_use_current_model(useCurrentModel.checked)
             text: "Use current model(s)"
