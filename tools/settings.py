@@ -21,6 +21,7 @@ class Settings:
         "filament_grams_estimate": "Filament Grams Estimate",
         "layer_height": "Layer Height",
         "model_height": "Model Height",
+        "filament_cost_estimate": "Filament Cost Estimate",
         "filament_meters_estimate": "Filament Meters Estimate"
     }
     PRINTER_MODELS: dict[str, str] = {

@@ -77,13 +77,14 @@ Additional features:
 
 ### Information Display Options
 
-| Setting                    | Description                                                                               |
-|----------------------------|-------------------------------------------------------------------------------------------|
-| `Time Estimate`            | Includes the estimated print time in the thumbnail                                        |
-| `Filament Grams Estimate`  | Includes the estimated filament usage in grams (for 1.75mm diameter PLA) in the thumbnail |
-| `Layer Height`             | Includes the layer height in the thumbnail                                                |
-| `Model Height`             | Includes the model height in the thumbnail                                                |
-| `Filament Meters Estimate` | Includes the estimated filament usage in meters in the thumbnail                          |
+| Setting                    | Description                                                                                 |
+|----------------------------|---------------------------------------------------------------------------------------------|
+| `Time Estimate`            | Includes the estimated print time in the thumbnail                                          |
+| `Filament Grams Estimate`  | Includes the estimated filament usage in grams in the thumbnail                             |
+| `Layer Height`             | Includes the layer height in the thumbnail                                                  |
+| `Model Height`             | Includes the model height in the thumbnail                                                  |
+| `Filament Cost Estimate`   | Includes the estimated filament cost (based on cost in filaments settings) in the thumbnail |
+| `Filament Meters Estimate` | Includes the estimated filament usage in meters in the thumbnail                            |
 
 ## FAQ
 

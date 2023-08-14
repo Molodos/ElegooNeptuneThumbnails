@@ -21,13 +21,13 @@ class SliceData:
     """
 
     def __init__(self, layer_height: float = 0.2, time_seconds: int = 3960, filament_meters: float = 3.9,
-                 model_height: float = 48.0):
+                 filament_grams: float = 11.6, model_height: float = 48.0, filament_cost: float = 0.25):
         self.layer_height: float = layer_height
         self.time_seconds: int = time_seconds
         self.filament_meters: float = filament_meters
-        self.filament_grams: float = filament_meters * 2.98
+        self.filament_grams: float = filament_grams
         self.model_height: float = model_height
-        # self.filament_cost: float = 0.25
+        self.filament_cost: float = filament_cost
 
 
 class ThumbnailGenerator:
@@ -151,6 +151,8 @@ class ThumbnailGenerator:
                 lines.append(f"⧗ {round(slice_data.layer_height, 2)}mm")
             elif option == "model_height":
                 lines.append(f"⭱ {round(slice_data.model_height, 2)}mm")
+            elif option == "filament_cost_estimate":
+                lines.append(f"⛁ {round(slice_data.filament_cost, 2)}€")
             elif option == "filament_meters_estimate":
                 lines.append(f"⬌ {round(slice_data.filament_meters, 2):.02f}m")
         return lines
