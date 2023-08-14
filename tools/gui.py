@@ -31,7 +31,6 @@ class SettingsTranslator(QObject):
         Set the popup ref for updates
         """
         self._popup = popup
-        self.render_thumbnail()
 
     def render_thumbnail(self) -> None:
         """
@@ -47,18 +46,20 @@ class SettingsTranslator(QObject):
         """
         Updates all values in the gui
         """
-        self._popup.findChild(QQuickItem, "thumbnailsEnabled") \
-            .setProperty("checked", SettingsManager.get_settings().thumbnails_enabled)
-        self._popup.findChild(QQuickItem, "printerModel") \
-            .setProperty("currentIndex", SettingsManager.get_settings().printer_model)
-        for i, v in enumerate(SettingsManager.get_settings().corner_options):
-            self._popup.findChild(QQuickItem, f"corner{i}") \
-                .setProperty("currentIndex", v)
-        self._popup.findChild(QQuickItem, "sendStatistics") \
-            .setProperty("checked", SettingsManager.get_settings().statistics_enabled)
-        self._popup.findChild(QQuickItem, "useCurrentModel") \
-            .setProperty("checked", SettingsManager.get_settings().use_current_model)
-        self.render_thumbnail()
+        # Olay update if popup exists
+        if self._popup:
+            self._popup.findChild(QQuickItem, "thumbnailsEnabled") \
+                .setProperty("checked", SettingsManager.get_settings().thumbnails_enabled)
+            self._popup.findChild(QQuickItem, "printerModel") \
+                .setProperty("currentIndex", SettingsManager.get_settings().printer_model)
+            for i, v in enumerate(SettingsManager.get_settings().corner_options):
+                self._popup.findChild(QQuickItem, f"corner{i}") \
+                    .setProperty("currentIndex", v)
+            self._popup.findChild(QQuickItem, "sendStatistics") \
+                .setProperty("checked", SettingsManager.get_settings().statistics_enabled)
+            self._popup.findChild(QQuickItem, "useCurrentModel") \
+                .setProperty("checked", SettingsManager.get_settings().use_current_model)
+            self.render_thumbnail()
 
     # Thumbnails enabled state
 
@@ -148,7 +149,6 @@ class SettingsTranslator(QObject):
         if not visible:
             # Discard settings on close
             SettingsManager.load()
-            self.update_gui()
 
     @pyqtSlot()
     def save(self) -> None:
@@ -185,7 +185,8 @@ class GUIManager(QObject):
             Logger.log("e", "Failed to create ElegooNeptuneThumbnails settings window.")
 
         if self._popup is not None:
-            # Show
+            # Update gui and show
+            self.settings_translator.update_gui()
             self._popup.show()
 
     def _init_gui(self) -> bool:

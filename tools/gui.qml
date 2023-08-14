@@ -259,7 +259,7 @@ Window
             {
                 objectName: "thumbnailPreview"
                 anchors.fill: parent
-                source: "../img/bg_thumbnail.png"
+                source: "../img/bg_new.png"
                 fillMode: Image.PreserveAspectFit
             }
         }

@@ -7,6 +7,7 @@ from os import path
 from typing import Any, Optional
 
 from UM.Application import Application
+from UM.Logger import Logger
 
 
 class Settings:
@@ -30,17 +31,15 @@ class Settings:
         "elegoo_neptune_3_plus": "Elegoo Neptune 3 Plus",
         "elegoo_neptune_3_max": "Elegoo Neptune 3 Max"
     }
-    STATISTICS_ID_PATH: str = path.join(path.dirname(path.realpath(__file__)), "..", "..", "..", "statistics_id.json")
-    PLUGIN_JSON_PATH: str = path.join(path.dirname(path.realpath(__file__)), "..", "plugin.json")
 
-    def __init__(self):
+    def __init__(self, statistics_id: str, plugin_json: dict[str, Any]):
         # Read stuff from files
-        self.statistics_id: str = self._generate_statistics_id()
-        self.plugin_json: dict[str, Any] = self._read_plugin_json()
+        self.statistics_id: str = statistics_id
+        self.plugin_json: dict[str, Any] = plugin_json
 
         # Define config
         self.thumbnails_enabled: bool = True
-        self.printer_model: int = 1
+        self.printer_model: int = 2
         self.corner_options: list[int] = [0, 0, 3, 1]
         self.statistics_enabled: bool = True
         self.use_current_model: bool = False
@@ -73,39 +72,6 @@ class Settings:
         """
         return list(self.PRINTER_MODELS.keys())[self.printer_model] in ["elegoo_neptune_2", "elegoo_neptune_2_s"]
 
-    @classmethod
-    def _read_plugin_json(cls) -> dict[str, Any]:
-        """
-        Read the plugin json
-        """
-        # Read plugin json
-        with open(cls.PLUGIN_JSON_PATH, "r") as file:
-            return json.load(file)
-
-    @classmethod
-    def _generate_statistics_id(cls) -> str:
-        """
-        Generates an id for anonymous statistics
-        """
-        # Generate if not exists
-        if not path.exists(cls.STATISTICS_ID_PATH):
-            random_id: str = str(uuid.uuid4())
-            with open(cls.STATISTICS_ID_PATH, "w") as file:
-                file.write(json.dumps(
-                    {
-                        "statistics_id": random_id
-                    },
-                    indent=4
-                ))
-
-        # Read and return
-        try:
-            with open(cls.STATISTICS_ID_PATH, "r") as file:
-                stats: dict[str, str] = json.load(file)
-                return stats.get("statistics_id", "unknown")
-        except Exception as e:
-            return "unknown"
-
     def load_json(self, data: dict[str, Any]) -> None:
         """
         Load from json
@@ -135,6 +101,8 @@ class SettingsManager:
     """
 
     SETTINGS_KEY: str = "elegoo_neptune_thumbnails"
+    STATISTICS_ID_KEY: str = "general/statistics_id"
+    PLUGIN_JSON_PATH: str = path.join(path.dirname(path.realpath(__file__)), "..", "plugin.json")
 
     _settings: Optional[Settings] = None
 
@@ -154,7 +122,7 @@ class SettingsManager:
         """
         # Init settings if None
         if not cls._settings:
-            cls._settings = Settings()
+            cls._settings = Settings(statistics_id=cls._generate_statistics_id(), plugin_json=cls._read_plugin_json())
 
         # Load settings and update
         plain_data: str = Application.getInstance().getGlobalContainerStack().getMetaDataEntry(cls.SETTINGS_KEY)
@@ -181,6 +149,8 @@ class SettingsManager:
                 cls._settings.printer_model = 3
             if printer_id in ["elegoo_neptune_3max", "elegoo_neptune_3_max"]:
                 cls._settings.printer_model = 4
+            # Printer ids, that most likely have no thumbnail: elegoo_neptune_1
+            # Printer ids, that need to be added: elegoo_neptune_4, elegoo_neptune_4_pro, elegoo_neptune_4pro
 
     @classmethod
     def save(cls) -> None:
@@ -194,3 +164,26 @@ class SettingsManager:
         # Get data and save
         data: dict[str, Any] = cls._settings.to_json()
         Application.getInstance().getGlobalContainerStack().setMetaDataEntry(cls.SETTINGS_KEY, json.dumps(data))
+
+    @classmethod
+    def _generate_statistics_id(cls) -> str:
+        """
+        Generates an id for anonymous statistics
+        """
+        # Generate if not exists
+        if not Application.getInstance().getPreferences().getValue(cls.STATISTICS_ID_KEY):
+            Application.getInstance().getPreferences().addPreference(cls.STATISTICS_ID_KEY, "")
+            Application.getInstance().getPreferences().setValue(cls.STATISTICS_ID_KEY, str(uuid.uuid4()))
+            Application.getInstance().savePreferences()
+
+        # Read and return
+        return Application.getInstance().getPreferences().getValue(cls.STATISTICS_ID_KEY)
+
+    @classmethod
+    def _read_plugin_json(cls) -> dict[str, Any]:
+        """
+        Read the plugin json
+        """
+        # Read plugin json
+        with open(cls.PLUGIN_JSON_PATH, "r") as file:
+            return json.load(file)

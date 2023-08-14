@@ -41,14 +41,14 @@ class ElegooNeptune3Thumbnails(Extension):
         with open(self.PLUGIN_JSON_PATH, "r") as file:
             self.plugin_version: str = json.load(file)["version"]
 
-    def printer_switched(self) -> None:
+    @classmethod
+    def printer_switched(cls) -> None:
         """
-        Hook triggered on printer switch
+        Hook triggered on printer switch (also triggered on startup)
         """
         SettingsManager.load()
-        self._gui.settings_translator.update_gui()
 
-    def add_snapshot_to_gcode(self) -> None:
+    def add_snapshot_to_gcode(self, output_device) -> None:
         """
         Hook triggered on G-code write to file
         """

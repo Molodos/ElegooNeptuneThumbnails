@@ -205,11 +205,11 @@ class ThumbnailGenerator:
         """
         img_type = f";{img_type}:"
         if Platform.isOSX():
-            p_dll = CDLL(path.join(path.dirname(__file__), "libs/libColPic.dylib"))
+            p_dll = CDLL(path.join(path.dirname(__file__), "..", "libs", "libColPic.dylib"))
         elif Platform.isLinux():
-            p_dll = CDLL(path.join(path.dirname(__file__), "libs/libColPic.so"))
+            p_dll = CDLL(path.join(path.dirname(__file__), "..", "libs", "libColPic.so"))
         else:
-            p_dll = CDLL(path.join(path.dirname(__file__), "libs/ColPic_X64.dll"))
+            p_dll = CDLL(path.join(path.dirname(__file__), "..", "libs", "ColPic_X64.dll"))
 
         result = ""
         b_image = img.scaled(width, height, Qt.AspectRatioMode.KeepAspectRatio)
