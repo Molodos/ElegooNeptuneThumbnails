@@ -142,19 +142,17 @@ class ThumbnailGenerator:
             option: str = list(SettingsManager.get_settings().OPTIONS.keys())[i]
             if option == "nothing":
                 lines.append("")
-            elif option == "includeTimeEstimate":
+            elif option == "time_estimate":
                 time_minutes: int = math.floor(slice_data.time_seconds / 60)
                 lines.append(f"⧖ {time_minutes // 60}:{time_minutes % 60:02d}h")
-            elif option == "includeFilamentGramsEstimate":
+            elif option == "filament_grams_estimate":
                 lines.append(f"⭗ {round(slice_data.filament_grams)}g")
-            elif option == "includeLayerHeight":
+            elif option == "layer_height":
                 lines.append(f"⧗ {round(slice_data.layer_height, 2)}mm")
-            elif option == "includeModelHeight":
+            elif option == "model_height":
                 lines.append(f"⭱ {round(slice_data.model_height, 2)}mm")
-            elif option == "includeFilamentMetersEstimate":
+            elif option == "filament_meters_estimate":
                 lines.append(f"⬌ {round(slice_data.filament_meters, 2):.02f}m")
-            # elif option == "includeCostEstimate":
-            #    lines.append(f"⛁ {round(slice_data.filament_cost, 2):.02f}€")
         return lines
 
     @classmethod

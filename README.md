@@ -134,8 +134,10 @@ No personal data is being collected. The statistics data, that is collected, is 
 - Name of this plugin
 - Version of this plugin
 - The anonymous statistics id
-- The printer type (e.g. "Elegoo Neptune 3 Pro")
+- The printer model from profile (e.g. "Elegoo Neptune 3 Pro")
+- The printer model selected (e.g. "Elegoo Neptune 3 Pro")
 - The information display options you are using (e.g. `Layer Height`)
+- Version of Cura
 
 > **Note:** This list might change at some time, so keep an eye on it if you update the plugin. Be aware, that personal
 > data will never be added to this list.

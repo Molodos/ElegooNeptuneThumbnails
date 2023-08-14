@@ -14,14 +14,14 @@ class Settings:
     Thumbnail settings
     """
 
+    CURA_VERSION_KEY: str = "general/last_run_version"
     OPTIONS: dict[str, str] = {
         "nothing": "Nothing",
-        "includeTimeEstimate": "Time Estimate",
-        "includeFilamentGramsEstimate": "Filament Grams Estimate",
-        "includeLayerHeight": "Layer Height",
-        "includeModelHeight": "Model Height",
-        "includeFilamentMetersEstimate": "Filament Meters Estimate",
-        # "includeCostEstimate": "Cost Estimate"
+        "time_estimate": "Time Estimate",
+        "filament_grams_estimate": "Filament Grams Estimate",
+        "layer_height": "Layer Height",
+        "model_height": "Model Height",
+        "filament_meters_estimate": "Filament Meters Estimate"
     }
     PRINTER_MODELS: dict[str, str] = {
         "elegoo_neptune_2": "Elegoo Neptune 2",
@@ -32,9 +32,13 @@ class Settings:
     }
 
     def __init__(self, statistics_id: str, plugin_json: dict[str, Any]):
-        # Read stuff from files
-        self.statistics_id: str = statistics_id
+        # Read stuff from params
         self.plugin_json: dict[str, Any] = plugin_json
+        self.statistics_id: str = statistics_id
+
+        # Read stuff from config
+        self.cura_version: str = Application.getInstance().getPreferences().getValue(self.CURA_VERSION_KEY)
+        self.printer_id: str = Application.getInstance().getMachineManager().activeMachine.definition.getId()
 
         # Define config
         self.thumbnails_enabled: bool = True
@@ -49,21 +53,30 @@ class Settings:
         """
         return list(self.PRINTER_MODELS.keys())[self.printer_model]
 
+    def _set_printer_model_id(self, printer_model_id: str) -> None:
+        """
+        Set printer model from string id
+        """
+        self.printer_model = list(self.PRINTER_MODELS.keys()).index(printer_model_id)
+
     def get_corner_option_ids(self) -> list[str]:
         """
-        Get corner option ids (str) if not "Nothing"
+        Get corner option ids (str)
         """
         # Find selected options
         option_ids: list[str] = list(self.OPTIONS.keys())
-        selected_options: list[str] = [option_ids[i] for i in self.corner_options if i > 0]
+        selected_options: list[str] = [option_ids[i] for i in self.corner_options]
 
-        # Remove duplicates
-        selected_options = list(dict.fromkeys(selected_options))
-
-        # Add "includeThumbnail" if thumbnails are enabled
-        if self.thumbnails_enabled:
-            selected_options.insert(0, "includeThumbnail")
+        # Return
         return selected_options
+
+    def _set_corner_option_ids(self, corner_option_ids: list[str]) -> None:
+        """
+        Set corner options from ids
+        """
+        option_ids: list[str] = list(self.OPTIONS.keys())
+        for i, option_id in enumerate(corner_option_ids):
+            self.corner_options[i] = option_ids.index(option_id)
 
     def is_old_thumbnail(self) -> bool:
         """
@@ -76,8 +89,8 @@ class Settings:
         Load from json
         """
         self.thumbnails_enabled = data["thumbnails_enabled"]
-        self.printer_model = data["printer_model"]
-        self.corner_options = data["corner_options"]
+        self._set_printer_model_id(data["printer_model"])
+        self._set_corner_option_ids(data["corner_options"])
         self.statistics_enabled = data["statistics_enabled"]
         self.use_current_model = data["use_current_model"]
 
@@ -87,8 +100,8 @@ class Settings:
         """
         return {
             "thumbnails_enabled": self.thumbnails_enabled,
-            "printer_model": self.printer_model,
-            "corner_options": self.corner_options,
+            "printer_model": self.get_printer_model_id(),
+            "corner_options": self.get_corner_option_ids(),
             "statistics_enabled": self.statistics_enabled,
             "use_current_model": self.use_current_model
         }
@@ -136,17 +149,17 @@ class SettingsManager:
             cls._settings.statistics_enabled = True
             cls._settings.use_current_model = False
 
-            # Try to determine current printer model
+            # Try to recognize current printer model
             printer_id: str = Application.getInstance().getMachineManager().activeMachine.definition.getId()
             if printer_id in ["elegoo_neptune_2"]:
                 cls._settings.printer_model = 0
-            if printer_id in ["elegoo_neptune_2s", "elegoo_neptune_2_s"]:
+            elif printer_id in ["elegoo_neptune_2s", "elegoo_neptune_2_s"]:
                 cls._settings.printer_model = 1
-            if printer_id in ["elegoo_neptune_3pro", "elegoo_neptune_3_pro"]:
+            elif printer_id in ["elegoo_neptune_3pro", "elegoo_neptune_3_pro"]:
                 cls._settings.printer_model = 2
-            if printer_id in ["elegoo_neptune_3plus", "elegoo_neptune_3_plus"]:
+            elif printer_id in ["elegoo_neptune_3plus", "elegoo_neptune_3_plus"]:
                 cls._settings.printer_model = 3
-            if printer_id in ["elegoo_neptune_3max", "elegoo_neptune_3_max"]:
+            elif printer_id in ["elegoo_neptune_3max", "elegoo_neptune_3_max"]:
                 cls._settings.printer_model = 4
             else:
                 # Disable thumbnails if printer is not recognized (to avoid slice errors)
