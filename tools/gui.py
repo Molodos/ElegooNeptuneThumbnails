@@ -181,7 +181,7 @@ class GUIManager(QObject):
         Show the settings popup
         """
         # Initialize gui if not exists
-        if self._popup is None and not self._init_gui():
+        if self._popup is None and not self.init_gui():
             Logger.log("e", "Failed to create ElegooNeptuneThumbnails settings window.")
 
         if self._popup is not None:
@@ -189,7 +189,7 @@ class GUIManager(QObject):
             self.settings_translator.update_gui()
             self._popup.show()
 
-    def _init_gui(self) -> bool:
+    def init_gui(self) -> bool:
         """
         Initialize GUI
         :return: Success state

@@ -8,6 +8,7 @@ from UM.Application import Application
 from UM.Extension import Extension
 from UM.Logger import Logger
 from UM.Scene.Scene import Scene
+from cura.CuraApplication import CuraApplication
 from .tools import SettingsManager, StatisticsSender, GUIManager, SliceData, ThumbnailGenerator
 
 
@@ -33,6 +34,9 @@ class ElegooNeptune3Thumbnails(Extension):
 
         # Add a hook when the selected printer changes -> load settings
         Application.getInstance().globalContainerStackChanged.connect(self.printer_switched)
+
+        # Init popup on load to keep popup open time low
+        CuraApplication.getInstance().mainWindowChanged.connect(self._gui.init_gui)
 
         # Get a scene handler for later usage
         self.scene: Scene = Application.getInstance().getController().getScene()
@@ -60,7 +64,7 @@ class ElegooNeptune3Thumbnails(Extension):
         if not SettingsManager.get_settings().thumbnails_enabled:
             return
 
-        # Return if there is no G-code - TODO: Maybe find slicing results other than g-code in scene
+        # Return if there is no G-code
         # TODO: "Application.getInstance().getMachineManager().activeMachine.definition.getId()" could also have info
         if not hasattr(self.scene, "gcode_dict") or not self.scene.gcode_dict:
             Logger.log("w", "Scene does not contain any gcode")
