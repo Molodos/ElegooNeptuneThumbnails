@@ -25,8 +25,10 @@ class StatisticsSender:
             "plugin": SettingsManager.get_settings().plugin_json["id"],
             "version": SettingsManager.get_settings().plugin_json["version"],
             "id": SettingsManager.get_settings().statistics_id,
-            "printer": SettingsManager.get_settings().get_printer_model_id(),
-            "options": SettingsManager.get_settings().get_corner_option_ids()
+            "printer": SettingsManager.get_settings().printer_id,
+            "options": SettingsManager.get_settings().get_corner_option_ids(),
+            "selected_printer": SettingsManager.get_settings().get_printer_model_id(),
+            "cura_version": SettingsManager.get_settings().cura_version
         }
 
         # Send statistics
