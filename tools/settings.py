@@ -7,7 +7,6 @@ from os import path
 from typing import Any, Optional
 
 from UM.Application import Application
-from UM.Logger import Logger
 
 
 class Settings:
@@ -149,6 +148,10 @@ class SettingsManager:
                 cls._settings.printer_model = 3
             if printer_id in ["elegoo_neptune_3max", "elegoo_neptune_3_max"]:
                 cls._settings.printer_model = 4
+            else:
+                # Disable thumbnails if printer is not recognized (to avoid slice errors)
+                cls._settings.thumbnails_enabled = False
+
             # Printer ids, that most likely have no thumbnail: elegoo_neptune_1
             # Printer ids, that need to be added: elegoo_neptune_4, elegoo_neptune_4_pro, elegoo_neptune_4pro
 

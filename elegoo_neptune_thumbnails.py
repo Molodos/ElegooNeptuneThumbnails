@@ -52,6 +52,14 @@ class ElegooNeptune3Thumbnails(Extension):
         """
         Hook triggered on G-code write to file
         """
+        # Send statistics if enabled
+        if SettingsManager.get_settings().statistics_enabled:
+            StatisticsSender.send_statistics()
+
+        # Cancel if thumbnail is disabled
+        if not SettingsManager.get_settings().thumbnails_enabled:
+            return
+
         # Return if there is no G-code - TODO: Maybe find slicing results other than g-code in scene
         # TODO: "Application.getInstance().getMachineManager().activeMachine.definition.getId()" could also have info
         if not hasattr(self.scene, "gcode_dict") or not self.scene.gcode_dict:
@@ -92,14 +100,6 @@ class ElegooNeptune3Thumbnails(Extension):
             # Cancel if thumbnail already present
             if thumbnail_present:
                 # TODO: Remove existing thumbnail instead cancelling (maybe thumbnail options changed)
-                return
-
-            # Send statistics if enabled
-            if SettingsManager.get_settings().statistics_enabled:
-                StatisticsSender.send_statistics()
-
-            # Cancel if thumbnail is disabled
-            if not SettingsManager.get_settings().thumbnails_enabled:
                 return
 
             # Get params from G-code
