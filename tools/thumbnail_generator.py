@@ -9,6 +9,7 @@ from os import path
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QImage, QPainter, QColor, QFont
 
+from UM.Application import Application
 from UM.Logger import Logger
 from UM.Platform import Platform
 from cura.Snapshot import Snapshot
@@ -50,6 +51,7 @@ class ThumbnailGenerator:
     FOREGROUND_IMAGE_PATH: str = path.join(path.dirname(path.realpath(__file__)), "..", "img", "benchy.png")
     NO_FOREGROUND_IMAGE_PATH: str = path.join(path.dirname(path.realpath(__file__)), "..", "img", "cross.png")
     THUMBNAIL_PREVIEW_PATH: str = path.join(path.dirname(path.realpath(__file__)), "..", "img", "thumbnail_preview.png")
+    CURRENCY_PREFERENCE: str = "cura/currency"
 
     @classmethod
     def generate_preview(cls) -> None:
@@ -152,7 +154,8 @@ class ThumbnailGenerator:
             elif option == "model_height":
                 lines.append(f"⭱ {round(slice_data.model_height, 2)}mm")
             elif option == "filament_cost_estimate":
-                lines.append(f"⛁ {round(slice_data.filament_cost, 2)}€")
+                currency: str = Application.getInstance().getPreferences().getValue(cls.CURRENCY_PREFERENCE)
+                lines.append(f"⛁ {round(slice_data.filament_cost, 2)}{currency}")
             elif option == "filament_meters_estimate":
                 lines.append(f"⬌ {round(slice_data.filament_meters, 2):.02f}m")
         return lines
