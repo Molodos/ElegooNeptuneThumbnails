@@ -130,8 +130,8 @@ class ElegooNeptune3Thumbnails(Extension):
         # Get more print information (independent of gcode)
         print_info: PrintInformation = CuraApplication.getInstance().getPrintInformation()
         print_time_duration: Duration = print_info.currentPrintTime
-        print_time: int = ((print_time_duration.days * 24) + print_time_duration.hours) * 60 \
-                          + print_time_duration.minutes
+        print_time: int = (((print_time_duration.days * 24) + print_time_duration.hours) * 60
+                           + print_time_duration.minutes) * 60 + print_time_duration.seconds
         material_length: float = print_info.materialLengths[0]
         material_cost: float = print_info.materialCosts[0]
         material_weight: float = print_info.materialWeights[0]
