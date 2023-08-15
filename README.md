@@ -33,7 +33,7 @@ Additional features:
 
 ## Installation
 
-### From GitHub
+### From GitHub (better option)
 
 1) Download the plugin
    from [GitHub](https://github.com/Molodos/ElegooNeptuneThumbnails/releases/latest/download/ElegooNeptuneThumbnails.curapackage)
@@ -43,9 +43,10 @@ Additional features:
 3) Configure the plugin as shown in [Usage](#usage)
 4) If it isn't working, check the [FAQ](#faq)
 
-### From Cura Marketplace
+### From Cura Marketplace (not always the latest version)
 
-> **Note:** As review by Ultimaker takes pretty long, the plugin could be outdated when installing it that way
+> **Note:** As review by Ultimaker takes pretty long (almost a whole month), the plugin could be outdated when
+> installing it that way. For latest releases, checkout the installation from GitHub above
 
 1) Install the plugin
    from [Cura marketplace](https://marketplace.ultimaker.com/app/cura/plugins/molodos/ElegooNeptune3Thumbnails)
