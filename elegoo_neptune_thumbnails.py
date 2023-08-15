@@ -72,10 +72,10 @@ class ElegooNeptune3Thumbnails(Extension):
             return
 
         # Only get first build plate (spoiler: there is only one possible, multiple buildplates are deprecated)
-        g_code_segments: list[str] = list(self.scene.gcode_dict.values())[0]
+        g_code_segments: list[str] = self.scene.gcode_dict[0]
 
         # Flag for existing thumbnail
-        thumbnail_present: bool = False
+        thumbnail_segments: list[int] = []
 
         # Params G-code
         params_needed: list[str] = ["flavor", "time", "filament used", "layer height", "minx", "miny", "minz",
@@ -83,7 +83,7 @@ class ElegooNeptune3Thumbnails(Extension):
         params_g_code: str = ""
 
         # Go through all G-code segments and extract information
-        for g_code in g_code_segments:
+        for i, g_code in enumerate(g_code_segments):
 
             # Add to params G-code if needed params exist withing G-code segment
             added: bool = False
@@ -99,13 +99,12 @@ class ElegooNeptune3Thumbnails(Extension):
                     params_needed.remove(param_needed)
 
             # Check if thumbnail is already present
-            if ';gimage:' in g_code or ';simage:' in g_code:
-                thumbnail_present = True
+            if ';start_thumbnail' in g_code or ';end_thumbnail' in g_code:
+                thumbnail_segments.append(i)
 
-        # Cancel if thumbnail already present
-        if thumbnail_present:
-            # TODO: Remove existing thumbnail instead cancelling (maybe thumbnail options changed)
-            return
+        # Remove thumbnail parts from gcode
+        for i in reversed(thumbnail_segments):
+            del g_code_segments[i]
 
         # Get params from params G-code
         g_code_params_list: list[str] = params_g_code.splitlines()
@@ -146,7 +145,7 @@ class ElegooNeptune3Thumbnails(Extension):
                                           filament_cost=material_cost)
 
         # Add encoded snapshot image (simage and gimage)
-        g_code_prefix: str = ThumbnailGenerator.generate_gcode_prefix(slice_data=slice_data)
+        thumbnail_prefix: str = ThumbnailGenerator.generate_gcode_prefix(slice_data=slice_data)
 
         # Add image G-code to the beginning of the G-code
-        self.scene.gcode_dict[0][0] = g_code_prefix + self.scene.gcode_dict[0][0]
+        self.scene.gcode_dict[0] = [thumbnail_prefix] + g_code_segments
