@@ -1,3 +1,6 @@
+[3.0.1]
+- Fixed a bug, that would sometimes cause thumbnail display errors
+
 [3.0.0]
 - Note: Settings from previous versions will no longer work and hav to be re-configured
 - Updated interface to set parameters via GUI in the extensions dropdown

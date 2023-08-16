@@ -99,7 +99,7 @@ class ElegooNeptune3Thumbnails(Extension):
                     params_needed.remove(param_needed)
 
             # Check if thumbnail is already present
-            if ';start_thumbnail' in g_code or ';end_thumbnail' in g_code:
+            if ';gimage:' in g_code or ';simage:' in g_code:
                 thumbnail_segments.append(i)
 
         # Remove thumbnail parts from gcode

@@ -70,14 +70,14 @@ class ThumbnailGenerator:
         thumbnail: QImage = cls._render_thumbnail(is_preview=False, slice_data=slice_data)
 
         # Parse to g-code prefix
-        gcode_prefix: str = ";start_thumbnail\r"
+        gcode_prefix: str = ""
         if SettingsManager.get_settings().is_old_thumbnail():
             gcode_prefix += cls._parse_thumbnail_old(thumbnail, 200, 200, "gimage")
             gcode_prefix += cls._parse_thumbnail_old(thumbnail, 160, 160, "simage")
         else:
             gcode_prefix += cls._parse_thumbnail_new(thumbnail, 200, 200, "gimage")
             gcode_prefix += cls._parse_thumbnail_new(thumbnail, 160, 160, "simage")
-        gcode_prefix += ";end_thumbnail\r\r"
+        gcode_prefix += "\r"
 
         # Return
         return gcode_prefix
