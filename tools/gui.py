@@ -1,6 +1,6 @@
 # Copyright (c) 2023 Molodos
 # The ElegooNeptuneThumbnails plugin is released under the terms of the AGPLv3 or higher.
-
+import uuid
 from os import path
 from typing import Optional
 
@@ -20,6 +20,7 @@ class SettingsTranslator(QObject):
     """
 
     THUMBNAIL_PREVIEW_PATH: str = "../img/thumbnail_preview.png"
+    BUY_ME_A_COFFEE_URL: str = "https://img.buymeacoffee.com/button-api/?text=Buy%20me%20a%20coffee&emoji=&slug=molodos&button_colour=196EF0&font_colour=ffffff&font_family=Comic&outline_colour=000000&coffee_colour=FFDD00"
 
     def __init__(self):
         QObject.__init__(self)
@@ -46,7 +47,7 @@ class SettingsTranslator(QObject):
         """
         Updates all values in the gui
         """
-        # Olay update if popup exists
+        # Only update if popup exists
         if self._popup:
             self._popup.findChild(QQuickItem, "thumbnailsEnabled") \
                 .setProperty("checked", SettingsManager.get_settings().thumbnails_enabled)
@@ -59,6 +60,8 @@ class SettingsTranslator(QObject):
                 .setProperty("checked", SettingsManager.get_settings().statistics_enabled)
             self._popup.findChild(QQuickItem, "useCurrentModel") \
                 .setProperty("checked", SettingsManager.get_settings().use_current_model)
+            self._popup.findChild(QQuickItem, "donationLink") \
+                .setProperty("source", self.BUY_ME_A_COFFEE_URL + f"&nonce={str(uuid.uuid4())}")
             self.render_thumbnail()
 
     # Thumbnails enabled state

@@ -1,6 +1,7 @@
 # Copyright (c) 2023 Molodos
 # The ElegooNeptuneThumbnails plugin is released under the terms of the AGPLv3 or higher.
 
+import platform
 from typing import Any
 
 import requests
@@ -28,7 +29,8 @@ class StatisticsSender:
             "printer": SettingsManager.get_settings().printer_id,
             "options": SettingsManager.get_settings().get_corner_option_ids(),
             "selected_printer": SettingsManager.get_settings().get_printer_model_id(),
-            "cura_version": SettingsManager.get_settings().cura_version
+            "cura_version": SettingsManager.get_settings().cura_version,
+            "os": f"{platform.system()} {platform.version()}"
         }
 
         # Send statistics

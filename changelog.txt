@@ -1,3 +1,9 @@
+[3.1.0]
+- Now officially sponsored by Elegoo
+- Added Neptune 2D Printer
+- Added Neptune X Printer
+- Minor other fixes
+
 [3.0.1]
 - Fixed a bug, that would sometimes cause thumbnail display errors
 

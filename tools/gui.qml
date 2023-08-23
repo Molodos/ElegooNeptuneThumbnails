@@ -15,7 +15,7 @@ Window
 {
     id: popupWindow
     minimumWidth: Math.round(UM.Theme.getSize("modal_window_minimum").width)
-    minimumHeight: Math.round(UM.Theme.getSize("modal_window_minimum").height / 6 * 5)
+    minimumHeight: Math.round(UM.Theme.getSize("modal_window_minimum").height / 11 * 10)
     maximumWidth: minimumWidth
     maximumHeight: minimumHeight
     modality: Qt.ApplicationModal
@@ -293,14 +293,16 @@ Window
         Item
         {
             id: donationButton
-            anchors.bottom: parent.bottom
+            anchors.bottom: sponsorTitle.top
             anchors.left: parent.left
+            anchors.bottomMargin: Math.round(UM.Theme.getSize("wide_margin").width)
             height: 50 * screenScaleFactor
             width: 200 * screenScaleFactor
 
             // Donate image
             Image
             {
+                objectName: "donationLink"
                 anchors.fill: parent
                 source: "https://img.buymeacoffee.com/button-api/?text=Buy%20me%20a%20coffee&emoji=&slug=molodos&button_colour=196EF0&font_colour=ffffff&font_family=Comic&outline_colour=000000&coffee_colour=FFDD00"
                 fillMode: Image.PreserveAspectFit
@@ -310,6 +312,41 @@ Window
                     anchors.fill: parent
                     cursorShape: Qt.PointingHandCursor
                     onClicked: Qt.openUrlExternally("https://www.buymeacoffee.com/molodos");
+                }
+            }
+        }
+
+        // Sponsor title
+        UM.Label
+        {
+            id: sponsorTitle
+            anchors.bottom: sponsorImage.top
+            anchors.left: parent.left
+            anchors.bottomMargin: Math.round(UM.Theme.getSize("wide_margin").width / 4)
+            text: "Sponsored by"
+            Layout.fillWidth: true
+        }
+
+        // Sponsor image
+        Item
+        {
+            id: sponsorImage
+            anchors.bottom: parent.bottom
+            anchors.left: parent.left
+            height: 25 * screenScaleFactor
+            width: 130 * screenScaleFactor
+
+            Image
+            {
+                anchors.fill: parent
+                source: "../img/sponsor_elegoo.png"
+                fillMode: Image.PreserveAspectFit
+
+                // Clickable
+                MouseArea {
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    onClicked: Qt.openUrlExternally("https://www.elegoo.com");
                 }
             }
         }

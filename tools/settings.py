@@ -25,11 +25,13 @@ class Settings:
         "filament_meters_estimate": "Filament Meters Estimate"
     }
     PRINTER_MODELS: dict[str, str] = {
-        "elegoo_neptune_2": "Elegoo Neptune 2",
-        "elegoo_neptune_2_s": "Elegoo Neptune 2S",
         "elegoo_neptune_3_pro": "Elegoo Neptune 3 Pro",
         "elegoo_neptune_3_plus": "Elegoo Neptune 3 Plus",
-        "elegoo_neptune_3_max": "Elegoo Neptune 3 Max"
+        "elegoo_neptune_3_max": "Elegoo Neptune 3 Max",
+        "elegoo_neptune_2": "Elegoo Neptune 2",
+        "elegoo_neptune_2_s": "Elegoo Neptune 2S",
+        "elegoo_neptune_2_d": "Elegoo Neptune 2D",
+        "elegoo_neptune_x": "Elegoo Neptune X",
     }
 
     def __init__(self, statistics_id: str, plugin_json: dict[str, Any]):
@@ -43,7 +45,7 @@ class Settings:
 
         # Define config
         self.thumbnails_enabled: bool = True
-        self.printer_model: int = 2
+        self.printer_model: int = list(self.PRINTER_MODELS.keys()).index("elegoo_neptune_3_pro")
         self.corner_options: list[int] = [0, 0, 3, 1]
         self.statistics_enabled: bool = True
         self.use_current_model: bool = False
@@ -83,7 +85,8 @@ class Settings:
         """
         Check if old thumbnail is required
         """
-        return list(self.PRINTER_MODELS.keys())[self.printer_model] in ["elegoo_neptune_2", "elegoo_neptune_2_s"]
+        return list(self.PRINTER_MODELS.keys())[self.printer_model] in ["elegoo_neptune_2", "elegoo_neptune_2_s",
+                                                                        "elegoo_neptune_2_d", "elegoo_neptune_x"]
 
     def load_json(self, data: dict[str, Any]) -> None:
         """
@@ -145,29 +148,31 @@ class SettingsManager:
         else:
             # Default settings
             cls._settings.thumbnails_enabled = True
-            cls._settings.printer_model = 2  # Neptune 3 Pro is most probable
+            # Neptune 3 Pro is most probable
+            cls._settings.printer_model = list(Settings.PRINTER_MODELS.keys()).index("elegoo_neptune_3_pro")
             cls._settings.corner_options = [0, 0, 3, 1]
             cls._settings.statistics_enabled = True
             cls._settings.use_current_model = False
 
             # Try to recognize current printer model
             printer_id: str = Application.getInstance().getMachineManager().activeMachine.definition.getId()
-            if printer_id in ["elegoo_neptune_2"]:
-                cls._settings.printer_model = 0
-            elif printer_id in ["elegoo_neptune_2s", "elegoo_neptune_2_s"]:
-                cls._settings.printer_model = 1
-            elif printer_id in ["elegoo_neptune_3pro", "elegoo_neptune_3_pro"]:
-                cls._settings.printer_model = 2
+            if printer_id in ["elegoo_neptune_3pro", "elegoo_neptune_3_pro"]:
+                cls._settings.printer_model = list(Settings.PRINTER_MODELS.keys()).index("elegoo_neptune_3_pro")
             elif printer_id in ["elegoo_neptune_3plus", "elegoo_neptune_3_plus"]:
-                cls._settings.printer_model = 3
+                cls._settings.printer_model = list(Settings.PRINTER_MODELS.keys()).index("elegoo_neptune_3_plus")
             elif printer_id in ["elegoo_neptune_3max", "elegoo_neptune_3_max"]:
-                cls._settings.printer_model = 4
+                cls._settings.printer_model = list(Settings.PRINTER_MODELS.keys()).index("elegoo_neptune_3_max")
+            elif printer_id in ["elegoo_neptune_2"]:
+                cls._settings.printer_model = list(Settings.PRINTER_MODELS.keys()).index("elegoo_neptune_2")
+            elif printer_id in ["elegoo_neptune_2s", "elegoo_neptune_2_s"]:
+                cls._settings.printer_model = list(Settings.PRINTER_MODELS.keys()).index("elegoo_neptune_2_s")
+            elif printer_id in ["elegoo_neptune_2d", "elegoo_neptune_2_d"]:
+                cls._settings.printer_model = list(Settings.PRINTER_MODELS.keys()).index("elegoo_neptune_2_d")
+            elif printer_id in ["elegoo_neptune_x"]:
+                cls._settings.printer_model = list(Settings.PRINTER_MODELS.keys()).index("elegoo_neptune_x")
             else:
                 # Disable thumbnails if printer is not recognized (to avoid slice errors)
                 cls._settings.thumbnails_enabled = False
-
-            # Printer ids, that most likely have no thumbnail: elegoo_neptune_1
-            # Printer ids, that need to be added: elegoo_neptune_4, elegoo_neptune_4_pro, elegoo_neptune_4pro
 
     @classmethod
     def save(cls) -> None:

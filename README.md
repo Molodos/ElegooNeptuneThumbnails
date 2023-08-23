@@ -2,6 +2,9 @@
 
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
 
+Sponsored by \
+<img src="readme_images/sponsor_elegoo.png" width="150">
+
 ## Support This Project
 
 If you like this plugin, consider supporting me :)
@@ -14,11 +17,13 @@ Cura 5.X plugin for adding gcode thumbnail images for Elegoo Neptune printers (t
 not tested every printer, but it seems like based on feedback at least the following models are supported (for other
 models, see [FAQ](#faq)):
 
-- Elegoo Neptune 2
-- Elegoo Neptune 2S
 - Elegoo Neptune 3 Pro
 - Elegoo Neptune 3 Plus
 - Elegoo Neptune 3 Max
+- Elegoo Neptune 2
+- Elegoo Neptune 2S
+- Elegoo Neptune 2D
+- Elegoo Neptune X
 
 Additional features:
 
@@ -74,7 +79,7 @@ Additional features:
 | `Bottom left corner`              | Information display option (see below) for the bottom left corner                                        |
 | `Bottom right corner`             | Information display option (see below) for the bottom right corner                                       |
 | `Send anonymous usage statistics` | Enables the collection of anonymous [usage statistics](#usage-statistics)                                |
-| `Use cuirrent model(s)`           | Use the current model(s) in the preview thumbnail                                                        |
+| `Use current model(s)`            | Use the current model(s) in the preview thumbnail                                                        |
 
 ### Information Display Options
 
@@ -94,6 +99,9 @@ Additional features:
 If your printer is in the settings dropdown, it should be supported. If your printer does support thumbnails, but it is
 not available in the dropdown, don't hesitate to open
 a [GitHub issue](https://github.com/Molodos/ElegooNeptuneThumbnails/issues/new/choose) and I will see what I can do.
+
+**Note:** The "normal" Neptune 3 doesn't support displaying thumbnails, I have talked with Elegoo as there were many
+people asking for it.
 
 ### Thumbnails are not generated. What to do?
 
@@ -140,6 +148,7 @@ No personal data is being collected. The statistics data, that is collected, is 
 - The printer model selected (e.g. "Elegoo Neptune 3 Pro")
 - The information display options you are using (e.g. `Layer Height`)
 - Version of Cura
+- Operating system (e.g. `Windows 10.0.22621`)
 
 > **Note:** This list might change at some time, so keep an eye on it if you update the plugin. Be aware, that personal
 > data will never be added to this list.
