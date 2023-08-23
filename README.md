@@ -3,7 +3,7 @@
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
 
 Sponsored by \
-<img src="readme_images/sponsor_elegoo.png" width="150">
+<a href="https://www.elegoo.com"><img src="readme_images/sponsor_elegoo.png" width="150"></a>
 
 ## Support This Project
 
