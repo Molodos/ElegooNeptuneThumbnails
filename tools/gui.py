@@ -26,6 +26,7 @@ class SettingsTranslator(QObject):
         QObject.__init__(self)
         self._popup: Optional[QQuickWindow] = None
         self._selected_corner: int = -1
+        self._support_button_loaded: bool = False
 
     def set_popup_ref(self, popup: QQuickWindow) -> None:
         """
@@ -60,8 +61,10 @@ class SettingsTranslator(QObject):
                 .setProperty("checked", SettingsManager.get_settings().statistics_enabled)
             self._popup.findChild(QQuickItem, "useCurrentModel") \
                 .setProperty("checked", SettingsManager.get_settings().use_current_model)
-            self._popup.findChild(QQuickItem, "donationLink") \
-                .setProperty("source", self.BUY_ME_A_COFFEE_URL + f"&nonce={str(uuid.uuid4())}")
+            if not self._support_button_loaded:
+                self._popup.findChild(QQuickItem, "donationLink") \
+                    .setProperty("source", self.BUY_ME_A_COFFEE_URL + f"&nonce={str(uuid.uuid4())}")
+                self._support_button_loaded = True
             self.render_thumbnail()
 
     # Thumbnails enabled state
