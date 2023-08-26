@@ -17,6 +17,8 @@ Cura 5.X plugin for adding gcode thumbnail images for Elegoo Neptune printers (t
 not tested every printer, but it seems like based on feedback at least the following models are supported (for other
 models, see [FAQ](#faq)):
 
+- Elegoo Neptune 4
+- Elegoo Neptune 4 Pro
 - Elegoo Neptune 3 Pro
 - Elegoo Neptune 3 Plus
 - Elegoo Neptune 3 Max

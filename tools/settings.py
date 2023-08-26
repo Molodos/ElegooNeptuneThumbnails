@@ -25,6 +25,8 @@ class Settings:
         "filament_meters_estimate": "Filament Meters Estimate"
     }
     PRINTER_MODELS: dict[str, str] = {
+        "elegoo_neptune_4": "Elegoo Neptune 4",
+        "elegoo_neptune_4_pro": "Elegoo Neptune 4 Pro",
         "elegoo_neptune_3_pro": "Elegoo Neptune 3 Pro",
         "elegoo_neptune_3_plus": "Elegoo Neptune 3 Plus",
         "elegoo_neptune_3_max": "Elegoo Neptune 3 Max",
@@ -156,7 +158,11 @@ class SettingsManager:
 
             # Try to recognize current printer model
             printer_id: str = Application.getInstance().getMachineManager().activeMachine.definition.getId()
-            if printer_id in ["elegoo_neptune_3pro", "elegoo_neptune_3_pro"]:
+            if printer_id in ["elegoo_neptune_4"]:
+                cls._settings.printer_model = list(Settings.PRINTER_MODELS.keys()).index("elegoo_neptune_4")
+            elif printer_id in ["elegoo_neptune_4pro", "elegoo_neptune_4_pro"]:
+                cls._settings.printer_model = list(Settings.PRINTER_MODELS.keys()).index("elegoo_neptune_4_pro")
+            elif printer_id in ["elegoo_neptune_3pro", "elegoo_neptune_3_pro"]:
                 cls._settings.printer_model = list(Settings.PRINTER_MODELS.keys()).index("elegoo_neptune_3_pro")
             elif printer_id in ["elegoo_neptune_3plus", "elegoo_neptune_3_plus"]:
                 cls._settings.printer_model = list(Settings.PRINTER_MODELS.keys()).index("elegoo_neptune_3_plus")

@@ -1,5 +1,7 @@
 [3.1.0]
 - Now officially sponsored by Elegoo
+- Added Neptune 4 printer
+- Added Neptune 4 Pro printer
 - Added Neptune 2D Printer
 - Added Neptune X Printer
 - Minor other fixes
