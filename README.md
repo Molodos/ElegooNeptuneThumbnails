@@ -13,7 +13,7 @@ If you like this plugin, consider supporting me :)
 
 ## General Info
 
-Cura 5.X plugin for adding gcode thumbnail images for Elegoo Neptune printers (tested for Elegoo Neptune 3 Pro). I have
+Cura 5.X plugin for adding gcode thumbnail images for Elegoo Neptune printers (tested for Elegoo Neptune 4 Pro). I have
 not tested every printer, but it seems like based on feedback at least the following models are supported (for other
 models, see [FAQ](#faq)):
 
@@ -36,7 +36,8 @@ Additional features:
 > **Note:** If you have some idea on how to improve the plugin or found a bug, feel free to create
 > a [GitHub issue](https://github.com/Molodos/ElegooNeptuneThumbnails/issues/new/choose) for that
 
-<img src="readme_images/neptune_3_pro_view.jpg" width="300">
+<img src="readme_images/neptune_4_preview.jpg" width="300">
+<img src="readme_images/neptune_4_view.jpg" width="300">
 
 ## Installation
 
