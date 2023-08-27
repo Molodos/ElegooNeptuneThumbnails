@@ -9,13 +9,12 @@ Sponsored by \
 
 If you like this plugin, consider supporting me :)
 
-[![Buy Me A Coffee](https://img.buymeacoffee.com/button-api/?text=Buy%20me%20a%20coffee&emoji=&slug=molodos&button_colour=5F7FFF&font_colour=ffffff&font_family=Comic&outline_colour=000000&coffee_colour=FFDD00&id=1)](https://www.buymeacoffee.com/molodos)
+[![Buy Me A Coffee](https://img.buymeacoffee.com/button-api/?text=Buy%20me%20a%20coffee&emoji=&slug=molodos&button_colour=5F7FFF&font_colour=ffffff&font_family=Comic&outline_colour=000000&coffee_colour=FFDD00&id=2)](https://www.buymeacoffee.com/molodos)
 
 ## General Info
 
-Cura 5.X plugin for adding gcode thumbnail images for Elegoo Neptune printers (tested for Elegoo Neptune 4 Pro). I have
-not tested every printer, but it seems like based on feedback at least the following models are supported (for other
-models, see [FAQ](#faq)):
+Cura 5.X plugin for adding gcode thumbnail images for Elegoo Neptune printers. The following models are supported (for
+other models, see [FAQ](#faq)):
 
 - Elegoo Neptune 4
 - Elegoo Neptune 4 Pro
@@ -36,8 +35,10 @@ Additional features:
 > **Note:** If you have some idea on how to improve the plugin or found a bug, feel free to create
 > a [GitHub issue](https://github.com/Molodos/ElegooNeptuneThumbnails/issues/new/choose) for that
 
-<img src="readme_images/neptune_4_preview.jpg" width="300">
-<img src="readme_images/neptune_4_view.jpg" width="300">
+<p float="left">
+   <img src="readme_images/neptune_4_preview.jpg" width="300">
+   <img src="readme_images/neptune_4_view.jpg" width="300">
+</p>
 
 ## Installation
 
@@ -118,11 +119,10 @@ There seems to be a bug in older printer firmware versions which causes the thum
 right after the last one ended. Restarting the printer in between prints seems to fix that. If this is the case for you,
 check your printer for firmware updates, which might fix the bug.
 
-### Will there be PrusaSlicer support at some point?
+### Is there PrusaSlicer support?
 
-Currently, I am not planning to release a PrusaSlicer version of the plugin. Maybe in distant future, there could be a
-chance, but for now I do not have enough time to do that. I will keep this in mind as there were several requests, but
-do not expect any news too soon.
+Yes, but only as a lite version because PrusaSlicer does not have enough possibilities for complex plugins. Check it
+out [here](https://github.com/Molodos/ElegooNeptuneThumbnails-Prusa)
 
 ## Development Guide
 
