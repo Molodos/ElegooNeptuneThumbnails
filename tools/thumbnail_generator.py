@@ -6,7 +6,7 @@ from array import array
 from ctypes import CDLL
 from os import path
 
-from PyQt6.QtCore import Qt
+from PyQt6.QtCore import Qt, QByteArray, QBuffer, QIODeviceBase
 from PyQt6.QtGui import QImage, QPainter, QColor, QFont
 
 from UM.Application import Application
@@ -36,6 +36,7 @@ class ThumbnailGenerator:
     Thumbnail generator
     """
 
+    KLIPPER_THUMBNAIL_BLOCK_SIZE: int = 78
     COLORS: dict[str, QColor] = {
         "green": QColor(34, 236, 128),
         "red": QColor(209, 76, 81),
@@ -83,20 +84,47 @@ class ThumbnailGenerator:
         return gcode_prefix
 
     @classmethod
-    def _render_thumbnail(cls, slice_data: SliceData, is_preview: bool = True) -> QImage:
+    def generate_klipper_thumbnail_gcode(cls, slice_data: SliceData) -> str:
+        """
+        Generate klipper thumbnail gcode for thumbnails in sizes 32x32 and 300x300
+        """
+        small_icon: QImage = Snapshot.snapshot(width=32, height=32)
+        big_icon: QImage = cls._render_thumbnail(slice_data=slice_data, is_preview=False, add_background=False)
+        big_icon = big_icon.scaled(300, 300)
+        g_code: str = "\r"
+        for icon in [small_icon, big_icon]:
+            byte_array: QByteArray = QByteArray()
+            byte_buffer: QBuffer = QBuffer(byte_array)
+            byte_buffer.open(QIODeviceBase.OpenModeFlag.WriteOnly)
+            icon.save(byte_buffer, "PNG")
+            base64_string: str = str(byte_array.toBase64().data(), "UTF-8")
+            g_code += f"; thumbnail begin {icon.width()} {icon.height()} {len(base64_string)}\r"
+            while base64_string:
+                g_code += f"; {base64_string[0:cls.KLIPPER_THUMBNAIL_BLOCK_SIZE]}\r"
+                base64_string = base64_string[cls.KLIPPER_THUMBNAIL_BLOCK_SIZE:]
+            g_code += "; thumbnail end\r\r"
+        return g_code
+
+    @classmethod
+    def _render_thumbnail(cls, slice_data: SliceData, is_preview: bool = True, add_background: bool = True) -> QImage:
         """
         Renders a thumbnail based on settings
         """
         # Create background
-        background: QImage
-        if SettingsManager.get_settings().is_old_thumbnail():
-            background = QImage(cls.BACKGROUND_OLD_PATH)
-        else:
-            background = QImage(cls.BACKGROUND_NEW_PATH)
+        background: QImage = QImage(900, 900, QImage.Format.Format_RGBA8888)
+        if add_background:
+            if SettingsManager.get_settings().is_old_thumbnail():
+                painter = QPainter(background)
+                painter.drawImage(0, 0, QImage(cls.BACKGROUND_OLD_PATH))
+                painter.end()
+            else:
+                painter = QPainter(background)
+                painter.drawImage(0, 0, QImage(cls.BACKGROUND_NEW_PATH))
+                painter.end()
 
         # Create foreground
         foreground: QImage
-        if not SettingsManager.get_settings().thumbnails_enabled:
+        if not SettingsManager.get_settings().thumbnails_enabled and not SettingsManager.get_settings().klipper_thumbnails_enabled:
             foreground = QImage(cls.NO_FOREGROUND_IMAGE_PATH)
         elif SettingsManager.get_settings().use_current_model or not is_preview:
             foreground = Snapshot.snapshot(width=600, height=600)
@@ -110,7 +138,7 @@ class ThumbnailGenerator:
             painter.end()
 
         # Don't add options if thumbnails disabled
-        if not SettingsManager.get_settings().thumbnails_enabled:
+        if not SettingsManager.get_settings().thumbnails_enabled and not SettingsManager.get_settings().klipper_thumbnails_enabled:
             return background
 
         # Generate option lines
@@ -118,7 +146,7 @@ class ThumbnailGenerator:
 
         # Add options
         painter = QPainter(background)
-        font = QFont("Arial", 30)
+        font = QFont("Arial", 60)
         painter.setFont(font)
         painter.setPen(cls.COLORS["own_gray"])
         for i, line in enumerate(lines):

@@ -15,7 +15,7 @@ Window
 {
     id: popupWindow
     minimumWidth: Math.round(UM.Theme.getSize("modal_window_minimum").width)
-    minimumHeight: Math.round(UM.Theme.getSize("modal_window_minimum").height / 11 * 10)
+    minimumHeight: Math.round(UM.Theme.getSize("modal_window_minimum").height)
     maximumWidth: minimumWidth
     maximumHeight: minimumHeight
     modality: Qt.ApplicationModal
@@ -64,6 +64,24 @@ Window
                     onClicked: settings.set_thumbnails_enabled(thumbnailsEnabled.checked)
                     text: "Enable thumbnails"
                     tooltip: "Thumbnails will be added when saving a G-code file"
+                }
+            }
+
+            // Settings item: Enable klipper checkbox
+            RowLayout
+            {
+                spacing: UM.Theme.getSize("wide_margin").width
+                width: parent.width
+
+                // Checkbox
+                UM.CheckBox
+                {
+                    id: klipperThumbnailsEnabled
+                    objectName: "klipperThumbnailsEnabled"
+                    checked: settings.klipper_thumbnails_enabled
+                    onClicked: settings.set_klipper_thumbnails_enabled(klipperThumbnailsEnabled.checked)
+                    text: "Enable Klipper thumbnails"
+                    tooltip: "Klipper thumbnails will be added when saving a G-code file"
                 }
             }
 

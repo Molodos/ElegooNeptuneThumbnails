@@ -31,6 +31,7 @@ Additional features:
 - Display more information about the sliced model on the thumbnail
 - Use a graphical user interface for thumbnail configuration
 - Thumbnail preview in graphical user interface
+- Add thumbnails for Klipper (to display in the Neptune 4 (Pro) web interface)
 
 > **Note:** If you have some idea on how to improve the plugin or found a bug, feel free to create
 > a [GitHub issue](https://github.com/Molodos/ElegooNeptuneThumbnails/issues/new/choose) for that
@@ -152,6 +153,8 @@ No personal data is being collected. The statistics data, that is collected, is 
 - The information display options you are using (e.g. `Layer Height`)
 - Version of Cura
 - Operating system (e.g. `Windows 10.0.22621`)
+- Enabled state of thumbnails
+- Enabled state of Klipper thumbnails
 
 > **Note:** This list might change at some time, so keep an eye on it if you update the plugin. Be aware, that personal
 > data will never be added to this list.

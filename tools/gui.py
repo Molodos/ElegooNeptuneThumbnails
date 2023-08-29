@@ -52,6 +52,8 @@ class SettingsTranslator(QObject):
         if self._popup:
             self._popup.findChild(QQuickItem, "thumbnailsEnabled") \
                 .setProperty("checked", SettingsManager.get_settings().thumbnails_enabled)
+            self._popup.findChild(QQuickItem, "klipperThumbnailsEnabled") \
+                .setProperty("checked", SettingsManager.get_settings().klipper_thumbnails_enabled)
             self._popup.findChild(QQuickItem, "printerModel") \
                 .setProperty("currentIndex", SettingsManager.get_settings().printer_model)
             for i, v in enumerate(SettingsManager.get_settings().corner_options):
@@ -77,6 +79,20 @@ class SettingsTranslator(QObject):
     def set_thumbnails_enabled(self, enabled: bool) -> None:
         updated: bool = SettingsManager.get_settings().thumbnails_enabled != enabled
         SettingsManager.get_settings().thumbnails_enabled = enabled
+        if updated:
+            # Update preview
+            self.render_thumbnail()
+
+    # Klipper thumbnails enabled state
+
+    @pyqtProperty(bool)
+    def klipper_thumbnails_enabled(self) -> bool:
+        return SettingsManager.get_settings().klipper_thumbnails_enabled
+
+    @pyqtSlot(bool)
+    def set_klipper_thumbnails_enabled(self, enabled: bool) -> None:
+        updated: bool = SettingsManager.get_settings().klipper_thumbnails_enabled != enabled
+        SettingsManager.get_settings().klipper_thumbnails_enabled = enabled
         if updated:
             # Update preview
             self.render_thumbnail()

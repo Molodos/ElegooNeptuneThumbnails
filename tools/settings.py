@@ -48,9 +48,10 @@ class Settings:
         # Define config
         self.thumbnails_enabled: bool = True
         self.printer_model: int = list(self.PRINTER_MODELS.keys()).index("elegoo_neptune_3_pro")
-        self.corner_options: list[int] = [0, 0, 3, 1]
+        self.corner_options: list[int] = [1, 4, 3, 5]
         self.statistics_enabled: bool = True
         self.use_current_model: bool = False
+        self.klipper_thumbnails_enabled: bool = False
 
     def get_printer_model_id(self) -> str:
         """
@@ -79,9 +80,10 @@ class Settings:
         """
         Set corner options from ids
         """
-        option_ids: list[str] = list(self.OPTIONS.keys())
-        for i, option_id in enumerate(corner_option_ids):
-            self.corner_options[i] = option_ids.index(option_id)
+        if corner_option_ids:
+            option_ids: list[str] = list(self.OPTIONS.keys())
+            for i, option_id in enumerate(corner_option_ids):
+                self.corner_options[i] = option_ids.index(option_id)
 
     def is_old_thumbnail(self) -> bool:
         """
@@ -94,11 +96,12 @@ class Settings:
         """
         Load from json
         """
-        self.thumbnails_enabled = data["thumbnails_enabled"]
-        self._set_printer_model_id(data["printer_model"])
-        self._set_corner_option_ids(data["corner_options"])
-        self.statistics_enabled = data["statistics_enabled"]
-        self.use_current_model = data["use_current_model"]
+        self.thumbnails_enabled = data.get("thumbnails_enabled", True)
+        self._set_printer_model_id(data.get("printer_model", "elegoo_neptune_3_pro"))
+        self._set_corner_option_ids(data.get("corner_options", None))
+        self.statistics_enabled = data.get("statistics_enabled", True)
+        self.use_current_model = data.get("use_current_model", False)
+        self.klipper_thumbnails_enabled = data.get("klipper_thumbnails_enabled", False)
 
     def to_json(self) -> dict[str, Any]:
         """
@@ -109,7 +112,8 @@ class Settings:
             "printer_model": self.get_printer_model_id(),
             "corner_options": self.get_corner_option_ids(),
             "statistics_enabled": self.statistics_enabled,
-            "use_current_model": self.use_current_model
+            "use_current_model": self.use_current_model,
+            "klipper_thumbnails_enabled": self.klipper_thumbnails_enabled
         }
 
 
@@ -152,9 +156,10 @@ class SettingsManager:
             cls._settings.thumbnails_enabled = True
             # Neptune 3 Pro is most probable
             cls._settings.printer_model = list(Settings.PRINTER_MODELS.keys()).index("elegoo_neptune_3_pro")
-            cls._settings.corner_options = [0, 0, 3, 1]
+            cls._settings.corner_options = [1, 4, 3, 5]
             cls._settings.statistics_enabled = True
             cls._settings.use_current_model = False
+            cls._settings.klipper_thumbnails_enabled = False
 
             # Try to recognize current printer model
             printer_id: str = Application.getInstance().getMachineManager().activeMachine.definition.getId()

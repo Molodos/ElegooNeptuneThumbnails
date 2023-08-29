@@ -1,3 +1,7 @@
+[3.2.0]
+- Added option to add klipper thumbnails
+- Minor other fixes
+
 [3.1.0]
 - Now officially sponsored by Elegoo
 - Added Neptune 4 printer

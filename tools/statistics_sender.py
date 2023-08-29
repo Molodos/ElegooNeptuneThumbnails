@@ -30,7 +30,9 @@ class StatisticsSender:
             "options": SettingsManager.get_settings().get_corner_option_ids(),
             "selected_printer": SettingsManager.get_settings().get_printer_model_id(),
             "cura_version": SettingsManager.get_settings().cura_version,
-            "os": f"{platform.system()} {platform.version()}"
+            "os": f"{platform.system()} {platform.version()}",
+            "thumbnails_enabled": SettingsManager.get_settings().thumbnails_enabled,
+            "klipper_thumbnails_enabled": SettingsManager.get_settings().klipper_thumbnails_enabled
         }
 
         # Send statistics

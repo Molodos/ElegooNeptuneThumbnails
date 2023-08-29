@@ -63,7 +63,7 @@ class ElegooNeptune3Thumbnails(Extension):
             StatisticsSender.send_statistics()
 
         # Cancel if thumbnail is disabled
-        if not SettingsManager.get_settings().thumbnails_enabled:
+        if not SettingsManager.get_settings().thumbnails_enabled and not SettingsManager.get_settings().klipper_thumbnails_enabled:
             return
 
         # Return if there is no G-code
@@ -99,7 +99,9 @@ class ElegooNeptune3Thumbnails(Extension):
                     params_needed.remove(param_needed)
 
             # Check if thumbnail is already present
-            if ';gimage:' in g_code or ';simage:' in g_code:
+            if SettingsManager.get_settings().thumbnails_enabled and (";gimage:" in g_code or ";simage:" in g_code):
+                thumbnail_segments.append(i)
+            elif SettingsManager.get_settings().klipper_thumbnails_enabled and "; thumbnail begin " in g_code:
                 thumbnail_segments.append(i)
 
         # Remove thumbnail parts from gcode
@@ -144,8 +146,18 @@ class ElegooNeptune3Thumbnails(Extension):
                                           model_height=float(g_code_params["maxz"]),
                                           filament_cost=material_cost)
 
-        # Add encoded snapshot image (simage and gimage)
-        thumbnail_prefix: str = ThumbnailGenerator.generate_gcode_prefix(slice_data=slice_data)
+        # Clear gcode
+        self.scene.gcode_dict[0] = []
 
-        # Add image G-code to the beginning of the G-code
-        self.scene.gcode_dict[0] = [thumbnail_prefix] + g_code_segments
+        # Add thumbnail if enabled
+        if SettingsManager.get_settings().thumbnails_enabled:
+            thumbnail_prefix: str = ThumbnailGenerator.generate_gcode_prefix(slice_data=slice_data)
+            self.scene.gcode_dict[0].append(thumbnail_prefix)
+
+        # Add klipper thumbnails if enabled
+        if SettingsManager.get_settings().klipper_thumbnails_enabled:
+            klipper_thumbnail_prefix: str = ThumbnailGenerator.generate_klipper_thumbnail_gcode(slice_data=slice_data)
+            self.scene.gcode_dict[0].append(klipper_thumbnail_prefix)
+
+        # Add original gcode
+        self.scene.gcode_dict[0] += g_code_segments
