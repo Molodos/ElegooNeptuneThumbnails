@@ -1,5 +1,5 @@
 [3.2.0]
-- Added option to add klipper thumbnails
+- Added option to add extended Klipper thumbnails
 - Minor other fixes
 
 [3.1.0]

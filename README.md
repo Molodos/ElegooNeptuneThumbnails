@@ -40,6 +40,7 @@ Additional features:
    <img src="readme_images/neptune_4_preview.jpg" width="300">
    <img src="readme_images/neptune_4_view.jpg" width="300">
 </p>
+<img src="readme_images/klipper_preview.png" width="500">
 
 ## Installation
 
