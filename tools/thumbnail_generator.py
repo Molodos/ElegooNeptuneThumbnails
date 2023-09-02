@@ -183,7 +183,7 @@ class ThumbnailGenerator:
                 lines.append(f"⭱ {round(slice_data.model_height, 2)}mm")
             elif option == "filament_cost_estimate":
                 currency: str = Application.getInstance().getPreferences().getValue(cls.CURRENCY_PREFERENCE)
-                lines.append(f"⛁ {round(slice_data.filament_cost, 2)}{currency}")
+                lines.append(f"⛁ {round(slice_data.filament_cost, 2):.02f}{currency}")
             elif option == "filament_meters_estimate":
                 lines.append(f"⬌ {round(slice_data.filament_meters, 2):.02f}m")
         return lines

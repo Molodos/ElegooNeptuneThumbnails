@@ -1,3 +1,6 @@
+[3.2.1]
+- Fixed a bug, that sometimes caused display errors for filament cost
+
 [3.2.0]
 - Added option to add extended Klipper thumbnails
 - Minor other fixes
