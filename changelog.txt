@@ -1,3 +1,6 @@
+[3.2.2]
+- Fixed a bug, that caused thumbnails to be generated wrongly on Neptune 2, Neptune 2S, Neptune 2D and Neptune X printers
+
 [3.2.1]
 - Fixed a bug, that sometimes caused display errors for filament cost
 
