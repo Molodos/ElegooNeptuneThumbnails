@@ -195,7 +195,7 @@ class ThumbnailGenerator:
         TODO: Maybe optimize at some time
         """
         img_type = f";{img_type}:"
-        if img == "gimage":
+        if img_type == "gimage":
             img_type = f";{img_type}"
         result = ""
         b_image = img.scaled(width, height, Qt.AspectRatioMode.KeepAspectRatio)
