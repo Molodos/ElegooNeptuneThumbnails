@@ -74,7 +74,7 @@ class ThumbnailGenerator:
         gcode_prefix: str = ""
         if SettingsManager.get_settings().is_old_thumbnail():
             gcode_prefix += cls._parse_thumbnail_old(thumbnail, 160, 160, "simage")
-            gcode_prefix += cls._parse_thumbnail_old(thumbnail, 200, 200, "gimage")
+            gcode_prefix += cls._parse_thumbnail_old(thumbnail, 200, 200, ";gimage")
         else:
             gcode_prefix += cls._parse_thumbnail_new(thumbnail, 200, 200, "gimage")
             gcode_prefix += cls._parse_thumbnail_new(thumbnail, 160, 160, "simage")
@@ -195,8 +195,6 @@ class ThumbnailGenerator:
         TODO: Maybe optimize at some time
         """
         img_type = f";{img_type}:"
-        if img_type == "gimage":
-            img_type = f";{img_type}"
         result = ""
         b_image = img.scaled(width, height, Qt.AspectRatioMode.KeepAspectRatio)
         img_size = b_image.size()
