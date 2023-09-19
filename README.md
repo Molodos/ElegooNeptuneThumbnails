@@ -46,8 +46,11 @@ Additional features:
 
 ### From GitHub (better option)
 
-1) Download the plugin
-   from [GitHub](https://github.com/Molodos/ElegooNeptuneThumbnails/releases/latest/download/ElegooNeptuneThumbnails.curapackage)
+> **Note:** You need to use the `ElegooNeptuneThumbnails.curapackage` from the latest release, that is linked below. Not
+> the `base.curapackage` (that one is just for development and build purposes)
+
+1) Download the
+   plugin [here](https://github.com/Molodos/ElegooNeptuneThumbnails/releases/latest/download/ElegooNeptuneThumbnails.curapackage)
    and drag the `.curapackage` file into the Cura window (like onto the build
    plate) <img src="readme_images/cura_drag_plugin.png" width="400">
 2) Restart Cura
