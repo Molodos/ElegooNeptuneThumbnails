@@ -364,7 +364,7 @@ Window
                 MouseArea {
                     anchors.fill: parent
                     cursorShape: Qt.PointingHandCursor
-                    onClicked: Qt.openUrlExternally("https://www.elegoo.com");
+                    onClicked: Qt.openUrlExternally("https://elegoo.sjv.io/nthumbs");
                 }
             }
         }
