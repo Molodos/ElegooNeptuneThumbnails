@@ -2,14 +2,14 @@
   "author": {
     "author_id": "molodos",
     "display_name": "Molodos",
-    "email": "info@molodos.com",
+    "email": "realmolodos@gmail.com",
     "website": "https://github.com/Molodos"
   },
   "description": "Adds Elegoo Neptune printer thumbnail to G-code. Contains options to display parameters like estimated print time or model height on the thumbnail",
   "display_name": "Elegoo Neptune Thumbnails",
   "package_id": "ElegooNeptune3Thumbnails",
   "package_type": "plugin",
-  "package_version": "3.2.4",
+  "package_version": "3.3.0",
   "sdk_version": 8,
   "sdk_version_semver": "8.0.0",
   "website": "https://github.com/Molodos/ElegooNeptuneThumbnails"

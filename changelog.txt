@@ -1,3 +1,6 @@
+[3.3.0]
+- Added support for Cura 5.5
+
 [3.2.4]
 - Fixed the last bug, that caused thumbnails to be displayed wrongly on Neptune 2, Neptune 2S, Neptune 2D and Neptune X printers
 
