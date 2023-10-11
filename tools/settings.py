@@ -51,7 +51,7 @@ class Settings:
         self.corner_options: list[int] = [1, 4, 3, 5]
         self.statistics_enabled: bool = True
         self.use_current_model: bool = False
-        self.klipper_thumbnails_enabled: bool = False
+        self.klipper_thumbnails_enabled: bool = True
 
     def get_printer_model_id(self) -> str:
         """
@@ -101,7 +101,7 @@ class Settings:
         self._set_corner_option_ids(data.get("corner_options", None))
         self.statistics_enabled = data.get("statistics_enabled", True)
         self.use_current_model = data.get("use_current_model", False)
-        self.klipper_thumbnails_enabled = data.get("klipper_thumbnails_enabled", False)
+        self.klipper_thumbnails_enabled = data.get("klipper_thumbnails_enabled", True)
 
     def to_json(self) -> dict[str, Any]:
         """
@@ -159,7 +159,7 @@ class SettingsManager:
             cls._settings.corner_options = [1, 4, 3, 5]
             cls._settings.statistics_enabled = True
             cls._settings.use_current_model = False
-            cls._settings.klipper_thumbnails_enabled = False
+            cls._settings.klipper_thumbnails_enabled = True
 
             # Try to recognize current printer model
             printer_id: str = Application.getInstance().getMachineManager().activeMachine.definition.getId()
