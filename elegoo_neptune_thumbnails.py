@@ -128,6 +128,11 @@ class ElegooNeptune3Thumbnails(Extension):
         }
         """
 
+        extrud = Application.getInstance().getGlobalContainerStack().extruderList
+        Logger.log("w", extrud)
+        Logger.log("w", extrud[0].getProperty("line_width", "value"))
+        line_width = extrud[0].getProperty("line_width", "value")
+
         # Get more print information (independent of gcode)
         print_info: PrintInformation = CuraApplication.getInstance().getPrintInformation()
         print_time_duration: Duration = print_info.currentPrintTime
@@ -144,7 +149,8 @@ class ElegooNeptune3Thumbnails(Extension):
                                           filament_meters=material_length,
                                           filament_grams=material_weight,
                                           model_height=float(g_code_params["maxz"]),
-                                          filament_cost=material_cost)
+                                          filament_cost=material_cost,
+                                          line_width=line_width)
 
         # Clear gcode
         self.scene.gcode_dict[0] = []

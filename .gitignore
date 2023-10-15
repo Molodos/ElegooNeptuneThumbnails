@@ -1,8 +1,11 @@
 venv/
 .idea/
+.vscode/
 *.iml
 
 UM/
 cura/
 
 test/demo.png
+__pycache__/
+*.py[cod]

@@ -22,7 +22,8 @@ class Settings:
         "layer_height": "Layer Height",
         "model_height": "Model Height",
         "filament_cost_estimate": "Filament Cost Estimate",
-        "filament_meters_estimate": "Filament Meters Estimate"
+        "filament_meters_estimate": "Filament Meters Estimate",
+        "line_width": "Line Width"
     }
     PRINTER_MODELS: dict[str, str] = {
         "elegoo_neptune_4": "Elegoo Neptune 4",
