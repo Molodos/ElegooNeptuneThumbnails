@@ -1,5 +1,5 @@
-[3.3.1]
-- Added line_width option
+[3.4.0]
+- Added option for line width
 
 [3.3.0]
 - Added support for Cura 5.5

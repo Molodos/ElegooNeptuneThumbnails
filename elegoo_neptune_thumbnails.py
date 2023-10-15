@@ -128,10 +128,9 @@ class ElegooNeptune3Thumbnails(Extension):
         }
         """
 
-        extrud = Application.getInstance().getGlobalContainerStack().extruderList
-        Logger.log("w", extrud)
-        Logger.log("w", extrud[0].getProperty("line_width", "value"))
-        line_width = extrud[0].getProperty("line_width", "value")
+        # Get extruder line width
+        extruder = Application.getInstance().getGlobalContainerStack().extruderList
+        line_width = extruder[0].getProperty("line_width", "value")
 
         # Get more print information (independent of gcode)
         print_info: PrintInformation = CuraApplication.getInstance().getPrintInformation()
