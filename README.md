@@ -100,6 +100,7 @@ Additional features:
 | `Model Height`             | Includes the model height in the thumbnail                                                  |
 | `Filament Cost Estimate`   | Includes the estimated filament cost (based on cost in filaments settings) in the thumbnail |
 | `Filament Meters Estimate` | Includes the estimated filament usage in meters in the thumbnail                            |
+| `Line Width`               | Includes the line width (of the firs extruder) in the thumbnail                             |
 
 ## FAQ
 
