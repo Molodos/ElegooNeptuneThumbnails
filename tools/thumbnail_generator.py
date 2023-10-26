@@ -3,7 +3,7 @@
 
 import math
 from array import array
-from ctypes import CDLL
+from ctypes import CDLL, windll
 from os import path
 
 from PyQt6.QtCore import Qt, QByteArray, QBuffer, QIODeviceBase
@@ -242,6 +242,8 @@ class ThumbnailGenerator:
         TODO: Maybe optimize at some time
         """
         img_type = f";{img_type}:"
+
+        windll.kernel32.SetDllDirectoryW(None)
         if Platform.isOSX():
             p_dll = CDLL(path.abspath(path.join(path.dirname(__file__), "..", "libs", "libColPic.dylib")))
         elif Platform.isLinux():
