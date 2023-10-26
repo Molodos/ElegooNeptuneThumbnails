@@ -128,7 +128,7 @@ class SettingsManager:
 
     SETTINGS_KEY: str = "elegoo_neptune_thumbnails"
     STATISTICS_ID_KEY: str = "general/statistics_id"
-    PLUGIN_JSON_PATH: str = path.join(path.dirname(path.realpath(__file__)), "..", "plugin.json")
+    PLUGIN_JSON_PATH: str = path.abspath(path.join(path.dirname(path.realpath(__file__)), "..", "plugin.json"))
 
     _settings: Optional[Settings] = None
 

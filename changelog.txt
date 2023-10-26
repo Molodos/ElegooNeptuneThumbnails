@@ -1,5 +1,6 @@
 [3.4.1]
 - Fixes to keep the plugin from throwing errors if no printer exists
+- Minor other fixes
 
 [3.4.0]
 - Added option for line width

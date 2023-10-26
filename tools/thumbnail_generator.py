@@ -49,11 +49,14 @@ class ThumbnailGenerator:
         "bg_thumbnail": QColor(48, 57, 79),
         "own_gray": QColor(200, 200, 200)
     }
-    BACKGROUND_OLD_PATH: str = path.join(path.dirname(path.realpath(__file__)), "..", "img", "bg_old.png")
-    BACKGROUND_NEW_PATH: str = path.join(path.dirname(path.realpath(__file__)), "..", "img", "bg_new.png")
-    FOREGROUND_IMAGE_PATH: str = path.join(path.dirname(path.realpath(__file__)), "..", "img", "benchy.png")
-    NO_FOREGROUND_IMAGE_PATH: str = path.join(path.dirname(path.realpath(__file__)), "..", "img", "cross.png")
-    THUMBNAIL_PREVIEW_PATH: str = path.join(path.dirname(path.realpath(__file__)), "..", "img", "thumbnail_preview.png")
+    BACKGROUND_OLD_PATH: str = path.abspath(path.join(path.dirname(path.realpath(__file__)), "..", "img", "bg_old.png"))
+    BACKGROUND_NEW_PATH: str = path.abspath(path.join(path.dirname(path.realpath(__file__)), "..", "img", "bg_new.png"))
+    FOREGROUND_IMAGE_PATH: str = path.abspath(
+        path.join(path.dirname(path.realpath(__file__)), "..", "img", "benchy.png"))
+    NO_FOREGROUND_IMAGE_PATH: str = path.abspath(
+        path.join(path.dirname(path.realpath(__file__)), "..", "img", "cross.png"))
+    THUMBNAIL_PREVIEW_PATH: str = path.abspath(
+        path.join(path.dirname(path.realpath(__file__)), "..", "img", "thumbnail_preview.png"))
     CURRENCY_PREFERENCE: str = "cura/currency"
 
     @classmethod
@@ -240,11 +243,11 @@ class ThumbnailGenerator:
         """
         img_type = f";{img_type}:"
         if Platform.isOSX():
-            p_dll = CDLL(path.join(path.dirname(__file__), "..", "libs", "libColPic.dylib"))
+            p_dll = CDLL(path.abspath(path.join(path.dirname(__file__), "..", "libs", "libColPic.dylib")))
         elif Platform.isLinux():
-            p_dll = CDLL(path.join(path.dirname(__file__), "..", "libs", "libColPic.so"))
+            p_dll = CDLL(path.abspath(path.join(path.dirname(__file__), "..", "libs", "libColPic.so")))
         else:
-            p_dll = CDLL(path.join(path.dirname(__file__), "..", "libs", "ColPic_X64.dll"))
+            p_dll = CDLL(path.abspath(path.join(path.dirname(__file__), "..", "libs", "ColPic_X64.dll")))
 
         result = ""
         b_image = img.scaled(width, height, Qt.AspectRatioMode.KeepAspectRatio)
