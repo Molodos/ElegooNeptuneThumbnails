@@ -7,6 +7,8 @@ from os import path
 from typing import Any, Optional
 
 from UM.Application import Application
+from UM.Settings import ContainerStack
+from cura.Settings import GlobalStack
 
 
 class Settings:
@@ -44,7 +46,8 @@ class Settings:
 
         # Read stuff from config
         self.cura_version: str = Application.getInstance().getPreferences().getValue(self.CURA_VERSION_KEY)
-        self.printer_id: str = Application.getInstance().getMachineManager().activeMachine.definition.getId()
+        active_machine: Optional[GlobalStack] = Application.getInstance().getMachineManager().activeMachine
+        self.printer_id: str = active_machine.definition.getId() if active_machine else "unknown"
 
         # Define config
         self.thumbnails_enabled: bool = True
@@ -148,7 +151,8 @@ class SettingsManager:
             cls._settings = Settings(statistics_id=cls._generate_statistics_id(), plugin_json=cls._read_plugin_json())
 
         # Load settings and update
-        plain_data: str = Application.getInstance().getGlobalContainerStack().getMetaDataEntry(cls.SETTINGS_KEY)
+        global_container_stack: Optional[ContainerStack] = Application.getInstance().getGlobalContainerStack()
+        plain_data: str = global_container_stack.getMetaDataEntry(cls.SETTINGS_KEY) if global_container_stack else None
         if plain_data:
             data: dict[str, Any] = json.loads(plain_data)
             cls._settings.load_json(data=data)
@@ -163,7 +167,8 @@ class SettingsManager:
             cls._settings.klipper_thumbnails_enabled = True
 
             # Try to recognize current printer model
-            printer_id: str = Application.getInstance().getMachineManager().activeMachine.definition.getId()
+            active_machine: Optional[GlobalStack] = Application.getInstance().getMachineManager().activeMachine
+            printer_id: str = active_machine.definition.getId() if active_machine else "unknown"
             if printer_id in ["elegoo_neptune_4"]:
                 cls._settings.printer_model = list(Settings.PRINTER_MODELS.keys()).index("elegoo_neptune_4")
             elif printer_id in ["elegoo_neptune_4pro", "elegoo_neptune_4_pro"]:
