@@ -6,6 +6,5 @@ venv/
 UM/
 cura/
 
-test/demo.png
 __pycache__/
 *.py[cod]
