@@ -18,13 +18,13 @@ class TestLib:
     BG_BLACK: str = path.abspath(path.join(path.dirname(path.realpath(__file__)), "..", "img", "bg_old.png"))
 
     @classmethod
-    def test(cls, image_path: str, use_lib: bool) -> tuple[int, bytes]:
+    def test(cls, image_path: str, use_lib: bool, width: int = 200, height: int = 200) -> tuple[int, bytes]:
         image: QImage = QImage(3, 3, QImage.Format.Format_RGBA8888)
         painter = QPainter(image)
         painter.drawImage(0, 0, QImage(image_path))
         painter.end()
         if use_lib:
-            return cls._parse_thumbnail_new(img=image, width=200, height=200)
+            return cls._parse_thumbnail_new(img=image, width=width, height=height)
         else:
             return 10, b'0123425678910'
 
@@ -67,8 +67,8 @@ class TestLib:
             raise e
 
 
-def print_data(image_path: str, use_lib: bool) -> None:
-    count, data = TestLib.test(image_path=image_path, use_lib=use_lib)
+def print_data(image_path: str, use_lib: bool, width: int = 200, height: int = 200) -> None:
+    count, data = TestLib.test(image_path=image_path, use_lib=use_lib, width=width, height=height)
     print(f"Size: {count}")
     print(f"Data: {data[:count]}")
 
