@@ -27,7 +27,8 @@ def col_pic_encode(input_color_16: list[int], color_list: ColorList, output_max_
     colors_max = max(1024, colors_max)
     for color in input_color_16:
         color_list.add_color(color=color)
-    # TODO: Encode
+    for color, r, g ,b, count in color_list.get_sorted_entries()[::-1]:
+        pass
     return 0
 
 
