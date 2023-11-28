@@ -1,3 +1,7 @@
+[3.5.0]
+- Added Neptune 4 plus printer
+- Added Neptune 4 max printer
+
 [3.4.2]
 - Fixed some dll errors occurring on macOS
 
@@ -31,7 +35,7 @@
 - Now officially sponsored by Elegoo
 - Added Neptune 4 printer
 - Added Neptune 4 Pro printer
-- Added Neptune 2D Printer
+- Added Neptune 2D printer
 - Added Neptune X Printer
 - Minor other fixes
 

@@ -9,7 +9,7 @@ Sponsored by \
 
 If you like this plugin, consider supporting me :)
 
-[![Buy Me A Coffee](https://img.buymeacoffee.com/button-api/?text=Buy%20me%20a%20coffee&emoji=&slug=molodos&button_colour=5F7FFF&font_colour=ffffff&font_family=Comic&outline_colour=000000&coffee_colour=FFDD00&id=3)](https://www.buymeacoffee.com/molodos)
+[![Buy Me A Coffee](https://img.buymeacoffee.com/button-api/?text=Buy%20me%20a%20coffee&emoji=&slug=molodos&button_colour=5F7FFF&font_colour=ffffff&font_family=Comic&outline_colour=000000&coffee_colour=FFDD00&id=4)](https://www.buymeacoffee.com/molodos)
 
 ## General Info
 
@@ -18,6 +18,8 @@ other models, see [FAQ](#faq)):
 
 - Elegoo Neptune 4
 - Elegoo Neptune 4 Pro
+- Elegoo Neptune 4 Plus
+- Elegoo Neptune 4 Max
 - Elegoo Neptune 3 Pro
 - Elegoo Neptune 3 Plus
 - Elegoo Neptune 3 Max
