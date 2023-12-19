@@ -1,3 +1,6 @@
+[3.6.1]
+- Fixed a bug, that caused the plugin to crash on loading, when not running on Windows
+
 [3.6.0]
 - Added support for Cura 5.6
 
