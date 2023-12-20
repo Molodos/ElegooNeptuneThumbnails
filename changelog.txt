@@ -1,3 +1,7 @@
+[3.6.2]
+- Fixed a bug, that caused crashes when trying to generate thumbnails for some non-Elegoo printers
+- Sped up the thumbnail generation process
+
 [3.6.1]
 - Fixed a bug, that caused the plugin to crash on loading, when not running on Windows
 

@@ -183,9 +183,15 @@ class ThumbnailGenerator:
             elif option == "filament_grams_estimate":
                 lines.append(f"⭗ {round(slice_data.filament_grams)}g")
             elif option == "layer_height":
-                lines.append(f"⧗ {round(slice_data.layer_height, 2)}mm")
+                if slice_data.layer_height < 0:
+                    lines.append(f"⧗ N/A")
+                else:
+                    lines.append(f"⧗ {round(slice_data.layer_height, 2)}mm")
             elif option == "model_height":
-                lines.append(f"⭱ {round(slice_data.model_height, 2)}mm")
+                if slice_data.model_height < 0:
+                    lines.append(f"⭱ N/A")
+                else:
+                    lines.append(f"⭱ {round(slice_data.model_height, 2)}mm")
             elif option == "filament_cost_estimate":
                 currency: str = Application.getInstance().getPreferences().getValue(cls.CURRENCY_PREFERENCE)
                 lines.append(f"⛁ {round(slice_data.filament_cost, 2):.02f}{currency}")

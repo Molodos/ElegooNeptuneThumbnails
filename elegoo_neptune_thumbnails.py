@@ -3,6 +3,7 @@
 
 import json
 from os import path
+from typing import Optional
 
 from UM.Application import Application
 from UM.Extension import Extension
@@ -10,6 +11,7 @@ from UM.Logger import Logger
 from UM.Qt import Duration
 from UM.Scene.Scene import Scene
 from cura.CuraApplication import CuraApplication
+from cura.Settings.ExtruderStack import ExtruderStack
 from cura.UI.PrintInformation import PrintInformation
 from .tools import SettingsManager, StatisticsSender, GUIManager, SliceData, ThumbnailGenerator
 
@@ -78,25 +80,63 @@ class ElegooNeptune3Thumbnails(Extension):
         thumbnail_segments: list[int] = []
 
         # Params G-code
-        params_needed: list[str] = ["flavor", "time", "filament used", "layer height", "minx", "miny", "minz",
-                                    "maxx", "maxy", "maxz"]
-        params_g_code: str = ""
+        g_code_params: dict[str, Optional[str]] = {}
+        """
+        Example for g_code_params:
+        {
+            'flavor': 'Marlin',
+            'time': '2432',
+            'filament_used': '2.02409m',
+            'layer_height': '0.2',
+            'minx': '86.84',
+            'miny': '101.226',
+            'minz': '0.2',
+            'maxx': '140.428',
+            'maxy': '130.771',
+            'maxz': '33',
+            'machine_name': 'ELEGOO NEPTUNE 4 Pro',
+        }
+        """
+
+        # Param mappings
+        param_mappings: dict[str, dict[str, str]] = {
+            "elegoo": {
+                "flavor": "flavor",
+                "time": "time",
+                "filament used": "filament_used",
+                "layer height": "layer_height",
+                "minx": "minx",
+                "miny": "miny",
+                "minz": "minz",
+                "maxx": "maxx",
+                "maxy": "maxy",
+                "maxz": "maxz",
+                "target_machine.name": "machine_name",
+            },
+            "ultimaker": {
+                "flavor": "flavor",
+                "print.time": "time",
+                "print.size.min.x": "minx",
+                "print.size.min.y": "miny",
+                "print.size.min.z": "minz",
+                "print.size.max.x": "maxx",
+                "print.size.max.y": "maxy",
+                "print.size.max.z": "maxz",
+                "target_machine.name": "machine_name",
+            }
+        }
 
         # Go through all G-code segments and extract information
         for i, g_code in enumerate(g_code_segments):
 
-            # Add to params G-code if needed params exist withing G-code segment
-            added: bool = False
-            for param_needed in params_needed:
-                if param_needed in g_code.lower():
-
-                    # Add once
-                    if not added:
-                        params_g_code += f"\n{g_code}"
-                        added = True
-
-                    # Remove needed params from list for efficiency
-                    params_needed.remove(param_needed)
+            # Go through segment lines and extract parameters from mapping
+            for line in g_code.splitlines():
+                for param_mapping in param_mappings.values():
+                    for key, mapping in param_mapping.items():
+                        prefix: str = f";{key}:"
+                        if line.lower().startswith(prefix):
+                            value: str = line[len(prefix):]
+                            g_code_params[mapping] = value
 
             # Check if thumbnail is already present
             if SettingsManager.get_settings().thumbnails_enabled and (";gimage:" in g_code or ";simage:" in g_code):
@@ -104,33 +144,18 @@ class ElegooNeptune3Thumbnails(Extension):
             elif SettingsManager.get_settings().klipper_thumbnails_enabled and "; thumbnail begin " in g_code:
                 thumbnail_segments.append(i)
 
+            # Find end of head to break
+            if ";Generated with Cura_SteamEngine" in g_code:
+                break
+
         # Remove thumbnail parts from gcode
         for i in reversed(thumbnail_segments):
             del g_code_segments[i]
 
-        # Get params from params G-code
-        g_code_params_list: list[str] = params_g_code.splitlines()
-        g_code_params: dict[str, str] = {p[1:p.index(":")].lower(): p[p.index(":") + 1:] for p in
-                                         g_code_params_list if ":" in p}
-        """
-        Example for g_code_params:
-        {
-            'flavor': 'Marlin',
-            'time': '2432',
-            'filament used': '2.02409m',
-            'layer height': '0.2',
-            'minx': '86.84',
-            'miny': '101.226',
-            'minz': '0.2',
-            'maxx': '140.428',
-            'maxy': '130.771',
-            'maxz': '33'
-        }
-        """
-
         # Get extruder line width
-        extruder = Application.getInstance().getGlobalContainerStack().extruderList
-        line_width = extruder[0].getProperty("line_width", "value")
+        extruders: list[ExtruderStack] = Application.getInstance().getGlobalContainerStack().extruderList
+        extruder: ExtruderStack = extruders[0]
+        line_width = extruder.getProperty("line_width", "value")
 
         # Get more print information (independent of gcode)
         print_info: PrintInformation = CuraApplication.getInstance().getPrintInformation()
@@ -143,11 +168,11 @@ class ElegooNeptune3Thumbnails(Extension):
         # TODO: Find Model height and layer height independent of gcode (but not from settings because they could change between slice and save)
 
         # Create slice data object from g-code params and print information (prioritized)
-        slice_data: SliceData = SliceData(layer_height=float(g_code_params["layer height"]),
+        slice_data: SliceData = SliceData(layer_height=float(g_code_params.get("layer_height", "-1.0")),
                                           time_seconds=print_time,
                                           filament_meters=material_length,
                                           filament_grams=material_weight,
-                                          model_height=float(g_code_params["maxz"]),
+                                          model_height=float(g_code_params.get("maxz", "-1.0")),
                                           filament_cost=material_cost,
                                           line_width=line_width)
 
