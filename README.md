@@ -173,5 +173,5 @@ No personal data is being collected. The statistics data, that is collected, is 
 
 ## License
 
-This repository uses code snippets and image encoding binaries from Elegoo Cura MKS Plugin and is therefore released
-under the **AGPL v3** license.
+This repository uses code snippets from the Artillery Cura MKSWiFiPlugin and is therefore released under the **AGPL v3**
+license.

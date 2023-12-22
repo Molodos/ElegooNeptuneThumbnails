@@ -1,3 +1,6 @@
+[4.0.0]
+- Reworked the thumbnail encoding technique to not having to load any libraries, which caused errors before, anymore
+
 [3.6.2]
 - Fixed a bug, that caused crashes when trying to generate thumbnails for some non-Elegoo printers
 - Sped up the thumbnail generation process

@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Molodos
+# The ElegooNeptuneThumbnails plugin is released under the terms of the AGPLv3 or higher.
+
 def ColPic_EncodeStr(fromcolor16, picw, pich, outputdata: bytearray, outputmaxtsize, colorsmax):
     qty = 0
     temp = 0
