@@ -11,7 +11,7 @@ PLUGIN_FILES: list[str] = ["__init__.py", "elegoo_neptune_thumbnails.py", "LICEN
                            "changelog.txt", "img/benchy.png", "img/cross.png", "img/bg_old.png", "img/bg_new.png",
                            "tools/__init__.py", "tools/settings.py", "tools/thumbnail_generator.py", "tools/gui.qml",
                            "tools/gui.py", "tools/statistics_sender.py", "tools/lib_col_pic.py",
-                           "img/sponsor_elegoo.png"]
+                           "img/sponsor_elegoo.png", "img/bg_artillery.png"]
 
 BUILD_NAME = os.path.join(PACKAGE_PATH, "ElegooNeptuneThumbnails.curapackage")
 PLUGIN_BUILD_NAME = os.path.join(PACKAGE_PATH, "ElegooNeptuneThumbnails.zip")

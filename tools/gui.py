@@ -42,7 +42,7 @@ class SettingsTranslator(QObject):
         if self._popup:
             thumbnail: QQuickItem = self._popup.findChild(QQuickItem, "thumbnailPreview")
             thumbnail.setProperty("source", "")
-            thumbnail.setProperty("source", "../img/thumbnail_preview.png")
+            thumbnail.setProperty("source", self.THUMBNAIL_PREVIEW_PATH)
 
     def update_gui(self) -> None:
         """
