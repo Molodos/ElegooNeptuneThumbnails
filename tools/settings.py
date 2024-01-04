@@ -39,6 +39,7 @@ class Settings:
         "elegoo_neptune_2_s": "Elegoo Neptune 2S",
         "elegoo_neptune_2_d": "Elegoo Neptune 2D",
         "elegoo_neptune_x": "Elegoo Neptune X",
+        "artillery_sidewinder_x3_pro": "Artillery Sidewinder X3 Pro (beta)"
     }
 
     def __init__(self, statistics_id: str, plugin_json: dict[str, Any]):
@@ -97,6 +98,18 @@ class Settings:
         """
         return list(self.PRINTER_MODELS.keys())[self.printer_model] in ["elegoo_neptune_2", "elegoo_neptune_2_s",
                                                                         "elegoo_neptune_2_d", "elegoo_neptune_x"]
+
+    def is_elegoo_printer(self) -> bool:
+        """
+        Check if it is an elegoo printer
+        """
+        return "elegoo" in list(self.PRINTER_MODELS.keys())[self.printer_model]
+
+    def is_artillery_printer(self) -> bool:
+        """
+        Check if it is an artillery printer
+        """
+        return "artillery" in list(self.PRINTER_MODELS.keys())[self.printer_model]
 
     def load_json(self, data: dict[str, Any]) -> None:
         """
@@ -193,6 +206,8 @@ class SettingsManager:
                 cls._settings.printer_model = list(Settings.PRINTER_MODELS.keys()).index("elegoo_neptune_2_d")
             elif printer_id in ["elegoo_neptune_x"]:
                 cls._settings.printer_model = list(Settings.PRINTER_MODELS.keys()).index("elegoo_neptune_x")
+            elif printer_id in ["artillery_sidewinder_x3_pro"]:
+                cls._settings.printer_model = list(Settings.PRINTER_MODELS.keys()).index("artillery_sidewinder_x3_pro")
             else:
                 # Disable thumbnails if printer is not recognized (to avoid slice errors)
                 cls._settings.thumbnails_enabled = False

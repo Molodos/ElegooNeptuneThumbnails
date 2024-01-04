@@ -1,3 +1,6 @@
+[4.1.0]
+- Added Artillery Sidewinder X3 Pro printer (beta)
+
 [4.0.0]
 - Reworked the thumbnail encoding technique to not having to load any libraries, which caused errors before, anymore
 
@@ -12,8 +15,8 @@
 - Added support for Cura 5.6
 
 [3.5.0]
-- Added Neptune 4 plus printer
-- Added Neptune 4 max printer
+- Added Neptune 4 Plus printer
+- Added Neptune 4 Max printer
 
 [3.4.2]
 - Fixed some dll errors occurring on macOS

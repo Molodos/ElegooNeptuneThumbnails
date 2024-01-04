@@ -27,6 +27,7 @@ other models, see [FAQ](#faq)):
 - Elegoo Neptune 2S
 - Elegoo Neptune 2D
 - Elegoo Neptune X
+- Artillery Sidewinder X3 Pro (beta)
 
 Additional features:
 
