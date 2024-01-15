@@ -9,9 +9,12 @@ Sponsored by \
 
 If you like this plugin, consider supporting me :)
 
-[![Buy Me A Coffee](https://img.buymeacoffee.com/button-api/?text=Buy%20me%20a%20coffee&emoji=&slug=molodos&button_colour=5F7FFF&font_colour=ffffff&font_family=Comic&outline_colour=000000&coffee_colour=FFDD00&id=6)](https://www.buymeacoffee.com/molodos)
+[![Buy Me A Coffee](https://img.buymeacoffee.com/button-api/?text=Buy%20me%20a%20coffee&emoji=&slug=molodos&button_colour=5F7FFF&font_colour=ffffff&font_family=Comic&outline_colour=000000&coffee_colour=FFDD00&id=7)](https://www.buymeacoffee.com/molodos)
 
 ## General Info
+
+> **You are a printer manufacturer and want your printer to be supported?**\
+> Feel free to contact me via email: `realmolodos@gmail.com`
 
 Cura 5.X plugin for adding gcode thumbnail images for Elegoo Neptune printers. The following models are supported (for
 other models, see [FAQ](#faq)):
