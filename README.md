@@ -14,10 +14,11 @@ If you like this plugin, consider supporting me :)
 ## General Info
 
 > **You are a printer manufacturer and want your printer to be supported?**\
-> Feel free to contact me via email: `realmolodos@gmail.com`
+> Feel free to contact me via email: `realmolodos@gmail.com` (**Manufacturers only** - else open an issue here on
+> GitHub)
 
-Cura 5.X plugin for adding gcode thumbnail images for Elegoo Neptune printers. The following models are supported (for
-other models, see [FAQ](#faq)):
+Cura 5.X (Cura 4.X is **not** supported) plugin for adding gcode thumbnail images for Elegoo Neptune printers. The
+following models are supported (for other models, see [FAQ](#faq)):
 
 - Elegoo Neptune 4
 - Elegoo Neptune 4 Pro
