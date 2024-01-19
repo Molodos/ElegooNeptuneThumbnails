@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Molodos
+# Copyright (c) 2023 - 2024 Molodos
 # The ElegooNeptuneThumbnails plugin is released under the terms of the AGPLv3 or higher.
 
 import math
@@ -52,6 +52,8 @@ class ThumbnailGenerator:
     BACKGROUND_NEW_PATH: str = path.abspath(path.join(path.dirname(path.realpath(__file__)), "..", "img", "bg_new.png"))
     BACKGROUND_ARTILLERY_PATH: str = path.abspath(
         path.join(path.dirname(path.realpath(__file__)), "..", "img", "bg_artillery.png"))
+    BACKGROUND_ORANGESTORM_PATH: str = path.abspath(
+        path.join(path.dirname(path.realpath(__file__)), "..", "img", "bg_orangestorm.png"))
     FOREGROUND_IMAGE_PATH: str = path.abspath(
         path.join(path.dirname(path.realpath(__file__)), "..", "img", "benchy.png"))
     NO_FOREGROUND_IMAGE_PATH: str = path.abspath(
@@ -82,6 +84,9 @@ class ThumbnailGenerator:
             if SettingsManager.get_settings().is_old_thumbnail():
                 gcode_prefix += cls._parse_thumbnail_old(thumbnail, 100, 100, "simage")
                 gcode_prefix += cls._parse_thumbnail_old(thumbnail, 200, 200, ";gimage")
+            elif SettingsManager.get_settings().is_b64jpg_thumbnail():
+                gcode_prefix += cls._parse_thumbnail_b64jpg(thumbnail, 400, 400, "gimage")
+                gcode_prefix += cls._parse_thumbnail_b64jpg(thumbnail, 114, 114, "simage")
             else:
                 gcode_prefix += cls._parse_thumbnail_new(thumbnail, 200, 200, "gimage")
                 gcode_prefix += cls._parse_thumbnail_new(thumbnail, 160, 160, "simage")
@@ -127,6 +132,10 @@ class ThumbnailGenerator:
             if SettingsManager.get_settings().is_old_thumbnail():
                 painter = QPainter(background)
                 painter.drawImage(0, 0, QImage(cls.BACKGROUND_OLD_PATH))
+                painter.end()
+            elif SettingsManager.get_settings().is_b64jpg_thumbnail():
+                painter = QPainter(background)
+                painter.drawImage(0, 0, QImage(cls.BACKGROUND_ORANGESTORM_PATH))
                 painter.end()
             elif SettingsManager.get_settings().is_artillery_printer():
                 painter = QPainter(background)
@@ -296,6 +305,42 @@ class ThumbnailGenerator:
             result += '\r;'
             for m in range(append_len):
                 result += '0'
+
+        except Exception as e:
+            Logger.log("d", "Exception == " + str(e))
+
+        return result + '\r'
+
+    @classmethod
+    def _parse_thumbnail_b64jpg(cls, img: QImage, width: int, height: int, img_type: str) -> str:
+        """
+        Parse thumbnail to string for new printers
+        TODO: Maybe optimize at some time
+        """
+        img_type = f";{img_type}:"
+
+        result = ""
+        b_image = img.scaled(width, height, Qt.AspectRatioMode.KeepAspectRatio)
+
+        try:
+            byte_array: QByteArray = QByteArray()
+            byte_buffer: QBuffer = QBuffer(byte_array)
+            byte_buffer.open(QIODeviceBase.OpenModeFlag.WriteOnly)
+            b_image.save(byte_buffer, "JPEG")
+            base64_string: str = str(byte_array.toBase64().data(), "UTF-8")
+
+            each_max = 1024 - 8 - 1
+            max_line = int(len(base64_string) / each_max)
+
+            for i in range(len(base64_string)):
+                if i == max_line * each_max:
+                    result += '\r;' + img_type + base64_string[i]
+                elif i == 0:
+                    result += img_type + base64_string[i]
+                elif i % each_max == 0:
+                    result += '\r' + img_type + base64_string[i]
+                else:
+                    result += base64_string[i]
 
         except Exception as e:
             Logger.log("d", "Exception == " + str(e))
