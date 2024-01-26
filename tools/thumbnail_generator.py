@@ -46,7 +46,8 @@ class ThumbnailGenerator:
         "bg_dark": QColor(30, 36, 52),
         "bg_light": QColor(46, 54, 75),
         "bg_thumbnail": QColor(48, 57, 79),
-        "own_gray": QColor(200, 200, 200)
+        "own_gray": QColor(200, 200, 200),
+        "darker_gray": QColor(63, 63, 63)
     }
     BACKGROUND_OLD_PATH: str = path.abspath(path.join(path.dirname(path.realpath(__file__)), "..", "img", "bg_old.png"))
     BACKGROUND_NEW_PATH: str = path.abspath(path.join(path.dirname(path.realpath(__file__)), "..", "img", "bg_new.png"))
@@ -127,6 +128,7 @@ class ThumbnailGenerator:
         Renders a thumbnail based on settings
         """
         # Create background
+        is_light_background: bool = False
         background: QImage = QImage(900, 900, QImage.Format.Format_RGBA8888)
         if add_background:
             if SettingsManager.get_settings().is_old_thumbnail():
@@ -134,6 +136,7 @@ class ThumbnailGenerator:
                 painter.drawImage(0, 0, QImage(cls.BACKGROUND_OLD_PATH))
                 painter.end()
             elif SettingsManager.get_settings().is_b64jpg_thumbnail():
+                is_light_background = True
                 painter = QPainter(background)
                 painter.drawImage(0, 0, QImage(cls.BACKGROUND_ORANGESTORM_PATH))
                 painter.end()
@@ -172,7 +175,10 @@ class ThumbnailGenerator:
         painter = QPainter(background)
         font = QFont("Arial", 60)
         painter.setFont(font)
-        painter.setPen(cls.COLORS["own_gray"])
+        if is_light_background:
+            painter.setPen(cls.COLORS["darker_gray"])
+        else:
+            painter.setPen(cls.COLORS["own_gray"])
         for i, line in enumerate(lines):
             if line:
                 left: bool = i % 2 == 0
