@@ -165,6 +165,7 @@ class ElegooNeptune3Thumbnails(Extension):
         material_length: float = print_info.materialLengths[0]
         material_cost: float = print_info.materialCosts[0]
         material_weight: float = print_info.materialWeights[0]
+        currency: str = Application.getInstance().getPreferences().getValue("cura/currency")
         # TODO: Find Model height and layer height independent of gcode (but not from settings because they could change between slice and save)
 
         # Create slice data object from g-code params and print information (prioritized)
@@ -174,7 +175,8 @@ class ElegooNeptune3Thumbnails(Extension):
                                           filament_grams=material_weight,
                                           model_height=float(g_code_params.get("maxz", "-1.0")),
                                           filament_cost=material_cost,
-                                          line_width=line_width)
+                                          line_width=line_width,
+                                          currency=currency)
 
         # Clear gcode
         self.scene.gcode_dict[0] = []

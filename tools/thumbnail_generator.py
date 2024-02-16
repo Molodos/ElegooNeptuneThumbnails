@@ -8,7 +8,6 @@ from os import path
 from PyQt6.QtCore import Qt, QByteArray, QBuffer, QIODeviceBase
 from PyQt6.QtGui import QImage, QPainter, QColor, QFont
 
-from UM.Application import Application
 from UM.Logger import Logger
 from cura.Snapshot import Snapshot
 from . import lib_col_pic
@@ -22,7 +21,7 @@ class SliceData:
 
     def __init__(self, layer_height: float = 0.2, time_seconds: int = 3960, filament_meters: float = 3.9,
                  filament_grams: float = 11.6, model_height: float = 48.0, filament_cost: float = 0.25,
-                 line_width: float = 0.4):
+                 line_width: float = 0.4, currency: str = "€"):
         self.layer_height: float = layer_height
         self.time_seconds: int = time_seconds
         self.filament_meters: float = filament_meters
@@ -30,6 +29,7 @@ class SliceData:
         self.model_height: float = model_height
         self.filament_cost: float = filament_cost
         self.line_width: float = line_width
+        self.currency: str = currency
 
 
 class ThumbnailGenerator:
@@ -61,7 +61,6 @@ class ThumbnailGenerator:
         path.join(path.dirname(path.realpath(__file__)), "..", "img", "cross.png"))
     THUMBNAIL_PREVIEW_PATH: str = path.abspath(
         path.join(path.dirname(path.realpath(__file__)), "..", "img", "thumbnail_preview.png"))
-    CURRENCY_PREFERENCE: str = "cura/currency"
 
     @classmethod
     def generate_preview(cls) -> None:
@@ -218,8 +217,7 @@ class ThumbnailGenerator:
                 else:
                     lines.append(f"⭱ {round(slice_data.model_height, 2)}mm")
             elif option == "filament_cost_estimate":
-                currency: str = Application.getInstance().getPreferences().getValue(cls.CURRENCY_PREFERENCE)
-                lines.append(f"⛁ {round(slice_data.filament_cost, 2):.02f}{currency}")
+                lines.append(f"⛁ {round(slice_data.filament_cost, 2):.02f}{slice_data.currency}")
             elif option == "filament_meters_estimate":
                 lines.append(f"⬌ {round(slice_data.filament_meters, 2):.02f}m")
             elif option == "line_width":
