@@ -1,3 +1,7 @@
+[4.3.0]
+- Minor fixes on how snapshots for thumbnails are created
+- Added support for Cura 5.7
+
 [4.2.0]
 - Added Elegoo OrangeStorm Giga printer (beta)
 
