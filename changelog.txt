@@ -1,3 +1,6 @@
+[4.3.1]
+- Minor fix to ensure backwards compatibility
+
 [4.3.0]
 - Minor fixes on how snapshots for thumbnails are created
 - Added support for Cura 5.7

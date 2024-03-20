@@ -104,7 +104,7 @@ class ThumbnailGenerator:
         """
         Generate klipper thumbnail gcode for thumbnails in sizes 32x32 and 300x300
         """
-        small_icon: QImage = Snapshot.isometricSnapshot(width=32, height=32)
+        small_icon: QImage = cls._take_snapshot(width=32, height=32)
         big_icon: QImage = cls._render_thumbnail(slice_data=slice_data, is_preview=False, add_background=False)
         big_icon = big_icon.scaled(300, 300)
         g_code: str = "\r"
@@ -153,7 +153,7 @@ class ThumbnailGenerator:
         if not SettingsManager.get_settings().thumbnails_enabled and not SettingsManager.get_settings().klipper_thumbnails_enabled:
             foreground = QImage(cls.NO_FOREGROUND_IMAGE_PATH)
         elif SettingsManager.get_settings().use_current_model or not is_preview:
-            foreground = Snapshot.isometricSnapshot(width=600, height=600)
+            foreground = cls._take_snapshot(width=600, height=600)
         else:
             foreground = QImage(cls.FOREGROUND_IMAGE_PATH)
 
@@ -350,3 +350,17 @@ class ThumbnailGenerator:
             Logger.log("d", "Exception == " + str(e))
 
         return result + '\r'
+
+    @classmethod
+    def _take_snapshot(cls, width: int, height: int) -> QImage:
+        """
+        Create a snapshot
+        :param width: Width of snapshot
+        :param height: Height of snapshot
+        :return: The snapshot
+        """
+        try:
+            return Snapshot.isometricSnapshot(width=width, height=height)
+        except AttributeError:
+            # Fallback for older Cura versions
+            return Snapshot.snapshot(width=width, height=height)
