@@ -7,7 +7,7 @@
     "email": "realmolodos@gmail.com",
     "website": "https://github.com/Molodos"
   },
-  "version": "4.3.1",
+  "version": "4.4.0",
   "description": "Adds Elegoo Neptune printer thumbnail to G-code. Contains options to display parameters like estimated print time or model height on the thumbnail",
   "supported_sdk_versions": [
     "8.0.0",
@@ -17,7 +17,8 @@
     "8.4.0",
     "8.5.0",
     "8.6.0",
-    "8.7.0"
+    "8.7.0",
+    "8.8.0"
   ],
   "api": 8
 }
